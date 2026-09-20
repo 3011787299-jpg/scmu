@@ -2,3324 +2,877 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>SCMU 流浪动物管理平台</title>
 
 <style>
-
 :root{
-    --green:#0b6b4a;
-    --green-dark:#07543b;
-    --green-darker:#043d2c;
-
-    --green-light:#e9f5ef;
-    --green-soft:#f5faf7;
-
-    --white:#ffffff;
-
-    --text:#192b24;
-    --text-soft:#4e6259;
-    --muted:#78877f;
-
-    --border:#dce8e2;
-    --border-soft:#edf3ef;
-
-    --red:#c84f4f;
-    --red-bg:#fff0f0;
-
-    --gold:#b58a36;
-    --gold-bg:#fff8e7;
-
-    --blue:#47769b;
-    --blue-bg:#eef6fb;
-
-    --shadow:
-        0 10px 30px
-        rgba(19,58,43,.07);
-
-    --shadow-strong:
-        0 20px 60px
-        rgba(12,52,37,.15);
-
-    --radius:18px;
+--green:#0b6b4a;
+--green2:#11825b;
+--deep:#043d2c;
+--light:#e9f5ef;
+--soft:#f5f9f7;
+--white:#fff;
+--text:#192b24;
+--text2:#53665d;
+--muted:#7b8b83;
+--border:#dce8e2;
+--border2:#edf3ef;
+--red:#c44d4d;
+--gold:#d9a21b;
+--shadow:0 10px 30px rgba(15,61,45,.07);
+--shadow2:0 22px 65px rgba(8,40,29,.18);
 }
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-*{
-    box-sizing:border-box;
-}
-
-html,
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
 body{
-    margin:0;
-    padding:0;
+min-height:100vh;
+font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+background:#f4f8f6;
+color:var(--text)
 }
-
-body{
-    min-height:100vh;
-
-    background:#f4f8f6;
-
-    color:var(--text);
-
-    font-family:
-        "PingFang SC",
-        "Microsoft YaHei",
-        Arial,
-        sans-serif;
-}
-
-button,
-input,
-select,
-textarea{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-button:disabled{
-    cursor:not-allowed;
-    opacity:.6;
-}
-
-section[hidden]{
-    display:none !important;
-}
-
-body.modal-open{
-    overflow:hidden;
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+section[hidden]{display:none!important}
+body.modal-open{overflow:hidden}
 
 .login-screen{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:9999;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:24px;
-
-    overflow:hidden;
-
-    background:
-
-        radial-gradient(
-            circle at 15% 15%,
-            rgba(255,255,255,.12),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(255,255,255,.08),
-            transparent 30%
-        ),
-
-        linear-gradient(
-            135deg,
-            #043d2c 0%,
-            #086044 45%,
-            #0e8159 100%
-        );
+position:fixed;inset:0;z-index:9999;
+display:flex;align-items:center;justify-content:center;
+padding:20px;overflow:hidden;
+background:
+radial-gradient(circle at 15% 15%,rgba(255,255,255,.13),transparent 30%),
+linear-gradient(135deg,#033a2a,#086044 48%,#10855d)
 }
-
-
-.login-screen::before{
-
-    content:"SCMU";
-
-    position:absolute;
-
-    right:-30px;
-
-    top:30px;
-
-    font-size:150px;
-
-    font-weight:900;
-
-    letter-spacing:14px;
-
-    color:rgba(255,255,255,.045);
-
-    pointer-events:none;
+.login-screen:after{
+content:"SCMU";position:absolute;right:-45px;bottom:-50px;
+font-size:190px;font-weight:900;letter-spacing:15px;
+color:rgba(255,255,255,.045)
 }
-
-
-.login-screen::after{
-
-    content:"ANIMAL CARE";
-
-    position:absolute;
-
-    left:30px;
-
-    bottom:20px;
-
-    font-size:60px;
-
-    font-weight:900;
-
-    letter-spacing:10px;
-
-    color:rgba(255,255,255,.035);
-
-    pointer-events:none;
-}
-
-
 .login-card{
-
-    position:relative;
-
-    z-index:2;
-
-    width:min(440px, 94vw);
-
-    padding:36px 34px 30px;
-
-    border-radius:28px;
-
-    background:
-        rgba(255,255,255,.98);
-
-    box-shadow:
-        0 26px 80px
-        rgba(0,0,0,.22);
+position:relative;z-index:2;width:min(440px,94vw);
+padding:36px 34px;border-radius:28px;background:#fff;
+box-shadow:0 28px 80px rgba(0,0,0,.22)
 }
-
-
-.login-brand{
-
-    text-align:center;
-
-    margin-bottom:24px;
-}
-
-
 .login-logo{
-
-    width:76px;
-
-    height:76px;
-
-    margin:auto;
-
-    display:grid;
-
-    place-items:center;
-
-    border-radius:24px;
-
-    color:var(--green);
-
-    font-size:34px;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            #e7f5ee,
-            #f8fffb
-        );
-
-    border:
-        1px solid
-        var(--border);
+width:76px;height:76px;margin:auto;display:grid;place-items:center;
+border-radius:24px;background:linear-gradient(135deg,#e7f5ee,#fafffc);
+border:1px solid var(--border);font-size:34px
 }
-
-
 .login-scmu{
-
-    margin-top:17px;
-
-    color:var(--green);
-
-    font-size:13px;
-
-    font-weight:900;
-
-    letter-spacing:6px;
+margin-top:17px;text-align:center;color:var(--green);
+font-size:13px;font-weight:900;letter-spacing:6px
 }
-
-
-.login-title{
-
-    margin-top:8px;
-
-    font-size:24px;
-
-    font-weight:900;
+.login-title{margin-top:8px;text-align:center;font-size:24px;font-weight:900}
+.login-desc{
+margin-top:7px;text-align:center;color:var(--muted);
+font-size:12px;line-height:1.7
 }
-
-
-.login-subtitle{
-
-    margin-top:7px;
-
-    color:var(--muted);
-
-    font-size:13px;
-
-    line-height:1.7;
-}
-
-
 .login-tags{
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:7px;
-
-    flex-wrap:wrap;
-
-    margin-top:15px;
+display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin:16px 0 21px
 }
-
-
 .login-tag{
-
-    padding:6px 10px;
-
-    border-radius:999px;
-
-    color:var(--green);
-
-    background:var(--green-light);
-
-    border:
-        1px solid
-        var(--border);
-
-    font-size:11px;
-
-    font-weight:700;
+padding:6px 10px;border-radius:999px;color:var(--green);
+background:var(--light);border:1px solid var(--border);
+font-size:10px;font-weight:700
 }
-
-
-.login-field{
-
-    margin-bottom:11px;
+.login-input{
+width:100%;margin-bottom:10px;padding:13px 14px;outline:0;
+border:1px solid var(--border);border-radius:12px
 }
-
-
-.login-field input{
-
-    width:100%;
-
-    padding:13px 14px;
-
-    outline:none;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius:12px;
-
-    background:#fff;
-
-    transition:.2s;
+.login-input:focus{
+border-color:var(--green);box-shadow:0 0 0 3px rgba(11,107,74,.07)
 }
-
-
-.login-field input:focus{
-
-    border-color:var(--green);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(11,107,74,.08);
-}
-
-
-.login-actions{
-
-    display:grid;
-
-    gap:10px;
-
-    margin-top:14px;
-}
-
-
+.login-actions{display:grid;gap:9px}
 .login-message{
-
-    min-height:18px;
-
-    margin-top:13px;
-
-    text-align:center;
-
-    color:var(--red);
-
-    font-size:13px;
+min-height:18px;margin-top:12px;text-align:center;color:var(--red);font-size:12px
 }
 
-
-
-/* =========================================================
-   APP
-========================================================= */
-
-.app{
-
-    min-height:100vh;
-
-    display:grid;
-
-    grid-template-columns:
-        272px
-        minmax(0,1fr);
-}
-
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
+.app{min-height:100vh;display:grid;grid-template-columns:274px minmax(0,1fr)}
 
 .sidebar{
-
-    position:relative;
-
-    min-height:100vh;
-
-    overflow:hidden;
-
-    display:flex;
-
-    flex-direction:column;
-
-    padding:20px 16px;
-
-    color:white;
-
-    background:
-
-        linear-gradient(
-            180deg,
-            #096144 0%,
-            #064b36 60%,
-            #033a2a 100%
-        );
+position:relative;min-height:100vh;display:flex;flex-direction:column;
+overflow:hidden;padding:20px 16px;color:#fff;
+background:linear-gradient(180deg,#086044,#054934 62%,#03392a)
 }
-
-
-.sidebar::after{
-
-    content:"SCMU";
-
-    position:absolute;
-
-    right:-10px;
-
-    bottom:115px;
-
-    color:
-        rgba(255,255,255,.04);
-
-    font-size:85px;
-
-    font-weight:900;
-
-    letter-spacing:10px;
-
-    transform:
-        rotate(-90deg);
-
-    transform-origin:
-        bottom right;
-
-    pointer-events:none;
+.sidebar:after{
+content:"SCMU";position:absolute;right:-15px;bottom:120px;
+font-size:90px;font-weight:900;letter-spacing:10px;
+color:rgba(255,255,255,.035);
+transform:rotate(-90deg);transform-origin:right bottom
 }
-
-
 .brand{
-
-    position:relative;
-
-    z-index:2;
-
-    padding:
-
-        8px
-        8px
-        21px;
-
-    border-bottom:
-
-        1px solid
-        rgba(255,255,255,.11);
+position:relative;z-index:2;padding:8px 8px 20px;
+border-bottom:1px solid rgba(255,255,255,.11)
 }
-
-
-.brand-main{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-}
-
-
+.brand-main{display:flex;align-items:center;gap:12px}
 .brand-logo{
-
-    flex:0 0 auto;
-
-    width:54px;
-
-    height:54px;
-
-    display:grid;
-
-    place-items:center;
-
-    border-radius:17px;
-
-    font-size:25px;
-
-    background:
-        rgba(255,255,255,.12);
-
-    border:
-        1px solid
-        rgba(255,255,255,.16);
+width:54px;height:54px;display:grid;place-items:center;
+border-radius:17px;background:rgba(255,255,255,.11);
+border:1px solid rgba(255,255,255,.15);font-size:25px
 }
-
-
-.brand-scmu{
-
-    font-size:17px;
-
-    font-weight:900;
-
-    letter-spacing:3px;
-}
-
-
-.brand-title{
-
-    margin-top:3px;
-
-    font-size:14px;
-
-    font-weight:700;
-}
-
-
+.brand-scmu{font-size:18px;font-weight:900;letter-spacing:3px}
+.brand-title{margin-top:2px;font-size:13px;font-weight:700}
 .brand-en{
-
-    margin-top:3px;
-
-    color:
-        rgba(255,255,255,.6);
-
-    font-size:9px;
-
-    letter-spacing:.4px;
+margin-top:3px;color:rgba(255,255,255,.58);font-size:8px;letter-spacing:.5px
 }
-
-
-.brand-letters{
-
-    display:flex;
-
-    gap:6px;
-
-    margin-top:15px;
-}
-
-
-.brand-letter{
-
-    width:29px;
-
-    height:29px;
-
-    display:grid;
-
-    place-items:center;
-
-    border-radius:9px;
-
-    background:
-        rgba(255,255,255,.09);
-
-    border:
-        1px solid
-        rgba(255,255,255,.13);
-
-    font-size:10px;
-
-    font-weight:900;
-}
-
-
-.nav{
-
-    position:relative;
-
-    z-index:2;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:5px;
-
-    margin-top:18px;
-}
-
-
+.nav{position:relative;z-index:2;display:flex;flex-direction:column;gap:5px;margin-top:18px}
 .nav button{
-
-    width:100%;
-
-    padding:13px 14px;
-
-    border:0;
-
-    border-radius:13px;
-
-    text-align:left;
-
-    color:white;
-
-    background:
-        transparent;
-
-    opacity:.8;
-
-    transition:.18s;
+width:100%;padding:13px 14px;border:0;border-radius:13px;
+text-align:left;color:#fff;background:transparent;opacity:.78;transition:.18s
 }
-
-
-.nav button:hover{
-
-    opacity:1;
-
-    background:
-        rgba(255,255,255,.09);
-}
-
-
-.nav button.active{
-
-    opacity:1;
-
-    background:
-        rgba(255,255,255,.14);
-
-    box-shadow:
-        inset
-        0 0 0 1px
-        rgba(255,255,255,.06);
-}
-
-
-.sidebar-user{
-
-    position:relative;
-
-    z-index:2;
-
-    margin-top:auto;
-
-    padding-top:18px;
-}
-
-
+.nav button:hover,.nav button.active{opacity:1;background:rgba(255,255,255,.13)}
+.sidebar-user{position:relative;z-index:2;margin-top:auto}
 .sidebar-user-card{
-
-    padding:14px;
-
-    border-radius:16px;
-
-    background:
-        rgba(255,255,255,.08);
-
-    border:
-        1px solid
-        rgba(255,255,255,.11);
+padding:14px;border-radius:16px;background:rgba(255,255,255,.07);
+border:1px solid rgba(255,255,255,.1)
 }
-
-
-.sidebar-user-label{
-
-    color:
-        rgba(255,255,255,.58);
-
-    font-size:10px;
+.sidebar-small{color:rgba(255,255,255,.55);font-size:9px;letter-spacing:1px}
+.sidebar-email{
+margin-top:5px;overflow:hidden;text-overflow:ellipsis;
+white-space:nowrap;font-size:11px;font-weight:700
 }
+.sidebar-role{margin-top:8px}
 
-
-.sidebar-user-email{
-
-    margin-top:5px;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-    white-space:nowrap;
-
-    font-size:12px;
-
-    font-weight:700;
-}
-
-
-.sidebar-role{
-
-    margin-top:9px;
-}
-
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main{
-
-    min-width:0;
-
-    padding:
-        27px
-        30px
-        36px;
-}
-
-
+.main{min-width:0;padding:27px 30px 38px}
 .topbar{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-start;
-
-    gap:18px;
-
-    margin-bottom:23px;
+display:flex;align-items:flex-start;justify-content:space-between;
+gap:18px;margin-bottom:23px
 }
+.page-title{font-size:28px;font-weight:900}
+.page-subtitle{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.7}
+.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
-
-.page-title{
-
-    font-size:28px;
-
-    font-weight:900;
-
-    letter-spacing:.3px;
-}
-
-
-.page-subtitle{
-
-    margin-top:5px;
-
-    color:var(--muted);
-
-    font-size:13px;
-
-    line-height:1.7;
-}
-
-
-.top-actions{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:9px;
-
-    flex-wrap:wrap;
-}
-
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.btn{
-
-    border:0;
-
-    border-radius:11px;
-
-    padding:10px 15px;
-
-    transition:.18s;
-}
-
-
+.btn{padding:10px 15px;border:0;border-radius:11px;transition:.18s}
 .btn-primary{
-
-    color:white;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            #096849,
-            #10845b
-        );
-
-    box-shadow:
-
-        0 7px 18px
-        rgba(11,107,74,.16);
+color:#fff;background:linear-gradient(135deg,var(--green),var(--green2));
+box-shadow:0 7px 18px rgba(11,107,74,.16)
 }
-
-
-.btn-primary:hover{
-
-    transform:
-        translateY(-1px);
-}
-
-
-.btn-secondary{
-
-    color:var(--text);
-
-    background:white;
-
-    border:
-        1px solid
-        var(--border);
-}
-
-
-.btn-secondary:hover{
-
-    background:#fafdfb;
-}
-
-
-.btn-danger{
-
-    color:var(--red) !important;
-}
-
-
-
-/* =========================================================
-   ROLE BADGES
-========================================================= */
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-secondary{color:var(--text);background:#fff;border:1px solid var(--border)}
+.btn-danger{color:var(--red)!important}
 
 .role-pill{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:6px;
-
-    width:max-content;
-
-    max-width:100%;
-
-    padding:6px 10px;
-
-    border-radius:999px;
-
-    font-size:11px;
-
-    font-weight:800;
+display:inline-flex;align-items:center;gap:5px;padding:6px 10px;
+border-radius:999px;font-size:10px;font-weight:800
 }
-
-
-.role-viewer{
-
-    color:#64736c;
-
-    background:#edf2ef;
-
-    border:
-        1px solid
-        #dce5e0;
-}
-
-
-.role-volunteer{
-
-    color:var(--green);
-
-    background:#e7f6ef;
-
-    border:
-        1px solid
-        #d0e9dc;
-}
-
-
-.role-admin{
-
-    color:#356986;
-
-    background:var(--blue-bg);
-
-    border:
-        1px solid
-        #d7e7f1;
-}
-
-
-.role-super_admin{
-
-    color:#906b1d;
-
-    background:var(--gold-bg);
-
-    border:
-        1px solid
-        #efdfa9;
-}
-
-
-
-/* =========================================================
-   DASHBOARD HERO
-========================================================= */
+.role-viewer{color:#65736c;background:#edf2ef;border:1px solid #dce5e0}
+.role-volunteer{color:var(--green);background:#e7f6ef;border:1px solid #cee9dc}
+.role-admin{color:#3c6e8b;background:#eef6fb;border:1px solid #d8e9f2}
+.role-super_admin{color:#916c1c;background:#fff8e7;border:1px solid #efdfa9}
 
 .hero{
-
-    position:relative;
-
-    overflow:hidden;
-
-    margin-bottom:17px;
-
-    padding:28px;
-
-    border-radius:24px;
-
-    color:white;
-
-    box-shadow:var(--shadow);
-
-    background:
-
-        radial-gradient(
-            circle at 85% 10%,
-            rgba(255,255,255,.18),
-            transparent 26%
-        ),
-
-        linear-gradient(
-            135deg,
-            #075b40,
-            #0b7450 58%,
-            #109066
-        );
+position:relative;overflow:hidden;padding:28px;margin-bottom:16px;
+border-radius:24px;color:#fff;
+background:
+radial-gradient(circle at 84% 12%,rgba(255,255,255,.18),transparent 27%),
+linear-gradient(135deg,#075b40,#0b7450 58%,#119164);
+box-shadow:var(--shadow)
 }
-
-
-.hero::after{
-
-    content:"SCMU";
-
-    position:absolute;
-
-    right:22px;
-
-    bottom:-16px;
-
-    color:
-        rgba(255,255,255,.07);
-
-    font-size:82px;
-
-    font-weight:900;
-
-    letter-spacing:7px;
+.hero:after{
+content:"SCMU";position:absolute;right:22px;bottom:-18px;
+font-size:86px;font-weight:900;letter-spacing:8px;color:rgba(255,255,255,.065)
 }
-
-
-.hero-grid{
-
-    position:relative;
-
-    z-index:2;
-
-    display:grid;
-
-    grid-template-columns:
-        minmax(0,1.35fr)
-        minmax(220px,.65fr);
-
-    gap:25px;
+.hero-inner{
+position:relative;z-index:2;display:grid;
+grid-template-columns:minmax(0,1.4fr) minmax(230px,.6fr);gap:24px
 }
-
-
 .hero-kicker{
-
-    margin-bottom:9px;
-
-    color:
-        rgba(255,255,255,.7);
-
-    font-size:10px;
-
-    font-weight:800;
-
-    letter-spacing:4px;
+margin-bottom:9px;color:rgba(255,255,255,.65);
+font-size:9px;font-weight:900;letter-spacing:4px
 }
-
-
-.hero-title{
-
-    max-width:760px;
-
-    font-size:27px;
-
-    font-weight:900;
-
-    line-height:1.35;
-}
-
-
+.hero-title{font-size:27px;font-weight:900;line-height:1.35}
 .hero-desc{
-
-    max-width:760px;
-
-    margin-top:9px;
-
-    color:
-        rgba(255,255,255,.84);
-
-    font-size:13px;
-
-    line-height:1.8;
+max-width:760px;margin-top:9px;color:rgba(255,255,255,.83);
+font-size:12px;line-height:1.8
 }
-
-
-.hero-tags{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:8px;
-
-    margin-top:18px;
-}
-
-
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
 .hero-tag{
-
-    padding:7px 11px;
-
-    border-radius:999px;
-
-    color:
-        rgba(255,255,255,.94);
-
-    background:
-        rgba(255,255,255,.10);
-
-    border:
-        1px solid
-        rgba(255,255,255,.15);
-
-    font-size:11px;
-
-    font-weight:700;
+padding:7px 10px;border-radius:999px;color:rgba(255,255,255,.92);
+background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);
+font-size:10px;font-weight:700
 }
-
-
-.hero-side{
-
-    align-self:start;
-
-    padding:18px;
-
-    border-radius:19px;
-
-    background:
-        rgba(255,255,255,.11);
-
-    border:
-        1px solid
-        rgba(255,255,255,.14);
+.hero-stat{
+align-self:start;padding:18px;border-radius:19px;
+background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.14)
 }
-
-
-.hero-side-label{
-
-    color:
-        rgba(255,255,255,.67);
-
-    font-size:11px;
-}
-
-
-.hero-side-number{
-
-    margin-top:6px;
-
-    font-size:40px;
-
-    font-weight:900;
-}
-
-
-.hero-side-text{
-
-    margin-top:6px;
-
-    color:
-        rgba(255,255,255,.74);
-
-    font-size:11px;
-
-    line-height:1.7;
-}
-
-
-
-/* =========================================================
-   STATS
-========================================================= */
+.hero-stat-label{color:rgba(255,255,255,.65);font-size:10px}
+.hero-stat-value{margin-top:5px;font-size:40px;font-weight:900}
+.hero-stat-desc{margin-top:5px;color:rgba(255,255,255,.74);font-size:10px}
 
 .stats{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            5,
-            minmax(0,1fr)
-        );
-
-    gap:13px;
-
-    margin-bottom:17px;
+display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+gap:13px;margin-bottom:16px
 }
-
-
-.stat{
-
-    position:relative;
-
-    overflow:hidden;
-
-    min-width:0;
-
-    padding:18px;
-
-    border-radius:18px;
-
-    background:white;
-
-    border:
-        1px solid
-        var(--border);
-
-    box-shadow:var(--shadow);
+.stat-card{
+padding:17px;border-radius:18px;background:#fff;
+border:1px solid var(--border);box-shadow:var(--shadow)
 }
-
-
 .stat-icon{
-
-    width:34px;
-
-    height:34px;
-
-    display:grid;
-
-    place-items:center;
-
-    margin-bottom:13px;
-
-    border-radius:11px;
-
-    background:var(--green-light);
-
-    font-size:16px;
+width:33px;height:33px;display:grid;place-items:center;
+border-radius:10px;background:var(--light)
 }
-
-
-.stat-value{
-
-    color:var(--green);
-
-    font-size:29px;
-
-    font-weight:900;
-}
-
-
-.stat-label{
-
-    margin-top:4px;
-
-    color:var(--muted);
-
-    font-size:12px;
-}
-
-
-
-/* =========================================================
-   PANELS
-========================================================= */
-
-.dashboard-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        minmax(0,1.25fr)
-        minmax(300px,.75fr);
-
-    gap:17px;
-}
-
+.stat-number{margin-top:12px;color:var(--green);font-size:29px;font-weight:900}
+.stat-label{margin-top:3px;color:var(--muted);font-size:10px}
 
 .panel{
-
-    padding:20px;
-
-    border-radius:20px;
-
-    background:white;
-
-    border:
-        1px solid
-        var(--border);
-
-    box-shadow:var(--shadow);
+padding:20px;border-radius:20px;background:#fff;
+border:1px solid var(--border);box-shadow:var(--shadow)
 }
-
-
-.panel + .panel{
-
-    margin-top:17px;
-}
-
-
 .panel-title-row{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:14px;
-
-    margin-bottom:15px;
+display:flex;justify-content:space-between;align-items:center;
+gap:12px;margin-bottom:15px
+}
+.panel-title{font-size:17px;font-weight:900}
+.panel-subtitle{margin-top:3px;color:var(--muted);font-size:10px;line-height:1.6}
+.dashboard-grid{
+display:grid;grid-template-columns:1.1fr .9fr .9fr;gap:16px
 }
 
+.list-row{padding:13px 2px;border-bottom:1px solid var(--border2)}
+.list-row:last-child{border-bottom:0}
+.list-title{font-size:12px;font-weight:800}
+.small{margin-top:4px;color:var(--muted);font-size:10px;line-height:1.7}
+.empty{padding:42px 10px;text-align:center;color:var(--muted);font-size:12px}
 
-.panel-title{
-
-    font-size:17px;
-
-    font-weight:900;
+.announcement{padding:13px 2px;border-bottom:1px solid var(--border2)}
+.announcement:last-child{border-bottom:0}
+.announcement-head{display:flex;align-items:center;gap:6px}
+.pin-badge{
+padding:3px 6px;border-radius:6px;color:#956d18;
+background:#fff5d8;font-size:8px;font-weight:900
+}
+.announcement-title{font-size:12px;font-weight:900}
+.announcement-content{margin-top:5px;color:var(--text2);font-size:10px;line-height:1.65}
+.mini-actions{display:flex;gap:5px;margin-top:8px}
+.mini-actions button{
+padding:5px 8px;border-radius:7px;background:#fff;
+border:1px solid var(--border);font-size:9px
 }
 
-
-.panel-subtitle{
-
-    margin-top:3px;
-
-    color:var(--muted);
-
-    font-size:12px;
-
-    line-height:1.6;
-}
-
-
-
-/* =========================================================
-   LIST
-========================================================= */
-
-.list-row{
-
-    padding:
-        14px
-        2px;
-
-    border-bottom:
-        1px solid
-        var(--border-soft);
-}
-
-
-.list-row:last-child{
-
-    border-bottom:0;
-}
-
-
-.list-main{
-
-    font-size:13px;
-
-    font-weight:700;
-}
-
-
-.small{
-
-    margin-top:5px;
-
-    color:var(--muted);
-
-    font-size:11px;
-
-    line-height:1.7;
-}
-
-
-.empty{
-
-    padding:
-        45px
-        15px;
-
-    text-align:center;
-
-    color:var(--muted);
-}
-
-
-
-/* =========================================================
-   TOOLBAR
-========================================================= */
+.news-mini{padding:12px 0;border-bottom:1px solid var(--border2)}
+.news-mini:last-child{border-bottom:0}
+.news-category{color:var(--green);font-size:8px;font-weight:800;letter-spacing:.5px}
+.news-mini-title{margin-top:4px;font-size:12px;font-weight:900;line-height:1.5}
+.news-mini-time{margin-top:5px;color:var(--muted);font-size:9px}
 
 .toolbar{
-
-    display:flex;
-
-    gap:9px;
-
-    flex-wrap:wrap;
-
-    align-items:center;
-
-    margin-bottom:18px;
+display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:18px
 }
-
-
 .search{
-
-    flex:1;
-
-    min-width:240px;
-
-    padding:11px 13px;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius:11px;
-
-    outline:none;
-
-    background:white;
+flex:1;min-width:230px;padding:11px 13px;outline:0;
+border:1px solid var(--border);border-radius:11px
 }
-
-
-.search:focus{
-
-    border-color:var(--green);
-
-    box-shadow:
-
-        0 0 0 3px
-        rgba(11,107,74,.07);
-}
-
-
+.search:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(11,107,74,.07)}
 .filter{
-
-    padding:9px 14px;
-
-    border-radius:11px;
-
-    color:var(--text);
-
-    background:white;
-
-    border:
-        1px solid
-        var(--border);
-
-    font-weight:600;
+padding:9px 13px;border-radius:10px;color:var(--text);
+background:#fff;border:1px solid var(--border)
 }
-
-
-.filter.active{
-
-    color:white;
-
-    border-color:var(--green);
-
-    background:var(--green);
-}
-
-
-
-/* =========================================================
-   ANIMAL CARDS
-========================================================= */
+.filter.active{color:#fff;background:var(--green);border-color:var(--green)}
 
 .animals-grid{
-
-    display:grid;
-
-    grid-template-columns:
-
-        repeat(
-            auto-fill,
-            minmax(255px,1fr)
-        );
-
-    gap:17px;
+display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:17px
 }
-
-
 .animal-card{
-
-    overflow:hidden;
-
-    border-radius:19px;
-
-    background:white;
-
-    border:
-        1px solid
-        var(--border);
-
-    box-shadow:var(--shadow);
-
-    transition:.18s;
+overflow:hidden;border-radius:19px;background:#fff;
+border:1px solid var(--border);box-shadow:var(--shadow);transition:.18s
 }
-
-
-.animal-card:hover{
-
-    transform:
-        translateY(-3px);
-
-    box-shadow:
-
-        0 15px 36px
-        rgba(16,65,46,.11);
-}
-
-
+.animal-card:hover{transform:translateY(-3px);box-shadow:0 15px 38px rgba(15,61,45,.11)}
 .animal-photo{
-
-    position:relative;
-
-    height:183px;
-
-    display:grid;
-
-    place-items:center;
-
-    overflow:hidden;
-
-    font-size:62px;
-
-    background:
-
-        radial-gradient(
-            circle at 78% 15%,
-            rgba(255,255,255,.7),
-            transparent 28%
-        ),
-
-        linear-gradient(
-            135deg,
-            #dff2e9,
-            #eff9f4
-        );
+position:relative;height:185px;display:grid;place-items:center;overflow:hidden;
+font-size:62px;
+background:
+radial-gradient(circle at 80% 15%,rgba(255,255,255,.75),transparent 29%),
+linear-gradient(135deg,#dff2e9,#f0faf5)
 }
-
-
-.animal-photo img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
+.animal-photo img{width:100%;height:100%;object-fit:cover}
+.scmu-watermark{
+position:absolute;right:10px;bottom:9px;padding:4px 7px;border-radius:7px;
+color:rgba(255,255,255,.9);background:rgba(5,67,46,.42);
+backdrop-filter:blur(5px);font-size:8px;font-weight:900;letter-spacing:2px
 }
-
-
-.photo-watermark{
-
-    position:absolute;
-
-    right:11px;
-
-    bottom:9px;
-
-    padding:4px 7px;
-
-    border-radius:7px;
-
-    color:
-        rgba(255,255,255,.88);
-
-    background:
-        rgba(5,69,47,.45);
-
-    backdrop-filter:
-        blur(6px);
-
-    font-size:9px;
-
-    font-weight:900;
-
-    letter-spacing:2px;
+.rating-badge{
+position:absolute;right:10px;top:10px;display:flex;align-items:center;
+gap:4px;padding:6px 9px;border-radius:999px;color:#7c5812;
+background:rgba(255,248,225,.95);border:1px solid rgba(231,205,141,.85);
+box-shadow:0 5px 15px rgba(0,0,0,.06);font-size:11px;font-weight:900
 }
-
-
-.animal-body{
-
-    padding:15px;
-}
-
-
-.animal-top{
-
-    display:flex;
-
-    align-items:flex-start;
-
-    justify-content:space-between;
-
-    gap:10px;
-}
-
-
-.animal-name{
-
-    font-size:19px;
-
-    font-weight:900;
-}
-
-
-.animal-code{
-
-    margin-top:3px;
-
-    color:var(--muted);
-
-    font-size:11px;
-}
-
-
+.animal-body{padding:15px}
+.animal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.animal-name{font-size:19px;font-weight:900}
+.animal-code{margin-top:3px;color:var(--muted);font-size:10px}
 .species-tag{
-
-    flex:0 0 auto;
-
-    padding:5px 9px;
-
-    border-radius:999px;
-
-    color:var(--green);
-
-    background:var(--green-light);
-
-    font-size:10px;
-
-    font-weight:800;
+padding:5px 9px;border-radius:999px;color:var(--green);
+background:var(--light);font-size:9px;font-weight:800
 }
-
-
-.status-row{
-
-    display:flex;
-
-    gap:6px;
-
-    flex-wrap:wrap;
-
-    margin-top:12px;
-}
-
-
+.status-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:11px}
 .status-chip{
-
-    padding:5px 8px;
-
-    border-radius:8px;
-
-    color:#597068;
-
-    background:#f2f6f4;
-
-    font-size:10px;
-
-    font-weight:700;
+padding:5px 8px;border-radius:8px;color:#607069;
+background:#f2f6f4;font-size:9px;font-weight:700
 }
-
-
-.status-chip.good{
-
-    color:var(--green);
-
-    background:#e7f6ef;
-}
-
-
-.status-chip.warn{
-
-    color:#a27420;
-
-    background:#fff7e5;
-}
-
-
-.animal-meta{
-
-    margin-top:11px;
-
-    color:var(--text-soft);
-
-    font-size:12px;
-
-    line-height:1.8;
-}
-
-
-.animal-actions{
-
-    display:flex;
-
-    gap:7px;
-
-    margin-top:14px;
-}
-
-
+.status-chip.good{color:var(--green);background:#e6f6ee}
+.status-chip.warn{color:#9c7428;background:#fff6df}
+.animal-meta{margin-top:11px;color:var(--text2);font-size:11px;line-height:1.75}
+.animal-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:13px}
 .animal-actions button{
-
-    flex:1;
-
-    padding:8px 8px;
-
-    border-radius:9px;
-
-    color:var(--text);
-
-    background:white;
-
-    border:
-        1px solid
-        var(--border);
-
-    font-size:12px;
+flex:1;min-width:65px;padding:8px 6px;border-radius:9px;
+color:var(--text);background:#fff;border:1px solid var(--border);font-size:10px
 }
-
-
-.animal-actions button:hover{
-
-    background:#f9fcfa;
-}
-
-
-
-/* =========================================================
-   AREA
-========================================================= */
 
 .area-grid{
-
-    display:grid;
-
-    grid-template-columns:
-
-        repeat(
-            auto-fill,
-            minmax(220px,1fr)
-        );
-
-    gap:13px;
+display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px
 }
-
-
 .area-card{
-
-    padding:17px;
-
-    border-radius:16px;
-
-    background:#fbfdfc;
-
-    border:
-        1px solid
-        var(--border);
+padding:17px;border-radius:16px;background:#fbfdfc;border:1px solid var(--border)
 }
+.area-icon{font-size:19px}
+.area-name{margin-top:9px;font-size:14px;font-weight:900}
+.area-number{margin-top:4px;color:var(--green);font-size:23px;font-weight:900}
+.area-caption{color:var(--muted);font-size:9px}
 
-
-.area-icon{
-
-    font-size:20px;
+.news-grid{
+display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px
 }
-
-
-.area-name{
-
-    margin-top:10px;
-
-    font-size:15px;
-
-    font-weight:800;
+.news-card{
+overflow:hidden;border-radius:18px;background:#fff;
+border:1px solid var(--border);box-shadow:var(--shadow)
 }
-
-
-.area-count{
-
-    margin-top:5px;
-
-    color:var(--green);
-
-    font-size:22px;
-
-    font-weight:900;
+.news-cover{
+height:165px;display:grid;place-items:center;overflow:hidden;color:var(--green);
+background:
+radial-gradient(circle at 80% 10%,rgba(255,255,255,.8),transparent 30%),
+linear-gradient(135deg,#dcede5,#f2faf6);
+font-size:45px
 }
-
-
-.area-label{
-
-    margin-top:2px;
-
-    color:var(--muted);
-
-    font-size:10px;
-}
-
-
-
-/* =========================================================
-   MEMBERS
-========================================================= */
+.news-cover img{width:100%;height:100%;object-fit:cover}
+.news-body{padding:16px}
+.news-title{margin-top:5px;font-size:17px;font-weight:900;line-height:1.5}
+.news-summary{margin-top:8px;color:var(--text2);font-size:10px;line-height:1.7}
+.news-time{margin-top:10px;color:var(--muted);font-size:9px}
 
 .member-row{
-
-    display:grid;
-
-    grid-template-columns:
-        minmax(0,1fr)
-        auto;
-
-    gap:18px;
-
-    align-items:center;
-
-    padding:
-        15px
-        4px;
-
-    border-bottom:
-        1px solid
-        var(--border-soft);
+display:grid;grid-template-columns:minmax(0,1fr) auto;
+gap:15px;align-items:center;padding:14px 2px;
+border-bottom:1px solid var(--border2)
 }
-
-
-.member-row:last-child{
-
-    border-bottom:0;
-}
-
-
-.member-name{
-
-    font-size:14px;
-
-    font-weight:800;
-}
-
-
-.member-email{
-
-    margin-top:4px;
-
-    color:var(--muted);
-
-    font-size:11px;
-}
-
-
-.member-date{
-
-    margin-top:3px;
-
-    color:#9aa59f;
-
-    font-size:10px;
-}
-
-
-.member-right{
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    align-items:center;
-
-    gap:9px;
-}
-
-
+.member-row:last-child{border-bottom:0}
+.member-name{font-size:12px;font-weight:900}
+.member-email{margin-top:4px;color:var(--muted);font-size:10px}
 .role-select{
-
-    min-width:140px;
-
-    padding:8px 9px;
-
-    outline:none;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius:10px;
-
-    color:var(--text);
-
-    background:white;
+min-width:135px;padding:8px 9px;border:1px solid var(--border);
+border-radius:9px;background:#fff
 }
-
-
-
-/* =========================================================
-   LOGS
-========================================================= */
 
 .log-row{
-
-    display:grid;
-
-    grid-template-columns:
-        auto
-        minmax(0,1fr);
-
-    gap:12px;
-
-    padding:
-        15px
-        2px;
-
-    border-bottom:
-        1px solid
-        var(--border-soft);
+display:grid;grid-template-columns:auto minmax(0,1fr);
+gap:11px;padding:14px 2px;border-bottom:1px solid var(--border2)
 }
-
-
-.log-row:last-child{
-
-    border-bottom:0;
-}
-
-
+.log-row:last-child{border-bottom:0}
 .log-icon{
-
-    width:37px;
-
-    height:37px;
-
-    display:grid;
-
-    place-items:center;
-
-    border-radius:11px;
-
-    background:var(--green-light);
+width:36px;height:36px;display:grid;place-items:center;
+border-radius:10px;background:var(--light)
 }
-
-
-.log-title{
-
-    font-size:13px;
-
-    font-weight:800;
-}
-
-
-.log-desc{
-
-    margin-top:4px;
-
-    color:var(--muted);
-
-    font-size:11px;
-
-    line-height:1.7;
-}
-
-
-
-/* =========================================================
-   MODALS
-========================================================= */
+.log-title{font-size:12px;font-weight:900}
+.log-detail{margin-top:4px;color:var(--muted);font-size:10px;line-height:1.7}
 
 .modal{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:5000;
-
-    display:none;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:20px;
-
-    background:
-        rgba(13,38,29,.48);
-
-    backdrop-filter:
-        blur(4px);
+position:fixed;inset:0;z-index:5000;display:none;
+align-items:center;justify-content:center;padding:20px;
+background:rgba(12,38,28,.48);backdrop-filter:blur(4px)
 }
-
-
-.modal.open{
-
-    display:flex;
-}
-
-
+.modal.open{display:flex}
 .modal-card{
-
-    width:
-        min(
-            760px,
-            96vw
-        );
-
-    max-height:
-        92vh;
-
-    overflow:auto;
-
-    padding:24px;
-
-    border-radius:23px;
-
-    background:white;
-
-    box-shadow:var(--shadow-strong);
+width:min(760px,96vw);max-height:92vh;overflow:auto;
+padding:24px;border-radius:23px;background:#fff;box-shadow:var(--shadow2)
 }
-
-
-.modal-small{
-
-    width:
-        min(
-            620px,
-            96vw
-        );
-}
-
-
+.modal-wide{width:min(900px,96vw)}
+.modal-small{width:min(620px,96vw)}
 .modal-head{
-
-    display:flex;
-
-    align-items:flex-start;
-
-    justify-content:space-between;
-
-    gap:15px;
-
-    margin-bottom:20px;
+display:flex;justify-content:space-between;align-items:flex-start;
+gap:15px;margin-bottom:19px
 }
-
-
-.modal-title{
-
-    font-size:21px;
-
-    font-weight:900;
-}
-
-
-.modal-subtitle{
-
-    margin-top:4px;
-
-    color:var(--muted);
-
-    font-size:11px;
-}
-
-
+.modal-title{font-size:21px;font-weight:900}
+.modal-desc{margin-top:4px;color:var(--muted);font-size:10px}
 .close{
-
-    width:36px;
-
-    height:36px;
-
-    display:grid;
-
-    place-items:center;
-
-    border:0;
-
-    border-radius:10px;
-
-    color:var(--text);
-
-    background:#f5f7f6;
-
-    font-size:22px;
+width:36px;height:36px;display:grid;place-items:center;border:0;
+border-radius:10px;background:#f3f6f4;font-size:22px
 }
 
-
-
-/* =========================================================
-   FORMS
-========================================================= */
-
-.form-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr
-        1fr;
-
-    gap:14px;
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{color:var(--text2);font-size:11px;font-weight:700}
+.field input,.field select,.field textarea{
+width:100%;padding:10px 11px;outline:0;border:1px solid var(--border);
+border-radius:10px;background:#fff
 }
-
-
-.field{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:6px;
+.field textarea{min-height:105px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{
+border-color:var(--green);box-shadow:0 0 0 3px rgba(11,107,74,.07)
 }
+.hint{color:#96a19b;font-size:9px;line-height:1.5}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
 
-
-.field.full{
-
-    grid-column:1/-1;
+.detail-top{
+display:grid;grid-template-columns:190px minmax(0,1fr);gap:20px
 }
-
-
-.field label{
-
-    color:var(--text-soft);
-
-    font-size:12px;
-
-    font-weight:700;
-}
-
-
-.field input,
-.field select,
-.field textarea{
-
-    width:100%;
-
-    padding:10px 11px;
-
-    outline:none;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius:10px;
-
-    background:white;
-}
-
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-
-    border-color:var(--green);
-
-    box-shadow:
-
-        0 0 0 3px
-        rgba(11,107,74,.07);
-}
-
-
-.field textarea{
-
-    min-height:95px;
-
-    resize:vertical;
-}
-
-
-.field-hint{
-
-    color:#96a19b;
-
-    font-size:10px;
-
-    line-height:1.5;
-}
-
-
-.modal-footer{
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:9px;
-
-    margin-top:21px;
-}
-
-
-
-/* =========================================================
-   DETAILS
-========================================================= */
-
-.detail-hero{
-
-    display:grid;
-
-    grid-template-columns:
-        190px
-        minmax(0,1fr);
-
-    gap:20px;
-
-    margin-bottom:20px;
-}
-
-
 .detail-photo{
-
-    width:190px;
-
-    height:190px;
-
-    display:grid;
-
-    place-items:center;
-
-    overflow:hidden;
-
-    border-radius:18px;
-
-    background:var(--green-light);
-
-    font-size:65px;
+position:relative;width:190px;height:190px;display:grid;place-items:center;
+overflow:hidden;border-radius:18px;background:var(--light);font-size:65px
 }
-
-
-.detail-photo img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
+.detail-photo img{width:100%;height:100%;object-fit:cover}
+.detail-name{font-size:26px;font-weight:900}
+.detail-code{margin-top:4px;color:var(--muted);font-size:10px}
+.detail-grid{
+display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px
 }
-
-
-.detail-name{
-
-    font-size:27px;
-
-    font-weight:900;
+.detail-box{
+padding:11px;border-radius:11px;background:#f8fbf9;
+border:1px solid var(--border2)
 }
+.detail-label{color:var(--muted);font-size:9px}
+.detail-value{margin-top:4px;font-size:11px;font-weight:700;line-height:1.55}
 
-
-.detail-code{
-
-    margin-top:4px;
-
-    color:var(--muted);
-
-    font-size:12px;
+.review-section{
+margin-top:22px;padding-top:20px;border-top:1px solid var(--border)
 }
-
-
-.detail-info-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr
-        1fr;
-
-    gap:10px;
-
-    margin-top:18px;
+.review-header{
+display:flex;justify-content:space-between;align-items:center;gap:10px
 }
-
-
-.detail-item{
-
-    padding:12px;
-
-    border-radius:12px;
-
-    background:#f8fbf9;
-
-    border:
-        1px solid
-        var(--border-soft);
+.review-title{font-size:16px;font-weight:900}
+.review-score{color:#936b17;font-size:20px;font-weight:900}
+.review-form{
+margin-top:14px;padding:15px;border-radius:15px;
+background:#f8fbf9;border:1px solid var(--border)
 }
-
-
-.detail-label{
-
-    color:var(--muted);
-
-    font-size:10px;
+.star-picker{display:flex;gap:4px;margin:8px 0 10px}
+.star-button{
+padding:0;border:0;color:#cbd2ce;background:transparent;font-size:27px
 }
-
-
-.detail-value{
-
-    margin-top:4px;
-
-    font-size:12px;
-
-    font-weight:700;
-
-    line-height:1.6;
+.star-button.active{color:#e3a91f}
+.review-form textarea{
+width:100%;min-height:80px;padding:10px;resize:vertical;outline:0;
+border:1px solid var(--border);border-radius:10px
 }
+.review-list{margin-top:15px}
+.review-item{padding:13px 2px;border-bottom:1px solid var(--border2)}
+.review-item:last-child{border-bottom:0}
+.review-item-head{display:flex;justify-content:space-between;gap:10px}
+.review-user{font-size:11px;font-weight:800}
+.review-stars{color:#e1a31b;font-size:11px;letter-spacing:1px}
+.review-comment{margin-top:6px;color:var(--text2);font-size:10px;line-height:1.7}
 
-
-.detail-block{
-
-    margin-top:12px;
-
-    padding:14px;
-
-    border-radius:13px;
-
-    background:#f8fbf9;
-
-    border:
-        1px solid
-        var(--border-soft);
+.avatar-preview{
+width:180px;height:180px;display:grid;place-items:center;
+margin:0 auto 18px;overflow:hidden;border-radius:50%;
+background:var(--light);border:5px solid #f3f8f5;
+box-shadow:0 10px 30px rgba(12,65,44,.1);font-size:60px
 }
-
-
-
-/* =========================================================
-   TOAST
-========================================================= */
+.avatar-preview img{width:100%;height:100%;object-fit:cover}
 
 .toast-container{
-
-    position:fixed;
-
-    right:20px;
-
-    top:20px;
-
-    z-index:99999;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:9px;
-
-    pointer-events:none;
+position:fixed;right:20px;top:20px;z-index:99999;
+display:flex;flex-direction:column;gap:8px
 }
-
-
 .toast{
-
-    min-width:240px;
-
-    max-width:380px;
-
-    padding:
-        12px
-        14px;
-
-    border-radius:12px;
-
-    color:white;
-
-    background:#1d4032;
-
-    box-shadow:
-        0 10px 30px
-        rgba(0,0,0,.15);
-
-    font-size:12px;
-
-    line-height:1.6;
-
-    animation:
-        toastIn
-        .2s ease;
+min-width:230px;max-width:380px;padding:12px 14px;
+border-radius:11px;color:#fff;background:#174232;
+box-shadow:0 10px 30px rgba(0,0,0,.15);font-size:11px;line-height:1.6
+}
+.toast.success{background:var(--green)}
+.toast.error{background:#a94343}
+.footer{
+margin-top:23px;text-align:center;color:#99a69f;font-size:9px;letter-spacing:.4px
 }
 
-
-.toast.error{
-
-    background:#9f3f3f;
+@media(max-width:1200px){
+.dashboard-grid{grid-template-columns:1fr 1fr}
+.dashboard-grid>:first-child{grid-column:1/-1}
+.stats{grid-template-columns:repeat(3,1fr)}
 }
-
-
-.toast.success{
-
-    background:#0b6b4a;
-}
-
-
-@keyframes toastIn{
-
-    from{
-        transform:
-            translateY(-8px);
-
-        opacity:0;
-    }
-
-    to{
-        transform:
-            translateY(0);
-
-        opacity:1;
-    }
-}
-
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.page-footer{
-
-    margin-top:24px;
-
-    text-align:center;
-
-    color:#9ba69f;
-
-    font-size:10px;
-
-    letter-spacing:.3px;
-}
-
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:1100px){
-
-    .stats{
-
-        grid-template-columns:
-            repeat(
-                3,
-                minmax(0,1fr)
-            );
-    }
-
-    .dashboard-grid{
-
-        grid-template-columns:1fr;
-    }
-}
-
-
 @media(max-width:900px){
-
-    .app{
-
-        display:block;
-    }
-
-    .sidebar{
-
-        min-height:auto;
-
-        padding:
-            14px
-            14px
-            13px;
-    }
-
-    .brand{
-
-        padding-bottom:14px;
-    }
-
-    .brand-letters{
-
-        display:none;
-    }
-
-    .nav{
-
-        flex-direction:row;
-
-        overflow:auto;
-
-        margin-top:12px;
-
-        padding-bottom:3px;
-    }
-
-    .nav button{
-
-        width:auto;
-
-        flex:0 0 auto;
-
-        white-space:nowrap;
-    }
-
-    .sidebar-user{
-
-        display:none;
-    }
-
-    .main{
-
-        padding:
-            20px
-            18px
-            28px;
-    }
-
-    .hero-grid{
-
-        grid-template-columns:1fr;
-    }
-
-    .hero-side{
-
-        max-width:280px;
-    }
+.app{display:block}
+.sidebar{min-height:auto;padding:14px}
+.nav{flex-direction:row;overflow:auto;margin-top:12px}
+.nav button{width:auto;flex:0 0 auto;white-space:nowrap}
+.sidebar-user{display:none}
+.main{padding:20px 18px 30px}
+.hero-inner{grid-template-columns:1fr}
+.hero-stat{max-width:280px}
 }
-
-
 @media(max-width:650px){
-
-    .topbar{
-
-        flex-direction:column;
-    }
-
-    .top-actions{
-
-        width:100%;
-    }
-
-    .top-actions .btn{
-
-        flex:1;
-    }
-
-    .page-title{
-
-        font-size:24px;
-    }
-
-    .hero{
-
-        padding:22px;
-    }
-
-    .hero-title{
-
-        font-size:22px;
-    }
-
-    .stats{
-
-        grid-template-columns:
-            repeat(
-                2,
-                minmax(0,1fr)
-            );
-    }
-
-    .form-grid{
-
-        grid-template-columns:1fr;
-    }
-
-    .field.full{
-
-        grid-column:auto;
-    }
-
-    .detail-hero{
-
-        grid-template-columns:1fr;
-    }
-
-    .detail-photo{
-
-        width:100%;
-
-        height:230px;
-    }
-
-    .detail-info-grid{
-
-        grid-template-columns:1fr;
-    }
-
-    .member-row{
-
-        grid-template-columns:1fr;
-    }
-
-    .member-right{
-
-        justify-content:flex-start;
-    }
-
-    .animals-grid{
-
-        grid-template-columns:1fr;
-    }
+.topbar{flex-direction:column}
+.top-actions{width:100%}
+.page-title{font-size:24px}
+.dashboard-grid{grid-template-columns:1fr}
+.dashboard-grid>:first-child{grid-column:auto}
+.stats{grid-template-columns:repeat(2,1fr)}
+.hero{padding:21px}
+.hero-title{font-size:22px}
+.form-grid{grid-template-columns:1fr}
+.field.full{grid-column:auto}
+.detail-top{grid-template-columns:1fr}
+.detail-photo{width:100%;height:240px;border-radius:17px}
+.detail-grid{grid-template-columns:1fr}
+.member-row{grid-template-columns:1fr}
+.news-grid,.animals-grid{grid-template-columns:1fr}
 }
-
 </style>
 </head>
 
 <body>
 
+<div id="loginScreen" class="login-screen">
+<div class="login-card">
 
-<!-- =========================================================
-     LOGIN
-========================================================= -->
+<div class="login-logo">🐾</div>
+<div class="login-scmu">SCMU</div>
+<div class="login-title">流浪动物管理平台</div>
+<div class="login-desc">中南民族大学校园流浪动物<br>档案、评价与志愿协作平台</div>
 
-<div
-    id="loginScreen"
-    class="login-screen"
->
+<div class="login-tags">
+<span class="login-tag">猫狗档案</span>
+<span class="login-tag">五星评价</span>
+<span class="login-tag">校园新闻</span>
+<span class="login-tag">公告管理</span>
+</div>
 
-    <div class="login-card">
+<input id="email" class="login-input" type="email" placeholder="邮箱">
+<input id="password" class="login-input" type="password" placeholder="密码（至少 6 位）">
 
-        <div class="login-brand">
+<div class="login-actions">
+<button id="loginBtn" class="btn btn-primary">登录平台</button>
+<button id="registerBtn" class="btn btn-secondary">注册新账号</button>
+</div>
 
-            <div class="login-logo">
-                🐾
-            </div>
+<div id="loginMessage" class="login-message"></div>
 
-            <div class="login-scmu">
-                SCMU
-            </div>
-
-            <div class="login-title">
-                流浪动物管理平台
-            </div>
-
-            <div class="login-subtitle">
-                中南民族大学校园流浪动物<br>
-                档案管理与志愿协作平台
-            </div>
-
-            <div class="login-tags">
-
-                <span class="login-tag">
-                    猫狗建档
-                </span>
-
-                <span class="login-tag">
-                    多人共享
-                </span>
-
-                <span class="login-tag">
-                    权限管理
-                </span>
-
-                <span class="login-tag">
-                    SCMU
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="login-field">
-
-            <input
-                id="email"
-                type="email"
-                placeholder="请输入邮箱"
-                autocomplete="email"
-            >
-
-        </div>
-
-
-        <div class="login-field">
-
-            <input
-                id="password"
-                type="password"
-                placeholder="请输入密码（至少 6 位）"
-                autocomplete="current-password"
-            >
-
-        </div>
-
-
-        <div class="login-actions">
-
-            <button
-                id="loginBtn"
-                class="btn btn-primary"
-            >
-                登录平台
-            </button>
-
-            <button
-                id="registerBtn"
-                class="btn btn-secondary"
-            >
-                注册新账号
-            </button>
-
-        </div>
-
-
-        <div
-            id="loginMessage"
-            class="login-message"
-        ></div>
-
-    </div>
-
+</div>
 </div>
 
 
-
-<!-- =========================================================
-     APP
-========================================================= -->
-
 <div class="app">
-
-
-<!-- =========================================================
-     SIDEBAR
-========================================================= -->
 
 <aside class="sidebar">
 
-    <div class="brand">
+<div class="brand">
+<div class="brand-main">
 
-        <div class="brand-main">
+<div class="brand-logo">🐾</div>
 
-            <div class="brand-logo">
-                🐾
-            </div>
+<div>
+<div class="brand-scmu">SCMU</div>
+<div class="brand-title">流浪动物管理平台</div>
+<div class="brand-en">SOUTH-CENTRAL MINZU UNIVERSITY</div>
+</div>
 
-            <div>
+</div>
+</div>
 
-                <div class="brand-scmu">
-                    SCMU
-                </div>
+<nav class="nav">
 
-                <div class="brand-title">
-                    流浪动物管理平台
-                </div>
+<button class="active" data-page="dashboard">◉　数据总览</button>
+<button data-page="animals">🐾　动物档案</button>
+<button data-page="areas">⌖　活动区域</button>
+<button data-page="news">▣　校园新闻</button>
+<button id="membersNav" data-page="members">♙　成员管理</button>
+<button id="logsNav" data-page="logs">≡　操作记录</button>
 
-                <div class="brand-en">
-                    SOUTH-CENTRAL MINZU UNIVERSITY
-                </div>
+</nav>
 
-            </div>
+<div class="sidebar-user">
+<div class="sidebar-user-card">
 
-        </div>
+<div class="sidebar-small">CURRENT ACCOUNT</div>
+<div id="sidebarEmail" class="sidebar-email">-</div>
+<div id="sidebarRole" class="sidebar-role"></div>
 
-
-        <div class="brand-letters">
-
-            <div class="brand-letter">S</div>
-
-            <div class="brand-letter">C</div>
-
-            <div class="brand-letter">M</div>
-
-            <div class="brand-letter">U</div>
-
-        </div>
-
-    </div>
-
-
-    <nav class="nav">
-
-        <button
-            class="active"
-            data-page="dashboard"
-        >
-            ◉　数据总览
-        </button>
-
-        <button
-            data-page="animals"
-        >
-            🐾　动物档案
-        </button>
-
-        <button
-            data-page="areas"
-        >
-            ⌖　活动区域
-        </button>
-
-        <button
-            id="membersNav"
-            data-page="members"
-        >
-            ♙　成员管理
-        </button>
-
-        <button
-            id="logsNav"
-            data-page="logs"
-        >
-            ≡　操作记录
-        </button>
-
-    </nav>
-
-
-    <div class="sidebar-user">
-
-        <div class="sidebar-user-card">
-
-            <div class="sidebar-user-label">
-                CURRENT ACCOUNT
-            </div>
-
-            <div
-                id="sidebarEmail"
-                class="sidebar-user-email"
-            >
-                -
-            </div>
-
-            <div
-                id="sidebarRole"
-                class="sidebar-role"
-            ></div>
-
-        </div>
-
-    </div>
+</div>
+</div>
 
 </aside>
 
 
-
-<!-- =========================================================
-     MAIN
-========================================================= -->
-
 <main class="main">
-
-
-<!-- TOPBAR -->
 
 <div class="topbar">
 
-    <div>
+<div>
+<div id="pageTitle" class="page-title">数据总览</div>
+<div class="page-subtitle">SCMU 校园流浪动物档案、评价、新闻与志愿协作管理</div>
+</div>
 
-        <div
-            id="pageTitle"
-            class="page-title"
-        >
-            数据总览
-        </div>
+<div class="top-actions">
 
-        <div class="page-subtitle">
-            SCMU 校园流浪动物档案、救助信息与志愿协作管理
-        </div>
+<div id="topRole"></div>
 
-    </div>
+<button id="publishAnnouncementBtn" class="btn btn-secondary">＋ 发布公告</button>
+<button id="publishNewsBtn" class="btn btn-secondary">＋ 发布新闻</button>
+<button id="addAnimalBtn" class="btn btn-primary">＋ 新建档案</button>
+<button id="logoutBtn" class="btn btn-secondary">退出</button>
 
-
-    <div class="top-actions">
-
-        <div
-            id="topRoleBadge"
-        ></div>
-
-        <button
-            id="addBtn"
-            class="btn btn-primary"
-        >
-            ＋ 新建档案
-        </button>
-
-        <button
-            id="logoutBtn"
-            class="btn btn-secondary"
-        >
-            退出登录
-        </button>
-
-    </div>
+</div>
 
 </div>
 
 
-
-<!-- =========================================================
-     DASHBOARD
-========================================================= -->
-
-<section
-    id="dashboardPage"
->
-
+<section id="dashboardPage">
 
 <div class="hero">
 
-    <div class="hero-grid">
+<div class="hero-inner">
 
-        <div>
+<div>
 
-            <div class="hero-kicker">
-                SCMU · ANIMAL CARE
-            </div>
+<div class="hero-kicker">SCMU · ANIMAL CARE</div>
 
-            <div class="hero-title">
-                让校园流浪动物信息更加完整，
-                让志愿协作更加有序
-            </div>
+<div class="hero-title">
+记录每一个校园生命，让关怀变得更有秩序
+</div>
 
-            <div class="hero-desc">
+<div class="hero-desc">
+统一维护中南民族大学校园流浪猫狗档案，通过成员评价、救助信息、
+公告和校园动态，建立更完整、更透明的校园动物协作体系。
+</div>
 
-                统一维护中南民族大学校园流浪猫狗档案，
-                记录活动区域、健康状况、绝育与疫苗情况，
-                并通过多人协作持续更新动物信息。
-
-            </div>
-
-
-            <div class="hero-tags">
-
-                <span class="hero-tag">
-                    猫狗分类建档
-                </span>
-
-                <span class="hero-tag">
-                    多人实时共享
-                </span>
-
-                <span class="hero-tag">
-                    四级权限管理
-                </span>
-
-                <span class="hero-tag">
-                    操作记录追踪
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="hero-side">
-
-            <div class="hero-side-label">
-                当前动物档案
-            </div>
-
-            <div
-                id="heroAnimalCount"
-                class="hero-side-number"
-            >
-                0
-            </div>
-
-            <div class="hero-side-text">
-
-                所有成员共同维护一套档案数据，
-                信息通过 Supabase 实时同步。
-
-            </div>
-
-        </div>
-
-    </div>
+<div class="hero-tags">
+<span class="hero-tag">猫狗分类建档</span>
+<span class="hero-tag">★ 五星评价</span>
+<span class="hero-tag">多人实时共享</span>
+<span class="hero-tag">校园新闻与公告</span>
+</div>
 
 </div>
 
+<div class="hero-stat">
 
+<div class="hero-stat-label">CURRENT ANIMAL PROFILES</div>
+<div id="heroAnimalCount" class="hero-stat-value">0</div>
+<div class="hero-stat-desc">当前累计校园动物档案数量</div>
 
-<!-- STAT -->
+</div>
+
+</div>
+
+</div>
+
 
 <div class="stats">
 
-    <div class="stat">
-
-        <div class="stat-icon">
-            🐾
-        </div>
-
-        <div
-            id="totalCount"
-            class="stat-value"
-        >
-            0
-        </div>
-
-        <div class="stat-label">
-            动物档案
-        </div>
-
-    </div>
-
-
-    <div class="stat">
-
-        <div class="stat-icon">
-            🐱
-        </div>
-
-        <div
-            id="catCount"
-            class="stat-value"
-        >
-            0
-        </div>
-
-        <div class="stat-label">
-            校园猫咪
-        </div>
-
-    </div>
-
-
-    <div class="stat">
-
-        <div class="stat-icon">
-            🐶
-        </div>
-
-        <div
-            id="dogCount"
-            class="stat-value"
-        >
-            0
-        </div>
-
-        <div class="stat-label">
-            校园狗狗
-        </div>
-
-    </div>
-
-
-    <div class="stat">
-
-        <div class="stat-icon">
-            ♡
-        </div>
-
-        <div
-            id="neuterCount"
-            class="stat-value"
-        >
-            0
-        </div>
-
-        <div class="stat-label">
-            未绝育 / 未知
-        </div>
-
-    </div>
-
-
-    <div class="stat">
-
-        <div class="stat-icon">
-            ↻
-        </div>
-
-        <div
-            id="recentCount"
-            class="stat-value"
-        >
-            0
-        </div>
-
-        <div class="stat-label">
-            近 7 日更新
-        </div>
-
-    </div>
-
+<div class="stat-card">
+<div class="stat-icon">🐾</div>
+<div id="totalCount" class="stat-number">0</div>
+<div class="stat-label">动物档案</div>
 </div>
 
+<div class="stat-card">
+<div class="stat-icon">🐱</div>
+<div id="catCount" class="stat-number">0</div>
+<div class="stat-label">校园猫咪</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-icon">🐶</div>
+<div id="dogCount" class="stat-number">0</div>
+<div class="stat-label">校园狗狗</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-icon">★</div>
+<div id="reviewCount" class="stat-number">0</div>
+<div class="stat-label">累计评价</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-icon">↻</div>
+<div id="recentCount" class="stat-number">0</div>
+<div class="stat-label">近 7 日更新</div>
+</div>
+
+</div>
 
 
 <div class="dashboard-grid">
 
-
-<!-- 最近更新 -->
-
 <div class="panel">
 
-    <div class="panel-title-row">
+<div class="panel-title-row">
 
-        <div>
+<div>
+<div class="panel-title">最近更新</div>
+<div class="panel-subtitle">最近更新的动物档案</div>
+</div>
 
-            <div class="panel-title">
-                最近更新
-            </div>
+<button class="btn btn-secondary" data-go="animals">全部档案</button>
 
-            <div class="panel-subtitle">
-                最近维护的动物档案
-            </div>
+</div>
 
-        </div>
-
-        <button
-            class="btn btn-secondary"
-            data-go="animals"
-        >
-            查看全部
-        </button>
-
-    </div>
-
-
-    <div id="recentList"></div>
+<div id="recentAnimals"></div>
 
 </div>
 
 
-
-<!-- 当前权限 -->
-
 <div class="panel">
 
-    <div class="panel-title-row">
+<div class="panel-title-row">
 
-        <div>
-
-            <div class="panel-title">
-                当前账号
-            </div>
-
-            <div class="panel-subtitle">
-                当前登录身份与权限范围
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div id="dashboardUser"></div>
-
-
-    <div class="list-row">
-
-        <div class="list-main">
-            动物档案
-        </div>
-
-        <div
-            id="permissionAnimal"
-            class="small"
-        ></div>
-
-    </div>
-
-
-    <div class="list-row">
-
-        <div class="list-main">
-            管理后台
-        </div>
-
-        <div
-            id="permissionAdmin"
-            class="small"
-        ></div>
-
-    </div>
-
-
-    <div class="list-row">
-
-        <div class="list-main">
-            成员权限
-        </div>
-
-        <div
-            id="permissionRole"
-            class="small"
-        ></div>
-
-    </div>
+<div>
+<div class="panel-title">📢 公告栏</div>
+<div class="panel-subtitle">校园动物管理重要通知</div>
+</div>
 
 </div>
 
+<div id="announcementPreview"></div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-title-row">
+
+<div>
+<div class="panel-title">校园新闻</div>
+<div class="panel-subtitle">动物保护与志愿动态</div>
+</div>
+
+<button class="btn btn-secondary" data-go="news">更多</button>
+
+</div>
+
+<div id="newsPreview"></div>
+
+</div>
 
 </div>
 
 </section>
 
 
+<section id="animalsPage" hidden>
 
-<!-- =========================================================
-     ANIMALS
-========================================================= -->
+<div class="panel">
 
-<section
-    id="animalsPage"
-    hidden
+<div class="panel-title-row">
+
+<div>
+<div class="panel-title">动物档案</div>
+<div class="panel-subtitle">查看档案、综合评分和成员评价</div>
+</div>
+
+</div>
+
+<div class="toolbar">
+
+<input
+id="animalSearch"
+class="search"
+placeholder="搜索编号、名字、毛色或活动区域..."
 >
 
-<div class="panel">
+<button class="filter active" data-filter="all">全部</button>
+<button class="filter" data-filter="cat">🐱 猫</button>
+<button class="filter" data-filter="dog">🐶 狗</button>
 
-    <div class="panel-title-row">
+</div>
 
-        <div>
-
-            <div class="panel-title">
-                动物档案
-            </div>
-
-            <div class="panel-subtitle">
-                查询、查看和维护校园流浪猫狗信息
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="toolbar">
-
-        <input
-            id="search"
-            class="search"
-            placeholder="搜索编号、名字、毛色、活动区域..."
-        >
-
-
-        <button
-            class="filter active"
-            data-filter="all"
-        >
-            全部
-        </button>
-
-
-        <button
-            class="filter"
-            data-filter="cat"
-        >
-            🐱 猫
-        </button>
-
-
-        <button
-            class="filter"
-            data-filter="dog"
-        >
-            🐶 狗
-        </button>
-
-    </div>
-
-
-    <div
-        id="animalGrid"
-        class="animals-grid"
-    ></div>
+<div id="animalGrid" class="animals-grid"></div>
 
 </div>
 
 </section>
 
 
-
-<!-- =========================================================
-     AREAS
-========================================================= -->
-
-<section
-    id="areasPage"
-    hidden
->
+<section id="areasPage" hidden>
 
 <div class="panel">
 
-    <div class="panel-title-row">
+<div class="panel-title-row">
 
-        <div>
+<div>
+<div class="panel-title">校园活动区域</div>
+<div class="panel-subtitle">根据动物档案中的活动区域自动统计</div>
+</div>
 
-            <div class="panel-title">
-                校园活动区域
-            </div>
+</div>
 
-            <div class="panel-subtitle">
-                根据动物档案中的活动区域自动统计
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div
-        id="areaList"
-        class="area-grid"
-    ></div>
+<div id="areaGrid" class="area-grid"></div>
 
 </div>
 
 </section>
 
 
-
-<!-- =========================================================
-     MEMBERS
-========================================================= -->
-
-<section
-    id="membersPage"
-    hidden
->
+<section id="newsPage" hidden>
 
 <div class="panel">
 
-    <div class="panel-title-row">
+<div class="panel-title-row">
 
-        <div>
+<div>
+<div class="panel-title">SCMU 校园动物新闻</div>
+<div class="panel-subtitle">志愿服务、救助进展与校园动物动态</div>
+</div>
 
-            <div class="panel-title">
-                协作成员管理
-            </div>
+<button id="pagePublishNewsBtn" class="btn btn-primary">
+＋ 发布新闻
+</button>
 
-            <div class="panel-subtitle">
-                管理员可查看成员；
-                最高管理员可调整成员权限
-            </div>
+</div>
 
-        </div>
-
-    </div>
-
-
-    <div id="membersList"></div>
+<div id="newsGrid" class="news-grid"></div>
 
 </div>
 
 </section>
 
 
-
-<!-- =========================================================
-     LOGS
-========================================================= -->
-
-<section
-    id="logsPage"
-    hidden
->
+<section id="membersPage" hidden>
 
 <div class="panel">
 
-    <div class="panel-title-row">
+<div class="panel-title-row">
 
-        <div>
+<div>
+<div class="panel-title">协作成员管理</div>
+<div class="panel-subtitle">最高管理员可以调整成员权限</div>
+</div>
 
-            <div class="panel-title">
-                平台操作记录
-            </div>
+</div>
 
-            <div class="panel-subtitle">
-                仅管理员与最高管理员可查看
-            </div>
-
-        </div>
-
-        <button
-            id="refreshLogsBtn"
-            class="btn btn-secondary"
-        >
-            ↻ 刷新
-        </button>
-
-    </div>
-
-
-    <div id="logList"></div>
+<div id="membersList"></div>
 
 </div>
 
 </section>
 
 
+<section id="logsPage" hidden>
 
-<div class="page-footer">
+<div class="panel">
 
-    SCMU · SOUTH-CENTRAL MINZU UNIVERSITY
-    · CAMPUS ANIMAL CARE
+<div class="panel-title-row">
 
+<div>
+<div class="panel-title">操作记录</div>
+<div class="panel-subtitle">仅管理员及最高管理员可查看</div>
+</div>
+
+<button id="refreshLogs" class="btn btn-secondary">↻ 刷新</button>
+
+</div>
+
+<div id="logsList"></div>
+
+</div>
+
+</section>
+
+
+<div class="footer">
+SCMU · SOUTH-CENTRAL MINZU UNIVERSITY · ANIMAL CARE
 </div>
 
 </main>
@@ -3327,517 +880,534 @@ body.modal-open{
 </div>
 
 
+<!-- 动物表单 -->
 
-<!-- =========================================================
-     EDIT MODAL
-========================================================= -->
-
-<div
-    id="animalModal"
-    class="modal"
->
+<div id="animalModal" class="modal">
 
 <div class="modal-card">
 
-    <div class="modal-head">
+<div class="modal-head">
 
-        <div>
+<div>
+<div id="animalModalTitle" class="modal-title">新建动物档案</div>
+<div class="modal-desc">SCMU Animal Profile</div>
+</div>
 
-            <div
-                id="animalModalTitle"
-                class="modal-title"
-            >
-                新建动物档案
-            </div>
+<button class="close" data-close="animalModal">×</button>
 
-            <div class="modal-subtitle">
-                SCMU 校园流浪动物信息记录
-            </div>
+</div>
 
-        </div>
 
+<form id="animalForm">
 
-        <button
-            id="closeAnimalModal"
-            class="close"
-            type="button"
-        >
-            ×
-        </button>
+<input id="animalId" type="hidden">
 
-    </div>
+<div class="form-grid">
 
+<div class="field">
+<label>档案编号 *</label>
+<input id="animalCode" required placeholder="例如 CAT-001">
+</div>
 
-    <form id="animalForm">
+<div class="field">
+<label>名字 / 昵称</label>
+<input id="animalName" placeholder="例如 小橘">
+</div>
 
-        <input
-            id="animalId"
-            type="hidden"
-        >
+<div class="field">
 
+<label>分类</label>
 
-        <div class="form-grid">
+<select id="animalSpecies">
+<option value="cat">猫</option>
+<option value="dog">狗</option>
+</select>
 
+</div>
 
-            <div class="field">
+<div class="field">
 
-                <label>
-                    档案编号 *
-                </label>
+<label>性别</label>
 
-                <input
-                    id="code"
-                    required
-                    placeholder="例如 CAT-001"
-                >
+<select id="animalSex">
+<option value="unknown">未知</option>
+<option value="male">公</option>
+<option value="female">母</option>
+</select>
 
-            </div>
+</div>
 
+<div class="field">
+<label>毛色</label>
+<input id="animalColor">
+</div>
 
-            <div class="field">
+<div class="field">
+<label>年龄估计</label>
+<input id="animalAge" placeholder="例如 约 2 岁">
+</div>
 
-                <label>
-                    名字 / 昵称
-                </label>
+<div class="field">
 
-                <input
-                    id="name"
-                    placeholder="例如 小橘"
-                >
+<label>绝育情况</label>
 
-            </div>
+<select id="animalNeutered">
+<option value="false">未绝育 / 未知</option>
+<option value="true">已绝育</option>
+</select>
 
+</div>
 
-            <div class="field">
+<div class="field">
 
-                <label>
-                    分类 *
-                </label>
+<label>疫苗情况</label>
 
-                <select id="species">
+<select id="animalVaccination">
+<option>未知</option>
+<option>未接种</option>
+<option>部分接种</option>
+<option>已接种</option>
+</select>
 
-                    <option value="cat">
-                        猫
-                    </option>
+</div>
 
-                    <option value="dog">
-                        狗
-                    </option>
+<div class="field full">
 
-                </select>
+<label>健康情况</label>
+<input id="animalHealth" placeholder="健康 / 受伤 / 治疗中...">
 
-            </div>
+</div>
 
+<div class="field">
 
-            <div class="field">
+<label>活动区域</label>
+<input id="animalArea" placeholder="例如 北区食堂">
 
-                <label>
-                    性别
-                </label>
+</div>
 
-                <select id="sex">
+<div class="field">
 
-                    <option value="unknown">
-                        未知
-                    </option>
+<label>首次发现日期</label>
+<input id="animalFoundAt" type="date">
 
-                    <option value="male">
-                        公
-                    </option>
+</div>
 
-                    <option value="female">
-                        母
-                    </option>
+<div class="field full">
 
-                </select>
+<label>备注</label>
 
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    毛色
-                </label>
-
-                <input
-                    id="color"
-                    placeholder="例如 橘白 / 黑白"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    年龄估计
-                </label>
-
-                <input
-                    id="age"
-                    placeholder="例如 约 2 岁"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    绝育情况
-                </label>
-
-                <select id="neutered">
-
-                    <option value="false">
-                        未绝育 / 未知
-                    </option>
-
-                    <option value="true">
-                        已绝育
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    疫苗情况
-                </label>
-
-                <select id="vaccination">
-
-                    <option>
-                        未知
-                    </option>
-
-                    <option>
-                        未接种
-                    </option>
-
-                    <option>
-                        部分接种
-                    </option>
-
-                    <option>
-                        已接种
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field full">
-
-                <label>
-                    健康情况
-                </label>
-
-                <input
-                    id="health"
-                    placeholder="例如 健康 / 左耳受伤 / 治疗中"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    活动区域
-                </label>
-
-                <input
-                    id="area"
-                    placeholder="例如 北区食堂"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    首次发现日期
-                </label>
-
-                <input
-                    id="foundAt"
-                    type="date"
-                >
-
-            </div>
-
-
-            <div class="field full">
-
-                <label>
-                    动物照片
-                </label>
-
-                <input
-                    id="photo"
-                    type="file"
-                    accept="image/*"
-                >
-
-                <div class="field-hint">
-                    建议 JPG / PNG，单张不超过 5 MB。
-                    编辑档案时不重新上传照片，将保留原照片。
-                </div>
-
-            </div>
-
-
-            <div class="field full">
-
-                <label>
-                    备注
-                </label>
-
-                <textarea
-                    id="notes"
-                    placeholder="可记录性格、喂养情况、救助经历、观察信息等"
-                ></textarea>
-
-            </div>
-
-        </div>
-
-
-        <div class="modal-footer">
-
-            <button
-                id="cancelAnimalBtn"
-                type="button"
-                class="btn btn-secondary"
-            >
-                取消
-            </button>
-
-
-            <button
-                id="saveAnimalBtn"
-                type="submit"
-                class="btn btn-primary"
-            >
-                保存档案
-            </button>
-
-        </div>
-
-    </form>
+<textarea
+id="animalNotes"
+placeholder="性格、喂养、救助情况等"
+></textarea>
 
 </div>
 
 </div>
 
 
+<div class="modal-footer">
 
-<!-- =========================================================
-     DETAIL MODAL
-========================================================= -->
-
-<div
-    id="detailModal"
-    class="modal"
+<button
+type="button"
+class="btn btn-secondary"
+data-close="animalModal"
 >
+取消
+</button>
+
+<button
+id="saveAnimalBtn"
+class="btn btn-primary"
+type="submit"
+>
+保存档案
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- 动物详情 -->
+
+<div id="detailModal" class="modal">
+
+<div class="modal-card modal-wide">
+
+<div class="modal-head">
+
+<div>
+<div class="modal-title">动物档案详情</div>
+<div class="modal-desc">查看档案并留下你的评价</div>
+</div>
+
+<button class="close" data-close="detailModal">×</button>
+
+</div>
+
+<div id="animalDetailContent"></div>
+
+</div>
+
+</div>
+
+
+<!-- 头像 -->
+
+<div id="avatarModal" class="modal">
 
 <div class="modal-card modal-small">
 
-    <div class="modal-head">
+<div class="modal-head">
 
-        <div>
+<div>
+<div class="modal-title">更换动物头像</div>
+<div class="modal-desc">仅管理员和最高管理员可以修改</div>
+</div>
 
-            <div class="modal-title">
-                动物档案详情
-            </div>
+<button class="close" data-close="avatarModal">×</button>
 
-            <div class="modal-subtitle">
-                SCMU Animal Profile
-            </div>
+</div>
 
-        </div>
+<input id="avatarAnimalId" type="hidden">
+
+<div id="avatarPreview" class="avatar-preview">🐾</div>
+
+<div class="field">
+
+<label>上传新头像</label>
+
+<input
+id="avatarFile"
+type="file"
+accept="image/jpeg,image/png,image/webp"
+>
+
+<div class="hint">
+建议上传正方形图片，JPG / PNG / WEBP，最大 5 MB。
+</div>
+
+</div>
+
+<div class="modal-footer">
+
+<button class="btn btn-secondary" data-close="avatarModal">
+取消
+</button>
+
+<button id="saveAvatarBtn" class="btn btn-primary">
+上传头像
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 
-        <button
-            id="closeDetailModal"
-            class="close"
-            type="button"
-        >
-            ×
-        </button>
+<!-- 新闻 -->
 
-    </div>
+<div id="newsModal" class="modal">
 
+<div class="modal-card">
 
-    <div id="detailContent"></div>
+<div class="modal-head">
+
+<div>
+<div id="newsModalTitle" class="modal-title">发布校园新闻</div>
+<div class="modal-desc">SCMU Animal News</div>
+</div>
+
+<button class="close" data-close="newsModal">×</button>
+
+</div>
+
+<form id="newsForm">
+
+<input id="newsId" type="hidden">
+
+<div class="form-grid">
+
+<div class="field full">
+
+<label>新闻标题 *</label>
+<input id="newsTitle" required>
+
+</div>
+
+<div class="field">
+
+<label>分类</label>
+
+<select id="newsCategory">
+<option>校园动态</option>
+<option>志愿活动</option>
+<option>动物救助</option>
+<option>科普宣传</option>
+</select>
+
+</div>
+
+<div class="field">
+
+<label>封面图片</label>
+
+<input
+id="newsCover"
+type="file"
+accept="image/jpeg,image/png,image/webp"
+>
+
+</div>
+
+<div class="field full">
+
+<label>新闻摘要</label>
+
+<textarea
+id="newsSummary"
+style="min-height:70px"
+></textarea>
+
+</div>
+
+<div class="field full">
+
+<label>新闻正文 *</label>
+
+<textarea
+id="newsContent"
+required
+style="min-height:180px"
+></textarea>
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="btn btn-secondary"
+type="button"
+data-close="newsModal"
+>
+取消
+</button>
+
+<button
+id="saveNewsBtn"
+class="btn btn-primary"
+type="submit"
+>
+保存新闻
+</button>
+
+</div>
+
+</form>
 
 </div>
 
 </div>
 
 
+<!-- 新闻详情 -->
 
-<!-- TOAST -->
+<div id="newsDetailModal" class="modal">
 
-<div
-    id="toastContainer"
-    class="toast-container"
-></div>
+<div class="modal-card modal-small">
+
+<div class="modal-head">
+
+<div>
+<div class="modal-title">新闻详情</div>
+</div>
+
+<button class="close" data-close="newsDetailModal">×</button>
+
+</div>
+
+<div id="newsDetail"></div>
+
+</div>
+
+</div>
 
 
+<!-- 公告 -->
 
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
+<div id="announcementModal" class="modal">
+
+<div class="modal-card modal-small">
+
+<div class="modal-head">
+
+<div>
+<div id="announcementModalTitle" class="modal-title">发布公告</div>
+<div class="modal-desc">SCMU 平台公告</div>
+</div>
+
+<button class="close" data-close="announcementModal">×</button>
+
+</div>
+
+<form id="announcementForm">
+
+<input id="announcementId" type="hidden">
+
+<div class="field">
+
+<label>公告标题 *</label>
+<input id="announcementTitle" required>
+
+</div>
+
+<div class="field" style="margin-top:13px">
+
+<label>公告内容 *</label>
+
+<textarea
+id="announcementContent"
+required
+></textarea>
+
+</div>
+
+<div class="field" style="margin-top:13px">
+
+<label>公告级别</label>
+
+<select id="announcementPinned">
+<option value="false">普通公告</option>
+<option value="true">置顶公告</option>
+</select>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="btn btn-secondary"
+type="button"
+data-close="announcementModal"
+>
+取消
+</button>
+
+<button class="btn btn-primary" type="submit">
+保存公告
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<div id="toastContainer" class="toast-container"></div>
+
 
 <script type="module">
 
-import {
-    createClient
-}
-from
-"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import {createClient}
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-
-/* =========================================================
-   SUPABASE
-========================================================= */
 
 const SUPABASE_URL =
 "https://ntjqwquhbmrcdbgmnhkm.supabase.co";
 
-
 const SUPABASE_KEY =
 "sb_publishable_oypAZwh1XxKKHjT2XG1DGA_37Yr9iX0";
 
-
 const supabase =
 createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
 
+let animals=[];
+let reviews=[];
+let reviewStats={};
+let newsItems=[];
+let announcements=[];
 
-/* =========================================================
-   STATE
-========================================================= */
+let animalFilter="all";
 
-let animals = [];
+let currentUser=null;
+let currentProfile=null;
+let currentRole="viewer";
 
-let animalFilter = "all";
-
-let currentUser = null;
-
-let currentProfile = null;
-
-let currentRole = "viewer";
-
-let currentPage = "dashboard";
+let selectedReviewRating=0;
+let currentDetailAnimalId=null;
 
 
-const ROLE_INFO = {
+const ROLE_INFO={
 
-    viewer:{
-        name:"只读成员",
-        icon:"○",
-        description:
-            "可以浏览和查看动物档案"
-    },
+viewer:{
+name:"只读成员",
+icon:"○"
+},
 
-    volunteer:{
-        name:"志愿者",
-        icon:"♡",
-        description:
-            "可以新建和编辑动物档案"
-    },
+volunteer:{
+name:"志愿者",
+icon:"♡"
+},
 
-    admin:{
-        name:"管理员",
-        icon:"●",
-        description:
-            "可以管理动物档案、成员和操作记录"
-    },
+admin:{
+name:"管理员",
+icon:"●"
+},
 
-    super_admin:{
-        name:"最高管理员",
-        icon:"◆",
-        description:
-            "拥有平台完整管理权限"
-    }
+super_admin:{
+name:"最高管理员",
+icon:"◆"
+}
 
 };
 
 
-
-/* =========================================================
-   PERMISSIONS
-========================================================= */
-
 function canEditAnimal(){
 
-    return [
-        "volunteer",
-        "admin",
-        "super_admin"
-    ].includes(
-        currentRole
-    );
+return[
+"volunteer",
+"admin",
+"super_admin"
+].includes(currentRole);
 
 }
 
 
-function canDeleteAnimal(){
+function canAdmin(){
 
-    return [
-        "admin",
-        "super_admin"
-    ].includes(
-        currentRole
-    );
+return[
+"admin",
+"super_admin"
+].includes(currentRole);
 
 }
 
 
-function canViewAdminPages(){
+function canSuperAdmin(){
 
-    return [
-        "admin",
-        "super_admin"
-    ].includes(
-        currentRole
-    );
+return currentRole==="super_admin";
 
 }
 
 
-function canManageRoles(){
-
-    return (
-        currentRole ===
-        "super_admin"
-    );
-
-}
-
-
-
-/* =========================================================
-   AUTH INIT
-========================================================= */
-
-const {
-    data:{
-        session
-    }
-} =
+const{
+data:{session}
+}=
 await supabase
 .auth
 .getSession();
@@ -3845,13 +1415,11 @@ await supabase
 
 if(session){
 
-    await showApp(
-        session.user
-    );
+await showApp(session.user);
 
 }else{
 
-    showLogin();
+showLogin();
 
 }
 
@@ -3859,3825 +1427,4129 @@ if(session){
 supabase
 .auth
 .onAuthStateChange(
-async(
-    event,
-    session
-)=>{
+async(event,session)=>{
 
-    if(session){
+if(session){
 
-        await showApp(
-            session.user
-        );
+await showApp(session.user);
 
-    }else{
+}else{
 
-        showLogin();
+showLogin();
 
-    }
-
-});
-
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-document
-.querySelector(
-    "#loginBtn"
-)
-.addEventListener(
-    "click",
-    login
-);
-
-
-document
-.querySelector(
-    "#registerBtn"
-)
-.addEventListener(
-    "click",
-    register
-);
-
-
-document
-.querySelector(
-    "#logoutBtn"
-)
-.addEventListener(
-    "click",
-async()=>{
-
-    await supabase
-    .auth
-    .signOut();
+}
 
 }
 );
 
 
+document.querySelector("#loginBtn").onclick=login;
+document.querySelector("#registerBtn").onclick=register;
+
+document.querySelector("#logoutBtn").onclick=
+async()=>{
+
+await supabase.auth.signOut();
+
+};
+
+
 document
-.querySelector(
-    "#password"
-)
+.querySelector("#password")
 .addEventListener(
-    "keydown",
-    e=>{
+"keydown",
+e=>{
 
-        if(
-            e.key ===
-            "Enter"
-        ){
+if(e.key==="Enter"){
 
-            login();
+login();
 
-        }
+}
 
-    }
+}
 );
-
 
 
 async function login(){
 
-    const email =
-        document
-        .querySelector(
-            "#email"
-        )
-        .value
-        .trim();
+const email=
+getValue("email").trim();
+
+const password=
+getValue("password");
 
 
-    const password =
-        document
-        .querySelector(
-            "#password"
-        )
-        .value;
+if(!email||!password){
 
+showLoginMessage(
+"请输入邮箱和密码。"
+);
 
-    if(
-        !email
-        ||
-        !password
-    ){
-
-        showLoginMessage(
-            "请输入邮箱和密码。"
-        );
-
-        return;
-
-    }
-
-
-    const {
-        error
-    } =
-    await supabase
-    .auth
-    .signInWithPassword({
-
-        email,
-
-        password
-
-    });
-
-
-    if(error){
-
-        showLoginMessage(
-            translateAuthError(
-                error.message
-            )
-        );
-
-        return;
-
-    }
-
-
-    showLoginMessage("");
+return;
 
 }
 
+
+const{error}=
+await supabase
+.auth
+.signInWithPassword({
+email,
+password
+});
+
+
+showLoginMessage(
+error
+?
+authError(error.message)
+:
+""
+);
+
+}
 
 
 async function register(){
 
-    const email =
-        document
-        .querySelector(
-            "#email"
-        )
-        .value
-        .trim();
+const email=
+getValue("email").trim();
+
+const password=
+getValue("password");
 
 
-    const password =
-        document
-        .querySelector(
-            "#password"
-        )
-        .value;
+if(!email){
 
+showLoginMessage(
+"请输入邮箱。"
+);
 
-    if(!email){
-
-        showLoginMessage(
-            "请输入邮箱。"
-        );
-
-        return;
-
-    }
-
-
-    if(
-        password.length <
-        6
-    ){
-
-        showLoginMessage(
-            "密码至少需要 6 位。"
-        );
-
-        return;
-
-    }
-
-
-    const {
-        data,
-        error
-    } =
-    await supabase
-    .auth
-    .signUp({
-
-        email,
-
-        password
-
-    });
-
-
-    if(error){
-
-        showLoginMessage(
-            translateAuthError(
-                error.message
-            )
-        );
-
-        return;
-
-    }
-
-
-    if(data.session){
-
-        showLoginMessage("");
-
-        toast(
-            "注册成功。新账号默认拥有只读成员权限。",
-            "success"
-        );
-
-    }else{
-
-        showLoginMessage(
-            "注册成功，请登录。新账号默认拥有只读权限。"
-        );
-
-    }
+return;
 
 }
 
+
+if(password.length<6){
+
+showLoginMessage(
+"密码至少需要 6 位。"
+);
+
+return;
+
+}
+
+
+const{
+data,
+error
+}=
+await supabase
+.auth
+.signUp({
+email,
+password
+});
+
+
+if(error){
+
+showLoginMessage(
+authError(error.message)
+);
+
+return;
+
+}
+
+
+if(data.session){
+
+toast(
+"注册成功，新账号默认是只读成员。",
+"success"
+);
+
+}else{
+
+showLoginMessage(
+"注册成功，请登录。"
+);
+
+}
+
+}
 
 
 function showLogin(){
 
-    currentUser = null;
+currentUser=null;
+currentProfile=null;
+currentRole="viewer";
 
-    currentProfile = null;
-
-    currentRole =
-        "viewer";
-
-
-    document
-    .querySelector(
-        "#loginScreen"
-    )
-    .style
-    .display =
-        "flex";
+document
+.querySelector("#loginScreen")
+.style.display="flex";
 
 }
-
 
 
 async function showApp(user){
 
-    currentUser =
-        user;
+currentUser=user;
 
 
-    const {
-        data,
-        error
-    } =
-    await supabase
-    .from(
-        "profiles"
-    )
-    .select(
-        "id,email,display_name,role,created_at,updated_at"
-    )
-    .eq(
-        "id",
-        user.id
-    )
-    .single();
+const{
+data,
+error
+}=
+await supabase
+.from("profiles")
+.select("*")
+.eq("id",user.id)
+.single();
 
 
-    if(error){
+if(error){
 
-        console.error(
-            error
-        );
+console.error(error);
 
-        showLoginMessage(
-            "账号已登录，但读取成员权限失败。请刷新页面。"
-        );
+showLoginMessage(
+"无法读取账号权限。"
+);
 
-        return;
-
-    }
-
-
-    currentProfile =
-        data;
-
-
-    currentRole =
-        data?.role
-        ||
-        "viewer";
-
-
-    document
-    .querySelector(
-        "#loginScreen"
-    )
-    .style
-    .display =
-        "none";
-
-
-    renderAccountUI();
-
-    applyPermissions();
-
-    switchPage(
-        "dashboard"
-    );
-
-
-    await loadAnimals();
+return;
 
 }
 
 
+currentProfile=data;
 
-/* =========================================================
-   ACCOUNT UI
-========================================================= */
-
-function renderAccountUI(){
-
-    const role =
-        ROLE_INFO[
-            currentRole
-        ]
-        ||
-        ROLE_INFO.viewer;
+currentRole=
+data?.role||"viewer";
 
 
-    const email =
-        currentProfile?.email
-        ||
-        currentUser?.email
-        ||
-        "";
+document
+.querySelector("#loginScreen")
+.style.display="none";
 
 
-    document
-    .querySelector(
-        "#sidebarEmail"
-    )
-    .textContent =
-        email;
+renderAccount();
 
+applyPermissions();
 
-    document
-    .querySelector(
-        "#sidebarRole"
-    )
-    .innerHTML =
-        roleBadge(
-            currentRole
-        );
+switchPage("dashboard");
 
-
-    document
-    .querySelector(
-        "#topRoleBadge"
-    )
-    .innerHTML =
-        roleBadge(
-            currentRole
-        );
-
-
-    document
-    .querySelector(
-        "#dashboardUser"
-    )
-    .innerHTML = `
-
-        <div class="list-row">
-
-            <div class="list-main">
-
-                ${
-                    escapeHtml(
-                        currentProfile
-                        ?.display_name
-                        ||
-                        email
-                    )
-                }
-
-            </div>
-
-            <div class="small">
-
-                ${
-                    escapeHtml(
-                        email
-                    )
-                }
-
-            </div>
-
-            <div style="
-                margin-top:9px;
-            ">
-
-                ${
-                    roleBadge(
-                        currentRole
-                    )
-                }
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    if(
-        currentRole ===
-        "viewer"
-    ){
-
-        setText(
-            "permissionAnimal",
-            "可查看动物档案，不可新建、编辑或删除。"
-        );
-
-        setText(
-            "permissionAdmin",
-            "无管理后台访问权限。"
-        );
-
-        setText(
-            "permissionRole",
-            "不能修改成员权限。"
-        );
-
-    }
-
-
-    if(
-        currentRole ===
-        "volunteer"
-    ){
-
-        setText(
-            "permissionAnimal",
-            "可以查看、新建和编辑动物档案，不可删除。"
-        );
-
-        setText(
-            "permissionAdmin",
-            "无成员管理和操作记录访问权限。"
-        );
-
-        setText(
-            "permissionRole",
-            "不能修改成员权限。"
-        );
-
-    }
-
-
-    if(
-        currentRole ===
-        "admin"
-    ){
-
-        setText(
-            "permissionAnimal",
-            "可以新建、编辑和删除动物档案。"
-        );
-
-        setText(
-            "permissionAdmin",
-            "可以查看成员列表和平台操作记录。"
-        );
-
-        setText(
-            "permissionRole",
-            "不可修改其他成员权限。"
-        );
-
-    }
-
-
-    if(
-        currentRole ===
-        "super_admin"
-    ){
-
-        setText(
-            "permissionAnimal",
-            "拥有完整动物档案管理权限。"
-        );
-
-        setText(
-            "permissionAdmin",
-            "拥有完整管理后台和操作记录权限。"
-        );
-
-        setText(
-            "permissionRole",
-            "可以调整其他成员的权限级别。"
-        );
-
-    }
+await loadEverything();
 
 }
 
+
+async function refreshCurrentProfile(){
+
+if(!currentUser){
+
+return;
+
+}
+
+
+const{
+data,
+error
+}=
+await supabase
+.from("profiles")
+.select("*")
+.eq("id",currentUser.id)
+.single();
+
+
+if(error){
+
+return;
+
+}
+
+
+currentProfile=data;
+
+currentRole=
+data?.role||"viewer";
+
+renderAccount();
+
+applyPermissions();
+
+switchPage("dashboard");
+
+}
+
+
+function renderAccount(){
+
+const email=
+currentProfile?.email
+||
+currentUser?.email
+||
+"";
+
+
+setText(
+"sidebarEmail",
+email
+);
+
+
+document
+.querySelector("#sidebarRole")
+.innerHTML=
+roleBadge(currentRole);
+
+
+document
+.querySelector("#topRole")
+.innerHTML=
+roleBadge(currentRole);
+
+}
 
 
 function applyPermissions(){
 
-    document
-    .querySelector(
-        "#addBtn"
-    )
-    .style
-    .display =
-        canEditAnimal()
-        ?
-        ""
-        :
-        "none";
+document
+.querySelector("#addAnimalBtn")
+.style.display=
+canEditAnimal()
+?
+""
+:
+"none";
 
 
-    document
-    .querySelector(
-        "#membersNav"
-    )
-    .style
-    .display =
-        canViewAdminPages()
-        ?
-        ""
-        :
-        "none";
+document
+.querySelector("#membersNav")
+.style.display=
+canAdmin()
+?
+""
+:
+"none";
 
 
-    document
-    .querySelector(
-        "#logsNav"
-    )
-    .style
-    .display =
-        canViewAdminPages()
-        ?
-        ""
-        :
-        "none";
+document
+.querySelector("#logsNav")
+.style.display=
+canAdmin()
+?
+""
+:
+"none";
+
+
+[
+"publishNewsBtn",
+"pagePublishNewsBtn",
+"publishAnnouncementBtn"
+]
+.forEach(
+id=>{
+
+const el=
+document.querySelector("#"+id);
+
+if(el){
+
+el.style.display=
+canAdmin()
+?
+""
+:
+"none";
+
+}
+
+}
+);
 
 }
 
 
+async function loadEverything(){
 
-/* =========================================================
-   ANIMALS LOAD
-========================================================= */
+await Promise.all([
+loadAnimals(),
+loadReviews(),
+loadNews(),
+loadAnnouncements()
+]);
+
+buildReviewStats();
+
+renderAll();
+
+}
+
 
 async function loadAnimals(){
 
-    const {
-        data,
-        error
-    } =
-    await supabase
-    .from(
-        "animals"
-    )
-    .select("*")
-    .order(
-        "updated_at",
-        {
-            ascending:false
-        }
-    );
+const{
+data,
+error
+}=
+await supabase
+.from("animals")
+.select("*")
+.order(
+"updated_at",
+{ascending:false}
+);
 
 
-    if(error){
+if(error){
 
-        console.error(
-            error
-        );
+toast(
+"读取动物档案失败："+error.message,
+"error"
+);
 
-        toast(
-            "读取动物档案失败：" +
-            error.message,
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    animals =
-        data
-        ||
-        [];
-
-
-    renderDashboard();
-
-    renderAnimals();
-
-    renderAreas();
+return;
 
 }
 
 
+animals=data||[];
 
-/* =========================================================
-   DASHBOARD
-========================================================= */
+}
+
+
+async function loadReviews(){
+
+const{
+data,
+error
+}=
+await supabase
+.from("animal_reviews")
+.select("*")
+.order(
+"created_at",
+{ascending:false}
+);
+
+
+if(error){
+
+console.error(error);
+
+reviews=[];
+
+return;
+
+}
+
+
+reviews=data||[];
+
+}
+
+
+async function loadNews(){
+
+const{
+data,
+error
+}=
+await supabase
+.from("news")
+.select("*")
+.order(
+"created_at",
+{ascending:false}
+);
+
+
+if(error){
+
+console.error(error);
+
+newsItems=[];
+
+return;
+
+}
+
+
+newsItems=data||[];
+
+}
+
+
+async function loadAnnouncements(){
+
+const{
+data,
+error
+}=
+await supabase
+.from("announcements")
+.select("*")
+.order(
+"pinned",
+{ascending:false}
+)
+.order(
+"created_at",
+{ascending:false}
+);
+
+
+if(error){
+
+console.error(error);
+
+announcements=[];
+
+return;
+
+}
+
+
+announcements=data||[];
+
+}
+
+
+function buildReviewStats(){
+
+reviewStats={};
+
+
+reviews.forEach(
+review=>{
+
+if(!reviewStats[review.animal_id]){
+
+reviewStats[review.animal_id]={
+total:0,
+count:0,
+average:0
+};
+
+}
+
+
+const stat=
+reviewStats[review.animal_id];
+
+
+stat.total+=
+Number(review.rating);
+
+stat.count+=1;
+
+stat.average=
+stat.total/stat.count;
+
+}
+);
+
+}
+
+
+function renderAll(){
+
+renderDashboard();
+
+renderAnimals();
+
+renderAreas();
+
+renderNews();
+
+}
+
 
 function renderDashboard(){
 
-    const cats =
-        animals
-        .filter(
-            a=>
-                a.species ===
-                "cat"
-        );
+const cats=
+animals.filter(
+a=>a.species==="cat"
+);
 
 
-    const dogs =
-        animals
-        .filter(
-            a=>
-                a.species ===
-                "dog"
-        );
+const dogs=
+animals.filter(
+a=>a.species==="dog"
+);
 
 
-    const unNeutered =
-        animals
-        .filter(
-            a=>
-                !a.neutered
-        );
+const weekAgo=
+Date.now()
+-
+7*86400000;
 
 
-    const weekAgo =
-        Date.now()
-        -
-        7 * 86400000;
+const recent=
+animals.filter(
+a=>
+new Date(a.updated_at)
+.getTime()
+>=
+weekAgo
+);
 
 
-    const recent =
-        animals
-        .filter(
-            a=>
-                new Date(
-                    a.updated_at
-                )
-                .getTime()
-                >=
-                weekAgo
-        );
+setText(
+"heroAnimalCount",
+animals.length
+);
+
+setText(
+"totalCount",
+animals.length
+);
+
+setText(
+"catCount",
+cats.length
+);
+
+setText(
+"dogCount",
+dogs.length
+);
+
+setText(
+"reviewCount",
+reviews.length
+);
+
+setText(
+"recentCount",
+recent.length
+);
 
 
-    setText(
-        "totalCount",
-        animals.length
-    );
+renderRecentAnimals();
 
+renderAnnouncementPreview();
 
-    setText(
-        "catCount",
-        cats.length
-    );
-
-
-    setText(
-        "dogCount",
-        dogs.length
-    );
-
-
-    setText(
-        "neuterCount",
-        unNeutered.length
-    );
-
-
-    setText(
-        "recentCount",
-        recent.length
-    );
-
-
-    setText(
-        "heroAnimalCount",
-        animals.length
-    );
-
-
-    const container =
-        document
-        .querySelector(
-            "#recentList"
-        );
-
-
-    if(
-        !animals.length
-    ){
-
-        container.innerHTML = `
-
-            <div class="empty">
-
-                当前还没有动物档案。
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        animals
-        .slice(
-            0,
-            7
-        )
-        .map(
-            animal=>`
-
-            <div class="list-row">
-
-                <div class="list-main">
-
-                    ${
-                        animal.species ===
-                        "cat"
-                        ?
-                        "🐱"
-                        :
-                        "🐶"
-                    }
-
-                    ${
-                        escapeHtml(
-                            animal.name
-                            ||
-                            "未命名"
-                        )
-                    }
-
-                    ·
-
-                    ${
-                        escapeHtml(
-                            animal.code
-                        )
-                    }
-
-                </div>
-
-
-                <div class="small">
-
-                    ${
-                        escapeHtml(
-                            animal.activity_area
-                            ||
-                            "活动区域未知"
-                        )
-                    }
-
-                    ·
-
-                    ${
-                        formatDateTime(
-                            animal.updated_at
-                        )
-                    }
-
-                </div>
-
-            </div>
-
-        `
-        )
-        .join("");
+renderNewsPreview();
 
 }
 
 
+function renderRecentAnimals(){
 
-/* =========================================================
-   ANIMAL CARDS
-========================================================= */
+const el=
+document.querySelector("#recentAnimals");
+
+
+if(!animals.length){
+
+el.innerHTML=
+empty("暂无动物档案");
+
+return;
+
+}
+
+
+el.innerHTML=
+animals
+.slice(0,6)
+.map(
+animal=>{
+
+const stat=
+reviewStats[animal.id];
+
+
+return`
+
+<div class="list-row">
+
+<div class="list-title">
+
+${animal.species==="cat"?"🐱":"🐶"}
+
+${escapeHtml(
+animal.name||"未命名"
+)}
+
+·
+
+${stat
+?
+`★ ${stat.average.toFixed(1)}`
+:
+"暂无评分"
+}
+
+</div>
+
+<div class="small">
+
+${escapeHtml(animal.code)}
+
+·
+
+${escapeHtml(
+animal.activity_area||"区域未知"
+)}
+
+</div>
+
+</div>
+
+`;
+
+}
+)
+.join("");
+
+}
+
+
+function renderAnnouncementPreview(){
+
+const el=
+document.querySelector(
+"#announcementPreview"
+);
+
+
+if(!announcements.length){
+
+el.innerHTML=
+empty("暂无公告");
+
+return;
+
+}
+
+
+el.innerHTML=
+announcements
+.slice(0,5)
+.map(
+item=>`
+
+<div class="announcement">
+
+<div class="announcement-head">
+
+${item.pinned
+?
+`<span class="pin-badge">置顶</span>`
+:
+""
+}
+
+<div class="announcement-title">
+${escapeHtml(item.title)}
+</div>
+
+</div>
+
+<div class="announcement-content">
+${escapeHtml(item.content)}
+</div>
+
+<div class="small">
+${formatDateTime(item.created_at)}
+</div>
+
+${canAdmin()
+?
+`
+
+<div class="mini-actions">
+
+<button
+data-edit-announcement="${item.id}"
+>
+编辑
+</button>
+
+<button
+class="btn-danger"
+data-delete-announcement="${item.id}"
+>
+删除
+</button>
+
+</div>
+
+`
+:
+""
+}
+
+</div>
+
+`
+)
+.join("");
+
+}
+
+
+function renderNewsPreview(){
+
+const el=
+document.querySelector("#newsPreview");
+
+
+if(!newsItems.length){
+
+el.innerHTML=
+empty("暂无新闻");
+
+return;
+
+}
+
+
+el.innerHTML=
+newsItems
+.slice(0,4)
+.map(
+item=>`
+
+<div
+class="news-mini"
+data-view-news="${item.id}"
+style="cursor:pointer"
+>
+
+<div class="news-category">
+${escapeHtml(item.category)}
+</div>
+
+<div class="news-mini-title">
+${escapeHtml(item.title)}
+</div>
+
+<div class="news-mini-time">
+${formatDateTime(item.created_at)}
+</div>
+
+</div>
+
+`
+)
+.join("");
+
+}
+
 
 function renderAnimals(){
 
-    const query =
-        document
-        .querySelector(
-            "#search"
-        )
-        .value
-        .trim()
-        .toLowerCase();
+const query=
+getValue("animalSearch")
+.trim()
+.toLowerCase();
 
 
-    const filtered =
-        animals
-        .filter(
-            animal=>{
+const filtered=
+animals.filter(
+animal=>{
 
-                const speciesOK =
+const typeOK=
+animalFilter==="all"
+||
+animal.species===animalFilter;
 
-                    animalFilter ===
-                    "all"
 
-                    ||
+const text=
+[
+animal.code,
+animal.name,
+animal.color,
+animal.activity_area,
+animal.health
+]
+.filter(Boolean)
+.join(" ")
+.toLowerCase();
 
-                    animal.species ===
-                    animalFilter;
 
+return(
+typeOK
+&&
+text.includes(query)
+);
 
-                const searchText =
+}
+);
 
-                    [
-                        animal.code,
-                        animal.name,
-                        animal.color,
-                        animal.activity_area,
-                        animal.health
-                    ]
-                    .filter(Boolean)
-                    .join(" ")
-                    .toLowerCase();
 
+const grid=
+document.querySelector("#animalGrid");
 
-                return (
 
-                    speciesOK
+if(!filtered.length){
 
-                    &&
+grid.innerHTML=
+empty(
+"没有找到符合条件的动物"
+);
 
-                    searchText.includes(
-                        query
-                    )
-
-                );
-
-            }
-        );
-
-
-    const grid =
-        document
-        .querySelector(
-            "#animalGrid"
-        );
-
-
-    if(
-        !filtered.length
-    ){
-
-        grid.innerHTML = `
-
-            <div class="empty">
-
-                暂无符合条件的动物档案。
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    grid.innerHTML =
-        filtered
-        .map(
-            animal=>{
-
-                const photo =
-
-                    animal.photo_url
-
-                    ?
-
-                    `
-                    <img
-                        src="${escapeHtml(
-                            animal.photo_url
-                        )}"
-                        alt=""
-                    >
-                    `
-
-                    :
-
-                    (
-                        animal.species ===
-                        "cat"
-                        ?
-                        "🐱"
-                        :
-                        "🐶"
-                    );
-
-
-                const vaccinationClass =
-
-                    animal.vaccination ===
-                    "已接种"
-
-                    ?
-                    "good"
-
-                    :
-                    (
-                        animal.vaccination ===
-                        "未知"
-                        ?
-                        ""
-                        :
-                        "warn"
-                    );
-
-
-                let actions = `
-
-                    <button
-                        data-view="${animal.id}"
-                    >
-                        查看详情
-                    </button>
-
-                `;
-
-
-                if(
-                    canEditAnimal()
-                ){
-
-                    actions += `
-
-                        <button
-                            data-edit="${animal.id}"
-                        >
-                            编辑
-                        </button>
-
-                    `;
-
-                }
-
-
-                if(
-                    canDeleteAnimal()
-                ){
-
-                    actions += `
-
-                        <button
-                            class="btn-danger"
-                            data-delete="${animal.id}"
-                        >
-                            删除
-                        </button>
-
-                    `;
-
-                }
-
-
-                return `
-
-                    <article class="animal-card">
-
-
-                        <div class="animal-photo">
-
-                            ${photo}
-
-                            <span class="photo-watermark">
-                                SCMU
-                            </span>
-
-                        </div>
-
-
-                        <div class="animal-body">
-
-
-                            <div class="animal-top">
-
-                                <div>
-
-                                    <div class="animal-name">
-
-                                        ${
-                                            escapeHtml(
-                                                animal.name
-                                                ||
-                                                "未命名"
-                                            )
-                                        }
-
-                                    </div>
-
-                                    <div class="animal-code">
-
-                                        ${
-                                            escapeHtml(
-                                                animal.code
-                                            )
-                                        }
-
-                                    </div>
-
-                                </div>
-
-
-                                <span class="species-tag">
-
-                                    ${
-                                        animal.species ===
-                                        "cat"
-                                        ?
-                                        "猫"
-                                        :
-                                        "狗"
-                                    }
-
-                                </span>
-
-                            </div>
-
-
-                            <div class="status-row">
-
-                                <span
-                                    class="status-chip ${
-                                        animal.neutered
-                                        ?
-                                        "good"
-                                        :
-                                        "warn"
-                                    }"
-                                >
-
-                                    ${
-                                        animal.neutered
-                                        ?
-                                        "已绝育"
-                                        :
-                                        "未绝育 / 未知"
-                                    }
-
-                                </span>
-
-
-                                <span
-                                    class="status-chip ${vaccinationClass}"
-                                >
-
-                                    疫苗：
-                                    ${
-                                        escapeHtml(
-                                            animal.vaccination
-                                            ||
-                                            "未知"
-                                        )
-                                    }
-
-                                </span>
-
-                            </div>
-
-
-                            <div class="animal-meta">
-
-                                ${
-                                    sexText(
-                                        animal.sex
-                                    )
-                                }
-
-                                ·
-
-                                ${
-                                    escapeHtml(
-                                        animal.color
-                                        ||
-                                        "毛色未知"
-                                    )
-                                }
-
-                                <br>
-
-                                📍
-
-                                ${
-                                    escapeHtml(
-                                        animal.activity_area
-                                        ||
-                                        "活动区域未知"
-                                    )
-                                }
-
-                            </div>
-
-
-                            <div class="animal-actions">
-
-                                ${actions}
-
-                            </div>
-
-
-                        </div>
-
-
-                    </article>
-
-                `;
-
-            }
-        )
-        .join("");
+return;
 
 }
 
 
+grid.innerHTML=
+filtered
+.map(
+animal=>{
 
-/* =========================================================
-   AREAS
-========================================================= */
+const stat=
+reviewStats[animal.id];
+
+
+const score=
+stat
+?
+`★ ${stat.average.toFixed(1)}`
+:
+"☆ 暂无评分";
+
+
+const photo=
+animal.photo_url
+?
+`
+<img
+src="${escapeHtml(animal.photo_url)}"
+alt=""
+>
+`
+:
+(
+animal.species==="cat"
+?
+"🐱"
+:
+"🐶"
+);
+
+
+let buttons=`
+
+<button
+data-view-animal="${animal.id}"
+>
+详情 / 评价
+</button>
+
+`;
+
+
+if(canEditAnimal()){
+
+buttons+=`
+
+<button
+data-edit-animal="${animal.id}"
+>
+编辑
+</button>
+
+`;
+
+}
+
+
+if(canAdmin()){
+
+buttons+=`
+
+<button
+data-avatar-animal="${animal.id}"
+>
+头像
+</button>
+
+<button
+class="btn-danger"
+data-delete-animal="${animal.id}"
+>
+删除
+</button>
+
+`;
+
+}
+
+
+return`
+
+<article class="animal-card">
+
+<div class="animal-photo">
+
+${photo}
+
+<div class="rating-badge">
+${score}
+</div>
+
+<span class="scmu-watermark">
+SCMU
+</span>
+
+</div>
+
+
+<div class="animal-body">
+
+<div class="animal-top">
+
+<div>
+
+<div class="animal-name">
+${escapeHtml(
+animal.name||"未命名"
+)}
+</div>
+
+<div class="animal-code">
+${escapeHtml(animal.code)}
+</div>
+
+</div>
+
+<span class="species-tag">
+${animal.species==="cat"?"猫":"狗"}
+</span>
+
+</div>
+
+
+<div class="status-row">
+
+<span
+class="status-chip ${animal.neutered?"good":"warn"}"
+>
+${animal.neutered
+?
+"已绝育"
+:
+"未绝育 / 未知"
+}
+</span>
+
+<span class="status-chip">
+疫苗：
+${escapeHtml(
+animal.vaccination||"未知"
+)}
+</span>
+
+</div>
+
+
+<div class="animal-meta">
+
+${sexText(animal.sex)}
+
+·
+
+${escapeHtml(
+animal.color||"毛色未知"
+)}
+
+<br>
+
+📍
+${escapeHtml(
+animal.activity_area||"活动区域未知"
+)}
+
+<br>
+
+${stat
+?
+`${stat.count} 条评价`
+:
+"暂时还没有评价"
+}
+
+</div>
+
+
+<div class="animal-actions">
+
+${buttons}
+
+</div>
+
+</div>
+
+</article>
+
+`;
+
+}
+)
+.join("");
+
+}
+
 
 function renderAreas(){
 
-    const counts = {};
+const counts={};
 
 
-    animals
-    .forEach(
-        animal=>{
+animals.forEach(
+animal=>{
 
-            const area =
-                animal.activity_area
-                ||
-                "区域未知";
+const area=
+animal.activity_area||"区域未知";
 
 
-            counts[area] =
-                (
-                    counts[area]
-                    ||
-                    0
-                )
-                +
-                1;
+counts[area]=
+(counts[area]||0)+1;
 
-        }
-    );
+}
+);
 
 
-    const items =
-        Object
-        .entries(
-            counts
-        )
-        .sort(
-            (
-                a,
-                b
-            )=>
-                b[1]
-                -
-                a[1]
-        );
+const items=
+Object.entries(counts)
+.sort(
+(a,b)=>b[1]-a[1]
+);
 
 
-    const el =
-        document
-        .querySelector(
-            "#areaList"
-        );
+const grid=
+document.querySelector("#areaGrid");
 
 
-    if(
-        !items.length
-    ){
+if(!items.length){
 
-        el.innerHTML = `
+grid.innerHTML=
+empty("暂无区域数据");
 
-            <div class="empty">
-
-                暂无活动区域数据。
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    el.innerHTML =
-        items
-        .map(
-            (
-                [
-                    area,
-                    count
-                ]
-            )=>`
-
-                <div class="area-card">
-
-                    <div class="area-icon">
-                        📍
-                    </div>
-
-                    <div class="area-name">
-
-                        ${
-                            escapeHtml(
-                                area
-                            )
-                        }
-
-                    </div>
-
-                    <div class="area-count">
-
-                        ${count}
-
-                    </div>
-
-                    <div class="area-label">
-
-                        当前记录动物数量
-
-                    </div>
-
-                </div>
-
-            `
-        )
-        .join("");
+return;
 
 }
 
 
+grid.innerHTML=
+items
+.map(
+([area,count])=>`
 
-/* =========================================================
-   MEMBERS
-========================================================= */
+<div class="area-card">
 
-async function loadMembers(){
+<div class="area-icon">📍</div>
 
-    if(
-        !canViewAdminPages()
-    ){
+<div class="area-name">
+${escapeHtml(area)}
+</div>
 
-        return;
+<div class="area-number">
+${count}
+</div>
 
-    }
+<div class="area-caption">
+只动物
+</div>
 
+</div>
 
-    const {
-        data,
-        error
-    } =
-    await supabase
-    .from(
-        "profiles"
-    )
-    .select(
-        "id,email,display_name,role,created_at"
-    )
-    .order(
-        "created_at",
-        {
-            ascending:true
-        }
-    );
-
-
-    if(error){
-
-        console.error(
-            error
-        );
-
-        toast(
-            "读取成员列表失败：" +
-            error.message,
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const el =
-        document
-        .querySelector(
-            "#membersList"
-        );
-
-
-    if(
-        !data?.length
-    ){
-
-        el.innerHTML = `
-
-            <div class="empty">
-
-                暂无成员。
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    el.innerHTML =
-        data
-        .map(
-            member=>{
-
-                const role =
-                    ROLE_INFO[
-                        member.role
-                    ]
-                    ||
-                    ROLE_INFO.viewer;
-
-
-                let permissionControl;
-
-
-                if(
-                    canManageRoles()
-                    &&
-                    member.id !==
-                    currentUser.id
-                ){
-
-                    permissionControl = `
-
-                        <select
-                            class="role-select"
-                            data-user-id="${member.id}"
-                            data-old-role="${member.role}"
-                        >
-
-                            <option
-                                value="viewer"
-                                ${
-                                    member.role ===
-                                    "viewer"
-                                    ?
-                                    "selected"
-                                    :
-                                    ""
-                                }
-                            >
-                                只读成员
-                            </option>
-
-                            <option
-                                value="volunteer"
-                                ${
-                                    member.role ===
-                                    "volunteer"
-                                    ?
-                                    "selected"
-                                    :
-                                    ""
-                                }
-                            >
-                                志愿者
-                            </option>
-
-                            <option
-                                value="admin"
-                                ${
-                                    member.role ===
-                                    "admin"
-                                    ?
-                                    "selected"
-                                    :
-                                    ""
-                                }
-                            >
-                                管理员
-                            </option>
-
-                            <option
-                                value="super_admin"
-                                ${
-                                    member.role ===
-                                    "super_admin"
-                                    ?
-                                    "selected"
-                                    :
-                                    ""
-                                }
-                            >
-                                最高管理员
-                            </option>
-
-                        </select>
-
-                    `;
-
-                }else{
-
-                    permissionControl =
-                        roleBadge(
-                            member.role
-                        );
-
-                }
-
-
-                return `
-
-                    <div class="member-row">
-
-
-                        <div>
-
-                            <div class="member-name">
-
-                                ${
-                                    escapeHtml(
-                                        member.display_name
-                                        ||
-                                        member.email
-                                        ||
-                                        "未命名成员"
-                                    )
-                                }
-
-                                ${
-                                    member.id ===
-                                    currentUser.id
-                                    ?
-                                    "（当前账号）"
-                                    :
-                                    ""
-                                }
-
-                            </div>
-
-
-                            <div class="member-email">
-
-                                ${
-                                    escapeHtml(
-                                        member.email
-                                        ||
-                                        ""
-                                    )
-                                }
-
-                            </div>
-
-
-                            <div class="member-date">
-
-                                加入时间：
-
-                                ${
-                                    formatDateTime(
-                                        member.created_at
-                                    )
-                                }
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="member-right">
-
-                            ${permissionControl}
-
-                        </div>
-
-
-                    </div>
-
-                `;
-
-            }
-        )
-        .join("");
+`
+)
+.join("");
 
 }
 
 
+async function openAnimalDetail(id){
 
-/* =========================================================
-   CHANGE ROLE
-========================================================= */
+currentDetailAnimalId=id;
+
+
+const animal=
+animals.find(
+item=>item.id===id
+);
+
+
+if(!animal){
+
+return;
+
+}
+
+
+const animalReviews=
+reviews.filter(
+review=>
+review.animal_id===id
+);
+
+
+const myReview=
+animalReviews.find(
+review=>
+review.user_id===currentUser.id
+);
+
+
+selectedReviewRating=
+myReview?.rating||0;
+
+
+const stat=
+reviewStats[id];
+
+
+const photo=
+animal.photo_url
+?
+`
+<img
+src="${escapeHtml(animal.photo_url)}"
+alt=""
+>
+`
+:
+(
+animal.species==="cat"
+?
+"🐱"
+:
+"🐶"
+);
+
+
+const reviewHTML=
+animalReviews.length
+?
+animalReviews
+.map(
+review=>`
+
+<div class="review-item">
+
+<div class="review-item-head">
+
+<div class="review-user">
+${escapeHtml(
+review.reviewer_name||"校园成员"
+)}
+</div>
+
+<div class="review-stars">
+${"★".repeat(review.rating)}
+${"☆".repeat(5-review.rating)}
+</div>
+
+</div>
+
+${review.comment
+?
+`
+<div class="review-comment">
+${escapeHtml(review.comment)}
+</div>
+`
+:
+""
+}
+
+<div class="small">
+${formatDateTime(review.updated_at)}
+</div>
+
+${canAdmin()
+?
+`
+<div class="mini-actions">
+
+<button
+class="btn-danger"
+data-delete-review="${review.id}"
+>
+删除评价
+</button>
+
+</div>
+`
+:
+""
+}
+
+</div>
+
+`
+)
+.join("")
+:
+`
+<div class="empty">
+还没有评价，成为第一个评价它的人吧。
+</div>
+`;
+
 
 document
-.querySelector(
-    "#membersList"
-)
-.addEventListener(
-    "change",
+.querySelector("#animalDetailContent")
+.innerHTML=`
+
+<div class="detail-top">
+
+<div class="detail-photo">
+
+${photo}
+
+${stat
+?
+`
+<div class="rating-badge">
+★ ${stat.average.toFixed(1)}
+</div>
+`
+:
+""
+}
+
+</div>
+
+
+<div>
+
+<div class="detail-name">
+${escapeHtml(
+animal.name||"未命名"
+)}
+</div>
+
+<div class="detail-code">
+${escapeHtml(animal.code)}
+·
+${animal.species==="cat"?"猫":"狗"}
+</div>
+
+
+<div class="detail-grid">
+
+${detailBox(
+"性别",
+sexText(animal.sex)
+)}
+
+${detailBox(
+"毛色",
+animal.color||"未知"
+)}
+
+${detailBox(
+"年龄估计",
+animal.age_estimate||"未知"
+)}
+
+${detailBox(
+"活动区域",
+animal.activity_area||"未知"
+)}
+
+${detailBox(
+"绝育状态",
+animal.neutered
+?
+"已绝育"
+:
+"未绝育 / 未知"
+)}
+
+${detailBox(
+"疫苗",
+animal.vaccination||"未知"
+)}
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="detail-box"
+style="margin-top:14px"
+>
+
+<div class="detail-label">
+健康情况
+</div>
+
+<div class="detail-value">
+${escapeHtml(
+animal.health||"暂无记录"
+)}
+</div>
+
+</div>
+
+
+<div
+class="detail-box"
+style="margin-top:9px"
+>
+
+<div class="detail-label">
+档案备注
+</div>
+
+<div class="detail-value">
+${escapeHtml(
+animal.notes||"暂无备注"
+)}
+</div>
+
+</div>
+
+
+<div class="review-section">
+
+<div class="review-header">
+
+<div>
+
+<div class="review-title">
+成员评价
+</div>
+
+<div class="small">
+每个成员可对该动物评分一次，并可随时修改自己的评价。
+</div>
+
+</div>
+
+<div class="review-score">
+
+${stat
+?
+`★ ${stat.average.toFixed(1)}`
+:
+"暂无评分"
+}
+
+</div>
+
+</div>
+
+
+<div class="review-form">
+
+<div class="small">
+我的评分
+</div>
+
+<div class="star-picker">
+${renderStarButtons()}
+</div>
+
+<textarea
+id="myReviewComment"
+placeholder="写下你对它的评价、性格观察或相处体验..."
+>${escapeHtml(
+myReview?.comment||""
+)}</textarea>
+
+<div
+style="
+margin-top:10px;
+display:flex;
+justify-content:flex-end
+"
+>
+
+<button
+id="saveReviewBtn"
+class="btn btn-primary"
+>
+${myReview
+?
+"更新评价"
+:
+"提交评价"
+}
+</button>
+
+</div>
+
+</div>
+
+
+<div
+id="reviewList"
+class="review-list"
+>
+
+${reviewHTML}
+
+</div>
+
+</div>
+
+`;
+
+
+bindReviewStars();
+
+
+document
+.querySelector("#saveReviewBtn")
+.onclick=
+saveCurrentReview;
+
+
+document
+.querySelector("#reviewList")
+.onclick=
 async e=>{
 
-    const target =
-        e.target;
+const reviewId=
+e.target.dataset.deleteReview;
 
 
-    if(
-        !target
-        .classList
-        .contains(
-            "role-select"
-        )
-    ){
+if(!reviewId){
 
-        return;
-
-    }
-
-
-    if(
-        !canManageRoles()
-    ){
-
-        toast(
-            "只有最高管理员可以调整成员权限。",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const userId =
-        target
-        .dataset
-        .userId;
-
-
-    const oldRole =
-        target
-        .dataset
-        .oldRole;
-
-
-    const newRole =
-        target
-        .value;
-
-
-    if(
-        oldRole ===
-        newRole
-    ){
-
-        return;
-
-    }
-
-
-    const role =
-        ROLE_INFO[
-            newRole
-        ];
-
-
-    const ok =
-        confirm(
-
-            `确定将该成员权限修改为「${role.name}」吗？`
-
-        );
-
-
-    if(!ok){
-
-        target.value =
-            oldRole;
-
-        return;
-
-    }
-
-
-    target.disabled =
-        true;
-
-
-    const {
-        error
-    } =
-    await supabase
-    .rpc(
-        "set_member_role",
-        {
-
-            target_user_id:
-                userId,
-
-            new_role:
-                newRole
-
-        }
-    );
-
-
-    target.disabled =
-        false;
-
-
-    if(error){
-
-        target.value =
-            oldRole;
-
-
-        toast(
-            "修改权限失败：" +
-            error.message,
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    toast(
-        `成员权限已修改为「${role.name}」。`,
-        "success"
-    );
-
-
-    await loadMembers();
+return;
 
 }
-);
 
 
+if(!canAdmin()){
 
-/* =========================================================
-   LOGS
-========================================================= */
-
-async function loadLogs(){
-
-    if(
-        !canViewAdminPages()
-    ){
-
-        return;
-
-    }
-
-
-    const {
-        data,
-        error
-    } =
-    await supabase
-    .from(
-        "audit_logs"
-    )
-    .select("*")
-    .order(
-        "created_at",
-        {
-            ascending:false
-        }
-    )
-    .limit(
-        150
-    );
-
-
-    if(error){
-
-        console.error(
-            error
-        );
-
-        toast(
-            "读取操作记录失败：" +
-            error.message,
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const el =
-        document
-        .querySelector(
-            "#logList"
-        );
-
-
-    if(
-        !data?.length
-    ){
-
-        el.innerHTML = `
-
-            <div class="empty">
-
-                暂无操作记录。
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    el.innerHTML =
-        data
-        .map(
-            item=>{
-
-                let title;
-
-                let icon;
-
-                let targetText;
-
-
-                if(
-                    item.action ===
-                    "INSERT"
-                ){
-
-                    title =
-                        "新增动物档案";
-
-                    icon =
-                        "＋";
-
-                    targetText =
-                        escapeHtml(
-                            item.animal_name
-                            ||
-                            item.animal_code
-                            ||
-                            "未命名动物"
-                        );
-
-                }
-
-
-                else if(
-                    item.action ===
-                    "UPDATE"
-                ){
-
-                    title =
-                        "修改动物档案";
-
-                    icon =
-                        "✎";
-
-                    targetText =
-                        escapeHtml(
-                            item.animal_name
-                            ||
-                            item.animal_code
-                            ||
-                            "未命名动物"
-                        );
-
-                }
-
-
-                else if(
-                    item.action ===
-                    "DELETE"
-                ){
-
-                    title =
-                        "删除动物档案";
-
-                    icon =
-                        "−";
-
-                    targetText =
-                        escapeHtml(
-                            item.animal_name
-                            ||
-                            item.animal_code
-                            ||
-                            "未命名动物"
-                        );
-
-                }
-
-
-                else if(
-                    item.action ===
-                    "ROLE_CHANGE"
-                ){
-
-                    title =
-                        "成员权限调整";
-
-                    icon =
-                        "◆";
-
-
-                    const targetEmail =
-                        item.details
-                        ?.target_email
-                        ||
-                        "成员";
-
-
-                    const oldRole =
-                        ROLE_INFO[
-                            item.details
-                            ?.old_role
-                        ]
-                        ?.name
-                        ||
-                        item.details
-                        ?.old_role
-                        ||
-                        "-";
-
-
-                    const newRole =
-                        ROLE_INFO[
-                            item.details
-                            ?.new_role
-                        ]
-                        ?.name
-                        ||
-                        item.details
-                        ?.new_role
-                        ||
-                        "-";
-
-
-                    targetText =
-
-                        `${escapeHtml(
-                            targetEmail
-                        )}：${escapeHtml(
-                            oldRole
-                        )} → ${escapeHtml(
-                            newRole
-                        )}`;
-
-                }
-
-
-                else{
-
-                    title =
-                        item.action;
-
-                    icon =
-                        "•";
-
-                    targetText =
-                        "-";
-
-                }
-
-
-                const actorRole =
-                    ROLE_INFO[
-                        item.actor_role
-                    ]
-                    ?.name
-                    ||
-                    item.actor_role
-                    ||
-                    "未知权限";
-
-
-                return `
-
-                    <div class="log-row">
-
-
-                        <div class="log-icon">
-
-                            ${icon}
-
-                        </div>
-
-
-                        <div>
-
-                            <div class="log-title">
-
-                                ${title}
-
-                            </div>
-
-
-                            <div class="log-desc">
-
-                                对象：
-                                ${targetText}
-
-                                <br>
-
-                                操作者：
-
-                                ${
-                                    escapeHtml(
-                                        item.actor_email
-                                        ||
-                                        "未知账号"
-                                    )
-                                }
-
-                                ·
-
-                                ${
-                                    escapeHtml(
-                                        actorRole
-                                    )
-                                }
-
-                                <br>
-
-                                时间：
-
-                                ${
-                                    formatDateTime(
-                                        item.created_at
-                                    )
-                                }
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                `;
-
-            }
-        )
-        .join("");
+return;
 
 }
 
 
-
-document
-.querySelector(
-    "#refreshLogsBtn"
+if(
+!confirm(
+"确定删除这条评价吗？"
 )
-.addEventListener(
-    "click",
-    loadLogs
+){
+
+return;
+
+}
+
+
+const{error}=
+await supabase
+.from("animal_reviews")
+.delete()
+.eq("id",reviewId);
+
+
+if(error){
+
+toast(
+"删除评价失败："+error.message,
+"error"
 );
 
+return;
+
+}
 
 
-/* =========================================================
-   OPEN NEW ANIMAL
-========================================================= */
+await loadReviews();
+
+buildReviewStats();
+
+renderDashboard();
+
+renderAnimals();
+
+await openAnimalDetail(
+currentDetailAnimalId
+);
+
+};
+
+
+openModal("detailModal");
+
+}
+
+
+function renderStarButtons(){
+
+return[
+1,2,3,4,5
+]
+.map(
+number=>`
+
+<button
+type="button"
+class="star-button ${
+number<=selectedReviewRating
+?
+"active"
+:
+""
+}"
+data-rating="${number}"
+>
+★
+</button>
+
+`
+)
+.join("");
+
+}
+
+
+function bindReviewStars(){
 
 document
-.querySelector(
-    "#addBtn"
-)
-.addEventListener(
-    "click",
+.querySelectorAll(".star-button")
+.forEach(
+button=>{
+
+button.onclick=
 ()=>{
 
-    if(
-        !canEditAnimal()
-    ){
+selectedReviewRating=
+Number(button.dataset.rating);
 
-        toast(
-            "当前账号没有新建档案权限。",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    document
-    .querySelector(
-        "#animalForm"
-    )
-    .reset();
-
-
-    setValue(
-        "animalId",
-        ""
-    );
-
-
-    setText(
-        "animalModalTitle",
-        "新建动物档案"
-    );
-
-
-    openModal(
-        "animalModal"
-    );
-
-}
-);
-
-
-
-/* =========================================================
-   ANIMAL GRID EVENTS
-========================================================= */
 
 document
-.querySelector(
-    "#animalGrid"
-)
-.addEventListener(
-    "click",
-async e=>{
+.querySelectorAll(".star-button")
+.forEach(
+star=>{
 
-    const viewId =
-        e.target
-        .dataset
-        .view;
-
-
-    const editId =
-        e.target
-        .dataset
-        .edit;
-
-
-    const deleteId =
-        e.target
-        .dataset
-        .delete;
-
-
-    if(viewId){
-
-        openAnimalDetail(
-            viewId
-        );
-
-        return;
-
-    }
-
-
-    if(editId){
-
-        openAnimalEdit(
-            editId
-        );
-
-        return;
-
-    }
-
-
-    if(deleteId){
-
-        await deleteAnimal(
-            deleteId
-        );
-
-    }
+star.classList.toggle(
+"active",
+Number(star.dataset.rating)
+<=
+selectedReviewRating
+);
 
 }
 );
 
+};
 
-
-/* =========================================================
-   DETAIL
-========================================================= */
-
-function openAnimalDetail(id){
-
-    const animal =
-        animals
-        .find(
-            a=>
-                a.id ===
-                id
-        );
-
-
-    if(!animal){
-
-        return;
-
-    }
-
-
-    const photo =
-
-        animal.photo_url
-
-        ?
-
-        `
-        <img
-            src="${escapeHtml(
-                animal.photo_url
-            )}"
-            alt=""
-        >
-        `
-
-        :
-
-        (
-            animal.species ===
-            "cat"
-            ?
-            "🐱"
-            :
-            "🐶"
-        );
-
-
-    document
-    .querySelector(
-        "#detailContent"
-    )
-    .innerHTML = `
-
-        <div class="detail-hero">
-
-
-            <div class="detail-photo">
-
-                ${photo}
-
-            </div>
-
-
-            <div>
-
-                <div class="detail-name">
-
-                    ${
-                        escapeHtml(
-                            animal.name
-                            ||
-                            "未命名"
-                        )
-                    }
-
-                </div>
-
-
-                <div class="detail-code">
-
-                    ${
-                        escapeHtml(
-                            animal.code
-                        )
-                    }
-
-                    ·
-
-                    ${
-                        animal.species ===
-                        "cat"
-                        ?
-                        "猫"
-                        :
-                        "狗"
-                    }
-
-                </div>
-
-
-                <div class="status-row">
-
-                    <span
-                        class="status-chip ${
-                            animal.neutered
-                            ?
-                            "good"
-                            :
-                            "warn"
-                        }"
-                    >
-
-                        ${
-                            animal.neutered
-                            ?
-                            "已绝育"
-                            :
-                            "未绝育 / 未知"
-                        }
-
-                    </span>
-
-
-                    <span class="status-chip">
-
-                        疫苗：
-
-                        ${
-                            escapeHtml(
-                                animal.vaccination
-                                ||
-                                "未知"
-                            )
-                        }
-
-                    </span>
-
-                </div>
-
-
-                <div class="detail-info-grid">
-
-
-                    <div class="detail-item">
-
-                        <div class="detail-label">
-                            性别
-                        </div>
-
-                        <div class="detail-value">
-
-                            ${
-                                sexText(
-                                    animal.sex
-                                )
-                            }
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        <div class="detail-label">
-                            毛色
-                        </div>
-
-                        <div class="detail-value">
-
-                            ${
-                                escapeHtml(
-                                    animal.color
-                                    ||
-                                    "未知"
-                                )
-                            }
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        <div class="detail-label">
-                            年龄估计
-                        </div>
-
-                        <div class="detail-value">
-
-                            ${
-                                escapeHtml(
-                                    animal.age_estimate
-                                    ||
-                                    "未知"
-                                )
-                            }
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        <div class="detail-label">
-                            活动区域
-                        </div>
-
-                        <div class="detail-value">
-
-                            ${
-                                escapeHtml(
-                                    animal.activity_area
-                                    ||
-                                    "未知"
-                                )
-                            }
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        <div class="detail-label">
-                            首次发现
-                        </div>
-
-                        <div class="detail-value">
-
-                            ${
-                                formatDate(
-                                    animal.found_at
-                                )
-                                ||
-                                "未知"
-                            }
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        <div class="detail-label">
-                            最近更新
-                        </div>
-
-                        <div class="detail-value">
-
-                            ${
-                                formatDateTime(
-                                    animal.updated_at
-                                )
-                            }
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-
-        <div class="detail-block">
-
-            <div class="detail-label">
-                健康情况
-            </div>
-
-            <div class="detail-value">
-
-                ${
-                    escapeHtml(
-                        animal.health
-                        ||
-                        "暂无记录"
-                    )
-                }
-
-            </div>
-
-        </div>
-
-
-        <div class="detail-block">
-
-            <div class="detail-label">
-                备注
-            </div>
-
-            <div class="detail-value">
-
-                ${
-                    escapeHtml(
-                        animal.notes
-                        ||
-                        "暂无备注"
-                    )
-                }
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    openModal(
-        "detailModal"
-    );
+}
+);
 
 }
 
 
+async function saveCurrentReview(){
 
-/* =========================================================
-   EDIT
-========================================================= */
+if(!selectedReviewRating){
+
+toast(
+"请先选择 1～5 星评分。",
+"error"
+);
+
+return;
+
+}
+
+
+const comment=
+getValue("myReviewComment")
+.trim();
+
+
+const{error}=
+await supabase
+.from("animal_reviews")
+.upsert(
+{
+
+animal_id:
+currentDetailAnimalId,
+
+user_id:
+currentUser.id,
+
+rating:
+selectedReviewRating,
+
+comment
+
+},
+{
+onConflict:
+"animal_id,user_id"
+}
+);
+
+
+if(error){
+
+toast(
+"保存评价失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+toast(
+"评价已保存。",
+"success"
+);
+
+
+await loadReviews();
+
+buildReviewStats();
+
+renderDashboard();
+
+renderAnimals();
+
+await openAnimalDetail(
+currentDetailAnimalId
+);
+
+}
+
+
+document
+.querySelector("#addAnimalBtn")
+.onclick=
+()=>{
+
+if(!canEditAnimal()){
+
+return;
+
+}
+
+
+document
+.querySelector("#animalForm")
+.reset();
+
+
+setValue(
+"animalId",
+""
+);
+
+
+setText(
+"animalModalTitle",
+"新建动物档案"
+);
+
+
+openModal("animalModal");
+
+};
+
 
 function openAnimalEdit(id){
 
-    if(
-        !canEditAnimal()
-    ){
+if(!canEditAnimal()){
 
-        toast(
-            "当前账号没有编辑权限。",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const animal =
-        animals
-        .find(
-            a=>
-                a.id ===
-                id
-        );
-
-
-    if(!animal){
-
-        return;
-
-    }
-
-
-    setValue(
-        "animalId",
-        animal.id
-    );
-
-
-    setValue(
-        "code",
-        animal.code
-    );
-
-
-    setValue(
-        "name",
-        animal.name
-        ||
-        ""
-    );
-
-
-    setValue(
-        "species",
-        animal.species
-    );
-
-
-    setValue(
-        "sex",
-        animal.sex
-        ||
-        "unknown"
-    );
-
-
-    setValue(
-        "color",
-        animal.color
-        ||
-        ""
-    );
-
-
-    setValue(
-        "age",
-        animal.age_estimate
-        ||
-        ""
-    );
-
-
-    setValue(
-        "neutered",
-        String(
-            animal.neutered
-        )
-    );
-
-
-    setValue(
-        "vaccination",
-        animal.vaccination
-        ||
-        "未知"
-    );
-
-
-    setValue(
-        "health",
-        animal.health
-        ||
-        ""
-    );
-
-
-    setValue(
-        "area",
-        animal.activity_area
-        ||
-        ""
-    );
-
-
-    setValue(
-        "foundAt",
-        animal.found_at
-        ||
-        ""
-    );
-
-
-    setValue(
-        "notes",
-        animal.notes
-        ||
-        ""
-    );
-
-
-    document
-    .querySelector(
-        "#photo"
-    )
-    .value =
-        "";
-
-
-    setText(
-        "animalModalTitle",
-        "编辑动物档案"
-    );
-
-
-    openModal(
-        "animalModal"
-    );
+return;
 
 }
 
 
+const animal=
+animals.find(
+item=>item.id===id
+);
 
-/* =========================================================
-   DELETE
-========================================================= */
+
+if(!animal){
+
+return;
+
+}
+
+
+setValue(
+"animalId",
+animal.id
+);
+
+setValue(
+"animalCode",
+animal.code
+);
+
+setValue(
+"animalName",
+animal.name||""
+);
+
+setValue(
+"animalSpecies",
+animal.species
+);
+
+setValue(
+"animalSex",
+animal.sex||"unknown"
+);
+
+setValue(
+"animalColor",
+animal.color||""
+);
+
+setValue(
+"animalAge",
+animal.age_estimate||""
+);
+
+setValue(
+"animalNeutered",
+String(animal.neutered)
+);
+
+setValue(
+"animalVaccination",
+animal.vaccination||"未知"
+);
+
+setValue(
+"animalHealth",
+animal.health||""
+);
+
+setValue(
+"animalArea",
+animal.activity_area||""
+);
+
+setValue(
+"animalFoundAt",
+animal.found_at||""
+);
+
+setValue(
+"animalNotes",
+animal.notes||""
+);
+
+
+setText(
+"animalModalTitle",
+"编辑动物档案"
+);
+
+
+openModal("animalModal");
+
+}
+
+
+document
+.querySelector("#animalForm")
+.onsubmit=
+async e=>{
+
+e.preventDefault();
+
+
+if(!canEditAnimal()){
+
+return;
+
+}
+
+
+const id=
+getValue("animalId");
+
+
+const existing=
+animals.find(
+item=>item.id===id
+);
+
+
+const record={
+
+code:
+getValue("animalCode")
+.trim(),
+
+name:
+getValue("animalName")
+.trim(),
+
+species:
+getValue("animalSpecies"),
+
+sex:
+getValue("animalSex"),
+
+color:
+getValue("animalColor")
+.trim(),
+
+age_estimate:
+getValue("animalAge")
+.trim(),
+
+neutered:
+getValue("animalNeutered")
+==="true",
+
+vaccination:
+getValue("animalVaccination"),
+
+health:
+getValue("animalHealth")
+.trim(),
+
+activity_area:
+getValue("animalArea")
+.trim(),
+
+found_at:
+getValue("animalFoundAt")
+||
+null,
+
+photo_url:
+existing?.photo_url
+||
+null,
+
+notes:
+getValue("animalNotes")
+.trim()
+
+};
+
+
+let error;
+
+
+if(id){
+
+({error}=
+await supabase
+.from("animals")
+.update(record)
+.eq("id",id));
+
+}else{
+
+({error}=
+await supabase
+.from("animals")
+.insert(record));
+
+}
+
+
+if(error){
+
+toast(
+"保存失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+closeModal("animalModal");
+
+
+toast(
+id
+?
+"档案已更新。"
+:
+"档案创建成功。",
+"success"
+);
+
+
+await loadAnimals();
+
+renderAll();
+
+};
+
 
 async function deleteAnimal(id){
 
-    if(
-        !canDeleteAnimal()
-    ){
+if(!canAdmin()){
 
-        toast(
-            "只有管理员及最高管理员可以删除档案。",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const animal =
-        animals
-        .find(
-            a=>
-                a.id ===
-                id
-        );
-
-
-    if(!animal){
-
-        return;
-
-    }
-
-
-    const ok =
-        confirm(
-
-            `确定删除「${animal.name || animal.code}」的档案吗？\n\n删除后动物档案无法直接恢复。`
-
-        );
-
-
-    if(!ok){
-
-        return;
-
-    }
-
-
-    const {
-        error
-    } =
-    await supabase
-    .from(
-        "animals"
-    )
-    .delete()
-    .eq(
-        "id",
-        id
-    );
-
-
-    if(error){
-
-        toast(
-            "删除失败：" +
-            error.message,
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    toast(
-        "动物档案已删除。",
-        "success"
-    );
-
-
-    await loadAnimals();
+return;
 
 }
 
 
+const animal=
+animals.find(
+item=>item.id===id
+);
 
-/* =========================================================
-   SAVE ANIMAL
-========================================================= */
+
+if(
+!confirm(
+`确定删除「${animal?.name||animal?.code}」吗？`
+)
+){
+
+return;
+
+}
+
+
+const{error}=
+await supabase
+.from("animals")
+.delete()
+.eq("id",id);
+
+
+if(error){
+
+toast(
+"删除失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+toast(
+"动物档案已删除。",
+"success"
+);
+
+
+await loadEverything();
+
+}
+
+
+function openAvatarModal(id){
+
+if(!canAdmin()){
+
+return;
+
+}
+
+
+const animal=
+animals.find(
+item=>item.id===id
+);
+
+
+if(!animal){
+
+return;
+
+}
+
+
+setValue(
+"avatarAnimalId",
+id
+);
+
 
 document
-.querySelector(
-    "#animalForm"
-)
-.addEventListener(
-    "submit",
+.querySelector("#avatarFile")
+.value="";
+
+
+document
+.querySelector("#avatarPreview")
+.innerHTML=
+animal.photo_url
+?
+`
+<img
+src="${escapeHtml(animal.photo_url)}"
+>
+`
+:
+(
+animal.species==="cat"
+?
+"🐱"
+:
+"🐶"
+);
+
+
+openModal("avatarModal");
+
+}
+
+
+document
+.querySelector("#avatarFile")
+.onchange=
+e=>{
+
+const file=
+e.target.files[0];
+
+
+if(!file){
+
+return;
+
+}
+
+
+const url=
+URL.createObjectURL(file);
+
+
+document
+.querySelector("#avatarPreview")
+.innerHTML=`
+<img src="${url}">
+`;
+
+};
+
+
+document
+.querySelector("#saveAvatarBtn")
+.onclick=
+async()=>{
+
+if(!canAdmin()){
+
+return;
+
+}
+
+
+const id=
+getValue("avatarAnimalId");
+
+
+const file=
+document
+.querySelector("#avatarFile")
+.files[0];
+
+
+if(!file){
+
+toast(
+"请选择头像图片。",
+"error"
+);
+
+return;
+
+}
+
+
+if(file.size>5*1024*1024){
+
+toast(
+"图片不能超过 5 MB。",
+"error"
+);
+
+return;
+
+}
+
+
+const ext=
+file.name
+.split(".")
+.pop()
+.toLowerCase();
+
+
+const path=
+`avatars/${id}/${crypto.randomUUID()}.${ext}`;
+
+
+const{
+error:uploadError
+}=
+await supabase
+.storage
+.from("animal-photos")
+.upload(
+path,
+file
+);
+
+
+if(uploadError){
+
+toast(
+"上传失败："+uploadError.message,
+"error"
+);
+
+return;
+
+}
+
+
+const{data}=
+supabase
+.storage
+.from("animal-photos")
+.getPublicUrl(path);
+
+
+const{error}=
+await supabase
+.from("animals")
+.update({
+photo_url:
+data.publicUrl
+})
+.eq("id",id);
+
+
+if(error){
+
+toast(
+"头像更新失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+closeModal("avatarModal");
+
+
+toast(
+"动物头像已更新。",
+"success"
+);
+
+
+await loadAnimals();
+
+renderAll();
+
+};
+
+
+document
+.querySelector("#animalGrid")
+.onclick=
 async e=>{
 
-    e.preventDefault();
+const viewId=
+e.target.dataset.viewAnimal;
 
+const editId=
+e.target.dataset.editAnimal;
 
-    if(
-        !canEditAnimal()
-    ){
+const avatarId=
+e.target.dataset.avatarAnimal;
 
-        toast(
-            "当前账号没有保存档案权限。",
-            "error"
-        );
+const deleteId=
+e.target.dataset.deleteAnimal;
 
-        return;
 
-    }
+if(viewId){
 
+await openAnimalDetail(viewId);
 
-    const saveButton =
-        document
-        .querySelector(
-            "#saveAnimalBtn"
-        );
+return;
 
+}
 
-    saveButton.disabled =
-        true;
 
+if(editId){
 
-    saveButton.textContent =
-        "保存中...";
+openAnimalEdit(editId);
 
+return;
 
-    try{
+}
 
 
-        const id =
-            getValue(
-                "animalId"
-            );
+if(avatarId){
 
+openAvatarModal(avatarId);
 
-        const existing =
-            animals
-            .find(
-                a=>
-                    a.id ===
-                    id
-            );
+return;
 
+}
 
-        let photoUrl =
-            existing
-            ?.photo_url
-            ||
-            null;
 
+if(deleteId){
 
-        const file =
-            document
-            .querySelector(
-                "#photo"
-            )
-            .files[0];
+await deleteAnimal(deleteId);
 
+}
 
-        if(file){
+};
 
 
-            if(
-                file.size >
-                5 * 1024 * 1024
-            ){
+function renderNews(){
 
-                throw new Error(
-                    "照片不能超过 5 MB。"
-                );
+const grid=
+document.querySelector("#newsGrid");
 
-            }
 
+if(!newsItems.length){
 
-            let ext =
-                file.name
-                .split(".")
-                .pop()
-                .toLowerCase();
+grid.innerHTML=
+empty("暂无校园动物新闻");
 
+return;
 
-            if(
-                !ext
-                ||
-                ext.length >
-                5
-            ){
+}
 
-                ext =
-                    "jpg";
 
-            }
+grid.innerHTML=
+newsItems
+.map(
+item=>`
 
+<article class="news-card">
 
-            const filename =
-
-                `animals/${crypto.randomUUID()}.${ext}`;
-
-
-            const {
-                error:uploadError
-            } =
-            await supabase
-            .storage
-            .from(
-                "animal-photos"
-            )
-            .upload(
-                filename,
-                file
-            );
-
-
-            if(uploadError){
-
-                throw new Error(
-                    "照片上传失败：" +
-                    uploadError.message
-                );
-
-            }
-
-
-            const {
-                data:publicData
-            } =
-            supabase
-            .storage
-            .from(
-                "animal-photos"
-            )
-            .getPublicUrl(
-                filename
-            );
-
-
-            photoUrl =
-                publicData
-                .publicUrl;
-
-        }
-
-
-        const record = {
-
-            code:
-                getValue(
-                    "code"
-                )
-                .trim(),
-
-            name:
-                getValue(
-                    "name"
-                )
-                .trim(),
-
-            species:
-                getValue(
-                    "species"
-                ),
-
-            sex:
-                getValue(
-                    "sex"
-                ),
-
-            color:
-                getValue(
-                    "color"
-                )
-                .trim(),
-
-            age_estimate:
-                getValue(
-                    "age"
-                )
-                .trim(),
-
-            neutered:
-                getValue(
-                    "neutered"
-                )
-                ===
-                "true",
+<div class="news-cover">
 
-            vaccination:
-                getValue(
-                    "vaccination"
-                ),
+${item.cover_url
+?
+`
+<img
+src="${escapeHtml(item.cover_url)}"
+>
+`
+:
+"📰"
+}
 
-            health:
-                getValue(
-                    "health"
-                )
-                .trim(),
+</div>
 
-            activity_area:
-                getValue(
-                    "area"
-                )
-                .trim(),
 
-            found_at:
-                getValue(
-                    "foundAt"
-                )
-                ||
-                null,
+<div class="news-body">
 
-            photo_url:
-                photoUrl,
+<div class="news-category">
+${escapeHtml(item.category)}
+</div>
 
-            notes:
-                getValue(
-                    "notes"
-                )
-                .trim()
+<div class="news-title">
+${escapeHtml(item.title)}
+</div>
 
-        };
+<div class="news-summary">
 
+${escapeHtml(
+item.summary
+||
+truncate(item.content,100)
+)}
 
-        let error;
+</div>
 
+<div class="news-time">
+${formatDateTime(item.created_at)}
+</div>
 
-        if(id){
+<div class="animal-actions">
 
-            ({
-                error
-            } =
-            await supabase
-            .from(
-                "animals"
-            )
-            .update(
-                record
-            )
-            .eq(
-                "id",
-                id
-            ));
+<button
+data-view-news="${item.id}"
+>
+阅读全文
+</button>
 
-        }else{
+${canAdmin()
+?
+`
 
-            ({
-                error
-            } =
-            await supabase
-            .from(
-                "animals"
-            )
-            .insert(
-                record
-            ));
+<button
+data-edit-news="${item.id}"
+>
+编辑
+</button>
 
-        }
+<button
+class="btn-danger"
+data-delete-news="${item.id}"
+>
+删除
+</button>
 
+`
+:
+""
+}
 
-        if(error){
+</div>
 
-            throw error;
+</div>
 
-        }
+</article>
 
+`
+)
+.join("");
 
-        closeModal(
-            "animalModal"
-        );
+}
 
 
-        toast(
-            id
-            ?
-            "动物档案已更新。"
-            :
-            "动物档案创建成功。",
-            "success"
-        );
+function openNewsModal(item=null){
 
+if(!canAdmin()){
 
-        await loadAnimals();
+return;
 
+}
 
-    }catch(error){
 
-        console.error(
-            error
-        );
+document
+.querySelector("#newsForm")
+.reset();
 
 
-        toast(
-            "保存失败：" +
-            (
-                error.message
-                ||
-                error
-            ),
-            "error"
-        );
+document
+.querySelector("#newsCover")
+.value="";
 
-    }finally{
 
-        saveButton.disabled =
-            false;
+if(item){
 
+setValue(
+"newsId",
+item.id
+);
 
-        saveButton.textContent =
-            "保存档案";
+setValue(
+"newsTitle",
+item.title
+);
 
-    }
+setValue(
+"newsCategory",
+item.category
+);
+
+setValue(
+"newsSummary",
+item.summary||""
+);
+
+setValue(
+"newsContent",
+item.content
+);
+
+
+setText(
+"newsModalTitle",
+"编辑校园新闻"
+);
+
+}else{
+
+setValue(
+"newsId",
+""
+);
+
+
+setText(
+"newsModalTitle",
+"发布校园新闻"
+);
+
+}
+
+
+openModal("newsModal");
+
+}
+
+
+document
+.querySelector("#publishNewsBtn")
+.onclick=
+()=>openNewsModal();
+
+
+document
+.querySelector("#pagePublishNewsBtn")
+.onclick=
+()=>openNewsModal();
+
+
+document
+.querySelector("#newsForm")
+.onsubmit=
+async e=>{
+
+e.preventDefault();
+
+
+if(!canAdmin()){
+
+return;
+
+}
+
+
+const id=
+getValue("newsId");
+
+
+const existing=
+newsItems.find(
+item=>item.id===id
+);
+
+
+let coverUrl=
+existing?.cover_url||null;
+
+
+const file=
+document
+.querySelector("#newsCover")
+.files[0];
+
+
+if(file){
+
+if(file.size>5*1024*1024){
+
+toast(
+"新闻封面不能超过 5 MB。",
+"error"
+);
+
+return;
+
+}
+
+
+const ext=
+file.name
+.split(".")
+.pop()
+.toLowerCase();
+
+
+const path=
+`covers/${crypto.randomUUID()}.${ext}`;
+
+
+const{
+error:uploadError
+}=
+await supabase
+.storage
+.from("news-images")
+.upload(
+path,
+file
+);
+
+
+if(uploadError){
+
+toast(
+"新闻封面上传失败："+uploadError.message,
+"error"
+);
+
+return;
+
+}
+
+
+const{data}=
+supabase
+.storage
+.from("news-images")
+.getPublicUrl(path);
+
+
+coverUrl=
+data.publicUrl;
+
+}
+
+
+const record={
+
+title:
+getValue("newsTitle")
+.trim(),
+
+category:
+getValue("newsCategory"),
+
+summary:
+getValue("newsSummary")
+.trim(),
+
+content:
+getValue("newsContent")
+.trim(),
+
+cover_url:
+coverUrl
+
+};
+
+
+let error;
+
+
+if(id){
+
+({error}=
+await supabase
+.from("news")
+.update(record)
+.eq("id",id));
+
+}else{
+
+({error}=
+await supabase
+.from("news")
+.insert(record));
+
+}
+
+
+if(error){
+
+toast(
+"保存新闻失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+closeModal("newsModal");
+
+
+toast(
+"新闻已保存。",
+"success"
+);
+
+
+await loadNews();
+
+renderDashboard();
+
+renderNews();
+
+};
+
+
+function viewNews(id){
+
+const item=
+newsItems.find(
+news=>news.id===id
+);
+
+
+if(!item){
+
+return;
+
+}
+
+
+document
+.querySelector("#newsDetail")
+.innerHTML=`
+
+${item.cover_url
+?
+`
+<img
+src="${escapeHtml(item.cover_url)}"
+style="
+width:100%;
+max-height:300px;
+object-fit:cover;
+border-radius:15px;
+margin-bottom:18px
+"
+>
+`
+:
+""
+}
+
+<div class="news-category">
+${escapeHtml(item.category)}
+</div>
+
+<div
+style="
+font-size:24px;
+font-weight:900;
+margin-top:7px;
+line-height:1.45
+"
+>
+${escapeHtml(item.title)}
+</div>
+
+<div class="small">
+${formatDateTime(item.created_at)}
+</div>
+
+<div
+style="
+margin-top:20px;
+font-size:12px;
+line-height:2;
+white-space:pre-wrap
+"
+>
+${escapeHtml(item.content)}
+</div>
+
+`;
+
+
+openModal("newsDetailModal");
+
+}
+
+
+async function deleteNews(id){
+
+if(!canAdmin()){
+
+return;
+
+}
+
+
+if(
+!confirm(
+"确定删除这条新闻吗？"
+)
+){
+
+return;
+
+}
+
+
+const{error}=
+await supabase
+.from("news")
+.delete()
+.eq("id",id);
+
+
+if(error){
+
+toast(
+"删除新闻失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+await loadNews();
+
+renderDashboard();
+
+renderNews();
+
+}
+
+
+document
+.querySelector("#newsGrid")
+.onclick=
+async e=>{
+
+if(e.target.dataset.viewNews){
+
+viewNews(
+e.target.dataset.viewNews
+);
+
+return;
+
+}
+
+
+if(e.target.dataset.editNews){
+
+const item=
+newsItems.find(
+n=>
+n.id===
+e.target.dataset.editNews
+);
+
+
+openNewsModal(item);
+
+return;
+
+}
+
+
+if(e.target.dataset.deleteNews){
+
+await deleteNews(
+e.target.dataset.deleteNews
+);
+
+}
+
+};
+
+
+document
+.querySelector("#newsPreview")
+.onclick=
+e=>{
+
+const target=
+e.target.closest(
+"[data-view-news]"
+);
+
+
+if(target){
+
+viewNews(
+target.dataset.viewNews
+);
+
+}
+
+};
+
+
+function openAnnouncementModal(item=null){
+
+if(!canAdmin()){
+
+return;
+
+}
+
+
+document
+.querySelector("#announcementForm")
+.reset();
+
+
+if(item){
+
+setValue(
+"announcementId",
+item.id
+);
+
+setValue(
+"announcementTitle",
+item.title
+);
+
+setValue(
+"announcementContent",
+item.content
+);
+
+setValue(
+"announcementPinned",
+String(item.pinned)
+);
+
+
+setText(
+"announcementModalTitle",
+"编辑公告"
+);
+
+}else{
+
+setValue(
+"announcementId",
+""
+);
+
+
+setText(
+"announcementModalTitle",
+"发布公告"
+);
+
+}
+
+
+openModal("announcementModal");
+
+}
+
+
+document
+.querySelector("#publishAnnouncementBtn")
+.onclick=
+()=>openAnnouncementModal();
+
+
+document
+.querySelector("#announcementForm")
+.onsubmit=
+async e=>{
+
+e.preventDefault();
+
+
+if(!canAdmin()){
+
+return;
+
+}
+
+
+const id=
+getValue("announcementId");
+
+
+const record={
+
+title:
+getValue("announcementTitle")
+.trim(),
+
+content:
+getValue("announcementContent")
+.trim(),
+
+pinned:
+getValue("announcementPinned")
+==="true"
+
+};
+
+
+let error;
+
+
+if(id){
+
+({error}=
+await supabase
+.from("announcements")
+.update(record)
+.eq("id",id));
+
+}else{
+
+({error}=
+await supabase
+.from("announcements")
+.insert(record));
+
+}
+
+
+if(error){
+
+toast(
+"保存公告失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+closeModal("announcementModal");
+
+
+await loadAnnouncements();
+
+renderDashboard();
+
+
+toast(
+"公告已保存。",
+"success"
+);
+
+};
+
+
+document
+.querySelector("#announcementPreview")
+.onclick=
+async e=>{
+
+const editId=
+e.target.dataset.editAnnouncement;
+
+const deleteId=
+e.target.dataset.deleteAnnouncement;
+
+
+if(editId){
+
+const item=
+announcements.find(
+a=>a.id===editId
+);
+
+
+openAnnouncementModal(item);
+
+return;
+
+}
+
+
+if(deleteId){
+
+if(
+!confirm(
+"确定删除该公告吗？"
+)
+){
+
+return;
+
+}
+
+
+const{error}=
+await supabase
+.from("announcements")
+.delete()
+.eq("id",deleteId);
+
+
+if(error){
+
+toast(
+"删除失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+await loadAnnouncements();
+
+renderDashboard();
+
+}
+
+};
+
+
+async function loadMembers(){
+
+if(!canAdmin()){
+
+return;
+
+}
+
+
+const{
+data,
+error
+}=
+await supabase
+.from("profiles")
+.select(
+"id,email,display_name,role,created_at"
+)
+.order(
+"created_at",
+{ascending:true}
+);
+
+
+if(error){
+
+toast(
+"读取成员失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+document
+.querySelector("#membersList")
+.innerHTML=
+data
+.map(
+member=>{
+
+let right;
+
+
+if(
+canSuperAdmin()
+&&
+member.id!==currentUser.id
+){
+
+right=`
+
+<select
+class="role-select"
+data-user-id="${member.id}"
+data-old-role="${member.role}"
+>
+
+${roleOption(
+"viewer",
+"只读成员",
+member.role
+)}
+
+${roleOption(
+"volunteer",
+"志愿者",
+member.role
+)}
+
+${roleOption(
+"admin",
+"管理员",
+member.role
+)}
+
+${roleOption(
+"super_admin",
+"最高管理员",
+member.role
+)}
+
+</select>
+
+`;
+
+}else{
+
+right=
+roleBadge(member.role);
+
+}
+
+
+return`
+
+<div class="member-row">
+
+<div>
+
+<div class="member-name">
+
+${escapeHtml(
+member.display_name
+||
+member.email
+||
+"未命名成员"
+)}
+
+${member.id===currentUser.id
+?
+"（当前账号）"
+:
+""
+}
+
+</div>
+
+<div class="member-email">
+${escapeHtml(member.email||"")}
+</div>
+
+</div>
+
+<div>
+${right}
+</div>
+
+</div>
+
+`;
+
+}
+)
+.join("");
+
+}
+
+
+document
+.querySelector("#membersList")
+.onchange=
+async e=>{
+
+if(
+!e.target
+.classList
+.contains("role-select")
+){
+
+return;
+
+}
+
+
+const select=e.target;
+
+const userId=
+select.dataset.userId;
+
+const oldRole=
+select.dataset.oldRole;
+
+const newRole=
+select.value;
+
+
+if(
+!confirm(
+`确定修改该成员权限为「${ROLE_INFO[newRole].name}」吗？`
+)
+){
+
+select.value=
+oldRole;
+
+return;
+
+}
+
+
+const{error}=
+await supabase
+.rpc(
+"set_member_role",
+{
+target_user_id:userId,
+new_role:newRole
+}
+);
+
+
+if(error){
+
+select.value=
+oldRole;
+
+
+toast(
+"修改权限失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+toast(
+"成员权限已更新。",
+"success"
+);
+
+
+await loadMembers();
+
+};
+
+
+async function loadLogs(){
+
+if(!canAdmin()){
+
+return;
+
+}
+
+
+const{
+data,
+error
+}=
+await supabase
+.from("audit_logs")
+.select("*")
+.order(
+"created_at",
+{ascending:false}
+)
+.limit(150);
+
+
+if(error){
+
+toast(
+"读取操作记录失败："+error.message,
+"error"
+);
+
+return;
+
+}
+
+
+const el=
+document.querySelector("#logsList");
+
+
+if(!data?.length){
+
+el.innerHTML=
+empty("暂无操作记录");
+
+return;
+
+}
+
+
+el.innerHTML=
+data
+.map(
+item=>{
+
+const info=
+logInfo(item);
+
+
+return`
+
+<div class="log-row">
+
+<div class="log-icon">
+${info.icon}
+</div>
+
+<div>
+
+<div class="log-title">
+${info.title}
+</div>
+
+<div class="log-detail">
+
+${info.detail}
+
+<br>
+
+操作者：
+${escapeHtml(
+item.actor_email||"未知账号"
+)}
+
+<br>
+
+${formatDateTime(item.created_at)}
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}
+)
+.join("");
+
+}
+
+
+document
+.querySelector("#refreshLogs")
+.onclick=
+loadLogs;
+
+
+document
+.querySelector("#animalSearch")
+.oninput=
+renderAnimals;
+
+
+document
+.querySelectorAll(".filter")
+.forEach(
+button=>{
+
+button.onclick=
+()=>{
+
+document
+.querySelectorAll(".filter")
+.forEach(
+b=>
+b.classList.remove("active")
+);
+
+
+button.classList.add("active");
+
+animalFilter=
+button.dataset.filter;
+
+renderAnimals();
+
+};
 
 }
 );
 
 
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
 document
-.querySelector(
-    "#search"
-)
-.addEventListener(
-    "input",
-    renderAnimals
-);
-
-
-
-document
-.querySelectorAll(
-    ".filter"
-)
+.querySelectorAll(".nav button")
 .forEach(
-    button=>{
+button=>{
 
-        button
-        .addEventListener(
-            "click",
-        ()=>{
-
-            document
-            .querySelectorAll(
-                ".filter"
-            )
-            .forEach(
-                item=>
-                    item
-                    .classList
-                    .remove(
-                        "active"
-                    )
-            );
-
-
-            button
-            .classList
-            .add(
-                "active"
-            );
-
-
-            animalFilter =
-                button
-                .dataset
-                .filter;
-
-
-            renderAnimals();
-
-        }
-        );
-
-    }
+button.onclick=
+()=>switchPage(
+button.dataset.page
 );
 
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-document
-.querySelectorAll(
-    ".nav button"
-)
-.forEach(
-    button=>{
-
-        button
-        .addEventListener(
-            "click",
-        ()=>{
-
-            switchPage(
-                button
-                .dataset
-                .page
-            );
-
-        }
-        );
-
-    }
+}
 );
-
 
 
 document
-.querySelectorAll(
-    "[data-go]"
-)
+.querySelectorAll("[data-go]")
 .forEach(
-    button=>{
+button=>{
 
-        button
-        .addEventListener(
-            "click",
-        ()=>{
-
-            switchPage(
-                button
-                .dataset
-                .go
-            );
-
-        }
-        );
-
-    }
+button.onclick=
+()=>switchPage(
+button.dataset.go
 );
 
+}
+);
 
 
 function switchPage(page){
 
-    if(
-        (
-            page ===
-            "members"
+if(
+(
+page==="members"
+||
+page==="logs"
+)
+&&
+!canAdmin()
+){
 
-            ||
-
-            page ===
-            "logs"
-        )
-
-        &&
-
-        !canViewAdminPages()
-    ){
-
-        toast(
-            "当前账号没有访问该页面的权限。",
-            "error"
-        );
-
-        page =
-            "dashboard";
-
-    }
-
-
-    currentPage =
-        page;
-
-
-    const titles = {
-
-        dashboard:
-            "数据总览",
-
-        animals:
-            "动物档案",
-
-        areas:
-            "活动区域",
-
-        members:
-            "成员管理",
-
-        logs:
-            "操作记录"
-
-    };
-
-
-    document
-    .querySelectorAll(
-        ".nav button"
-    )
-    .forEach(
-        button=>{
-
-            button
-            .classList
-            .toggle(
-
-                "active",
-
-                button
-                .dataset
-                .page
-                ===
-                page
-
-            );
-
-        }
-    );
-
-
-    [
-        "dashboard",
-        "animals",
-        "areas",
-        "members",
-        "logs"
-    ]
-    .forEach(
-        name=>{
-
-            document
-            .querySelector(
-                `#${name}Page`
-            )
-            .hidden =
-                name !==
-                page;
-
-        }
-    );
-
-
-    setText(
-        "pageTitle",
-        titles[page]
-    );
-
-
-    if(
-        page ===
-        "members"
-    ){
-
-        loadMembers();
-
-    }
-
-
-    if(
-        page ===
-        "logs"
-    ){
-
-        loadLogs();
-
-    }
+page="dashboard";
 
 }
 
 
+const titles={
 
-/* =========================================================
-   MODALS
-========================================================= */
+dashboard:"数据总览",
 
-document
-.querySelector(
-    "#closeAnimalModal"
-)
-.addEventListener(
-    "click",
-()=>{
+animals:"动物档案",
 
-    closeModal(
-        "animalModal"
-    );
+areas:"活动区域",
 
-}
-);
+news:"校园新闻",
+
+members:"成员管理",
+
+logs:"操作记录"
+
+};
 
 
 document
-.querySelector(
-    "#cancelAnimalBtn"
-)
-.addEventListener(
-    "click",
-()=>{
-
-    closeModal(
-        "animalModal"
-    );
-
-}
-);
-
-
-document
-.querySelector(
-    "#closeDetailModal"
-)
-.addEventListener(
-    "click",
-()=>{
-
-    closeModal(
-        "detailModal"
-    );
-
-}
-);
-
-
-
-document
-.querySelectorAll(
-    ".modal"
-)
+.querySelectorAll(".nav button")
 .forEach(
-    modal=>{
+button=>{
 
-        modal
-        .addEventListener(
-            "click",
-        e=>{
+button.classList.toggle(
+"active",
+button.dataset.page===page
+);
 
-            if(
-                e.target ===
-                modal
-            ){
-
-                closeModal(
-                    modal.id
-                );
-
-            }
-
-        }
-        );
-
-    }
+}
 );
 
 
+[
+"dashboard",
+"animals",
+"areas",
+"news",
+"members",
+"logs"
+]
+.forEach(
+name=>{
 
 document
-.addEventListener(
-    "keydown",
+.querySelector(
+`#${name}Page`
+)
+.hidden=
+name!==page;
+
+}
+);
+
+
+setText(
+"pageTitle",
+titles[page]
+);
+
+
+if(page==="members"){
+
+loadMembers();
+
+}
+
+
+if(page==="logs"){
+
+loadLogs();
+
+}
+
+}
+
+
+document
+.querySelectorAll("[data-close]")
+.forEach(
+button=>{
+
+button.onclick=
+()=>closeModal(
+button.dataset.close
+);
+
+}
+);
+
+
+document
+.querySelectorAll(".modal")
+.forEach(
+modal=>{
+
+modal.onclick=
 e=>{
 
-    if(
-        e.key ===
-        "Escape"
-    ){
+if(e.target===modal){
 
-        closeModal(
-            "animalModal"
-        );
+closeModal(modal.id);
 
-        closeModal(
-            "detailModal"
-        );
+}
 
-    }
+};
 
 }
 );
 
+
+document
+.addEventListener(
+"keydown",
+e=>{
+
+if(e.key==="Escape"){
+
+document
+.querySelectorAll(".modal.open")
+.forEach(
+modal=>
+closeModal(modal.id)
+);
+
+}
+
+}
+);
 
 
 function openModal(id){
 
-    document
-    .querySelector(
-        "#" + id
-    )
-    .classList
-    .add(
-        "open"
-    );
+document
+.querySelector("#"+id)
+.classList.add("open");
 
-
-    document
-    .body
-    .classList
-    .add(
-        "modal-open"
-    );
+document
+.body
+.classList.add("modal-open");
 
 }
-
 
 
 function closeModal(id){
 
-    const el =
-        document
-        .querySelector(
-            "#" + id
-        );
+const el=
+document.querySelector("#"+id);
 
 
-    if(el){
+if(el){
 
-        el
-        .classList
-        .remove(
-            "open"
-        );
-
-    }
-
-
-    const stillOpen =
-
-        document
-        .querySelector(
-            ".modal.open"
-        );
-
-
-    if(!stillOpen){
-
-        document
-        .body
-        .classList
-        .remove(
-            "modal-open"
-        );
-
-    }
+el.classList.remove("open");
 
 }
 
 
+if(
+!document
+.querySelector(".modal.open")
+){
 
-/* =========================================================
-   REALTIME
-========================================================= */
+document
+.body
+.classList.remove("modal-open");
+
+}
+
+}
+
 
 supabase
-.channel(
-    "scmu-animals-realtime"
+.channel("scmu-platform-realtime")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"animals"
+},
+async()=>{
+
+await loadAnimals();
+
+renderAll();
+
+}
 )
 .on(
-    "postgres_changes",
-    {
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"animal_reviews"
+},
+async()=>{
 
-        event:"*",
+await loadReviews();
 
-        schema:"public",
+buildReviewStats();
 
-        table:"animals"
+renderDashboard();
 
-    },
-()=>{
+renderAnimals();
 
-    loadAnimals();
+}
+)
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"news"
+},
+async()=>{
+
+await loadNews();
+
+renderDashboard();
+
+renderNews();
+
+}
+)
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"announcements"
+},
+async()=>{
+
+await loadAnnouncements();
+
+renderDashboard();
+
+}
+)
+.on(
+"postgres_changes",
+{
+event:"UPDATE",
+schema:"public",
+table:"profiles"
+},
+async payload=>{
+
+if(
+payload.new?.id===currentUser?.id
+){
+
+await refreshCurrentProfile();
+
+}
 
 }
 )
 .subscribe();
 
 
+function roleBadge(role){
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function roleBadge(roleName){
-
-    const role =
-        ROLE_INFO[
-            roleName
-        ]
-        ||
-        ROLE_INFO.viewer;
+const info=
+ROLE_INFO[role]
+||
+ROLE_INFO.viewer;
 
 
-    return `
+return`
 
-        <span
-            class="
-                role-pill
-                role-${roleName}
-            "
-        >
+<span
+class="
+role-pill
+role-${role}
+"
+>
+${info.icon}
+${info.name}
+</span>
 
-            ${role.icon}
-
-            ${role.name}
-
-        </span>
-
-    `;
+`;
 
 }
 
+
+function roleOption(
+value,
+label,
+current
+){
+
+return`
+
+<option
+value="${value}"
+${value===current
+?
+"selected"
+:
+""
+}
+>
+${label}
+</option>
+
+`;
+
+}
+
+
+function detailBox(
+label,
+value
+){
+
+return`
+
+<div class="detail-box">
+
+<div class="detail-label">
+${escapeHtml(label)}
+</div>
+
+<div class="detail-value">
+${escapeHtml(value)}
+</div>
+
+</div>
+
+`;
+
+}
+
+
+function logInfo(item){
+
+if(item.action==="INSERT"){
+
+return{
+icon:"＋",
+title:"新增动物档案",
+detail:
+`对象：${escapeHtml(
+item.animal_name
+||
+item.animal_code
+||
+"未命名动物"
+)}`
+};
+
+}
+
+
+if(item.action==="UPDATE"){
+
+return{
+icon:"✎",
+title:"修改动物档案",
+detail:
+`对象：${escapeHtml(
+item.animal_name
+||
+item.animal_code
+||
+"未命名动物"
+)}`
+};
+
+}
+
+
+if(item.action==="DELETE"){
+
+return{
+icon:"−",
+title:"删除动物档案",
+detail:
+`对象：${escapeHtml(
+item.animal_name
+||
+item.animal_code
+||
+"未命名动物"
+)}`
+};
+
+}
+
+
+if(item.action==="ROLE_CHANGE"){
+
+const oldRole=
+ROLE_INFO[
+item.details?.old_role
+]?.name
+||
+item.details?.old_role
+||
+"-";
+
+
+const newRole=
+ROLE_INFO[
+item.details?.new_role
+]?.name
+||
+item.details?.new_role
+||
+"-";
+
+
+return{
+icon:"◆",
+title:"调整成员权限",
+detail:
+`成员：${escapeHtml(
+item.details?.target_email||""
+)} · ${escapeHtml(oldRole)} → ${escapeHtml(newRole)}`
+};
+
+}
+
+
+return{
+icon:"•",
+title:item.action||"操作",
+detail:""
+};
+
+}
 
 
 function sexText(value){
 
-    if(
-        value ===
-        "male"
-    ){
+if(value==="male"){
 
-        return "♂ 公";
-
-    }
-
-
-    if(
-        value ===
-        "female"
-    ){
-
-        return "♀ 母";
-
-    }
-
-
-    return "性别未知";
+return "♂ 公";
 
 }
 
+
+if(value==="female"){
+
+return "♀ 母";
+
+}
+
+
+return "性别未知";
+
+}
 
 
 function getValue(id){
 
-    return (
-        document
-        .querySelector(
-            "#" + id
-        )
-        ?.value
-        ??
-        ""
-    );
+return(
+document
+.querySelector("#"+id)
+?.value
+??
+""
+);
 
 }
-
 
 
 function setValue(
-    id,
-    value
+id,
+value
 ){
 
-    const el =
-        document
-        .querySelector(
-            "#" + id
-        );
+const el=
+document.querySelector("#"+id);
 
 
-    if(el){
+if(el){
 
-        el.value =
-            value
-            ??
-            "";
-
-    }
+el.value=
+value??"";
 
 }
 
+}
 
 
 function setText(
-    id,
-    value
+id,
+value
 ){
 
-    const el =
-        document
-        .querySelector(
-            "#" + id
-        );
+const el=
+document.querySelector("#"+id);
 
 
-    if(el){
+if(el){
 
-        el.textContent =
-            value
-            ??
-            "";
+el.textContent=
+value??"";
 
-    }
+}
 
 }
 
 
+function empty(text){
 
-function formatDate(value){
-
-    if(!value){
-
-        return "";
-
-    }
-
-
-    return new Date(
-        value
-    )
-    .toLocaleDateString(
-        "zh-CN"
-    );
+return`
+<div class="empty">
+${escapeHtml(text)}
+</div>
+`;
 
 }
 
+
+function truncate(
+text,
+count
+){
+
+const value=
+String(text||"");
+
+
+if(value.length<=count){
+
+return value;
+
+}
+
+
+return(
+value.slice(0,count)
++
+"…"
+);
+
+}
 
 
 function formatDateTime(value){
 
-    if(!value){
+if(!value){
 
-        return "";
-
-    }
-
-
-    return new Date(
-        value
-    )
-    .toLocaleString(
-        "zh-CN",
-        {
-
-            year:"numeric",
-
-            month:"2-digit",
-
-            day:"2-digit",
-
-            hour:"2-digit",
-
-            minute:"2-digit"
-
-        }
-    );
+return "";
 
 }
 
+
+return new Date(value)
+.toLocaleString(
+"zh-CN",
+{
+year:"numeric",
+month:"2-digit",
+day:"2-digit",
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+}
 
 
 function escapeHtml(value){
 
-    return String(
-        value
-        ??
-        ""
-    )
-
-    .replaceAll(
-        "&",
-        "&amp;"
-    )
-
-    .replaceAll(
-        "<",
-        "&lt;"
-    )
-
-    .replaceAll(
-        ">",
-        "&gt;"
-    )
-
-    .replaceAll(
-        '"',
-        "&quot;"
-    )
-
-    .replaceAll(
-        "'",
-        "&#039;"
-    );
+return String(value??"")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 
 }
-
-
-
-function showLoginMessage(message){
-
-    setText(
-        "loginMessage",
-        message
-    );
-
-}
-
-
-
-function translateAuthError(message){
-
-    const text =
-        String(
-            message
-            ||
-            ""
-        );
-
-
-    if(
-        text
-        .toLowerCase()
-        .includes(
-            "invalid login credentials"
-        )
-    ){
-
-        return "邮箱或密码错误。";
-
-    }
-
-
-    if(
-        text
-        .toLowerCase()
-        .includes(
-            "user already registered"
-        )
-    ){
-
-        return "该邮箱已经注册，请直接登录。";
-
-    }
-
-
-    if(
-        text
-        .toLowerCase()
-        .includes(
-            "password"
-        )
-    ){
-
-        return "密码不符合要求，请至少使用 6 位字符。";
-
-    }
-
-
-    return text;
-
-}
-
 
 
 function toast(
-    message,
-    type=""
+message,
+type=""
 ){
 
-    const container =
-        document
-        .querySelector(
-            "#toastContainer"
-        );
+const el=
+document.createElement("div");
+
+el.className=
+`toast ${type}`;
+
+el.textContent=
+message;
+
+document
+.querySelector("#toastContainer")
+.appendChild(el);
 
 
-    const el =
-        document
-        .createElement(
-            "div"
-        );
+setTimeout(
+()=>el.remove(),
+3500
+);
+
+}
 
 
-    el.className =
-        `toast ${type}`;
+function showLoginMessage(text){
+
+setText(
+"loginMessage",
+text
+);
+
+}
 
 
-    el.textContent =
-        message;
+function authError(message){
+
+const text=
+String(message||"");
 
 
-    container
-    .appendChild(
-        el
-    );
+if(
+text
+.toLowerCase()
+.includes(
+"invalid login credentials"
+)
+){
+
+return "邮箱或密码错误。";
+
+}
 
 
-    setTimeout(
-        ()=>{
+if(
+text
+.toLowerCase()
+.includes(
+"already registered"
+)
+){
 
-            el.remove();
+return "该邮箱已经注册，请直接登录。";
 
-        },
-        3500
-    );
+}
+
+
+return text;
 
 }
 
