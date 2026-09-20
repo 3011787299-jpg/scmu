@@ -1,0 +1,2490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中南民族大学流浪动物管理平台</title>
+
+<style>
+:root{
+    --green:#08734f;
+    --green-dark:#07583e;
+    --green-light:#e9f5f0;
+    --green-bg:#f5f9f7;
+    --white:#fff;
+    --text:#1d3029;
+    --muted:#728078;
+    --border:#dce7e1;
+    --danger:#c94b4b;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:var(--green-bg);
+    color:var(--text);
+    font-family:
+      "PingFang SC",
+      "Microsoft YaHei",
+      Arial,
+      sans-serif;
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* ================= LOGIN ================= */
+
+.login-screen{
+    position:fixed;
+    inset:0;
+    background:
+      linear-gradient(
+        135deg,
+        #07583e,
+        #09845a
+      );
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.login-card{
+    width:min(410px,90vw);
+    background:white;
+    padding:36px;
+    border-radius:22px;
+    box-shadow:0 20px 60px rgba(0,0,0,.2);
+}
+
+.login-logo{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:var(--green-light);
+    color:var(--green);
+    display:grid;
+    place-items:center;
+    margin:auto;
+    font-size:35px;
+}
+
+.login-card h1{
+    margin:18px 0 6px;
+    text-align:center;
+    font-size:22px;
+}
+
+.login-card .school{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:25px;
+}
+
+.login-card input{
+    width:100%;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    margin-bottom:10px;
+    outline:none;
+}
+
+.login-card input:focus{
+    border-color:var(--green);
+}
+
+.login-actions{
+    display:grid;
+    gap:10px;
+}
+
+.login-message{
+    min-height:18px;
+    color:var(--danger);
+    text-align:center;
+    margin-top:12px;
+    font-size:13px;
+}
+
+/* ================= LAYOUT ================= */
+
+.app{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:245px 1fr;
+}
+
+.sidebar{
+    background:var(--green);
+    color:white;
+    padding:25px 16px;
+}
+
+.brand{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    padding:0 8px 28px;
+}
+
+.brand-logo{
+    width:47px;
+    height:47px;
+    background:white;
+    color:var(--green);
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    font-size:24px;
+}
+
+.brand-name{
+    font-weight:700;
+}
+
+.brand-sub{
+    opacity:.7;
+    font-size:11px;
+    margin-top:4px;
+}
+
+.nav button{
+    display:block;
+    width:100%;
+    text-align:left;
+    border:0;
+    border-radius:10px;
+    background:transparent;
+    color:white;
+    padding:13px 15px;
+    margin-bottom:5px;
+    opacity:.82;
+}
+
+.nav button:hover,
+.nav button.active{
+    background:rgba(255,255,255,.15);
+    opacity:1;
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    padding:28px 34px;
+}
+
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:26px;
+}
+
+.page-title{
+    font-size:25px;
+    font-weight:700;
+}
+
+.page-subtitle{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:5px;
+}
+
+.top-actions{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    border:0;
+    border-radius:9px;
+    padding:10px 15px;
+}
+
+.btn-primary{
+    background:var(--green);
+    color:white;
+}
+
+.btn-primary:hover{
+    background:var(--green-dark);
+}
+
+.btn-secondary{
+    background:white;
+    border:1px solid var(--border);
+    color:var(--text);
+}
+
+.btn-danger{
+    color:var(--danger);
+}
+
+/* ================= STATS ================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+}
+
+.stat{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:19px;
+}
+
+.stat-value{
+    color:var(--green);
+    font-size:29px;
+    font-weight:700;
+}
+
+.stat-label{
+    color:var(--muted);
+    margin-top:6px;
+    font-size:13px;
+}
+
+.panel{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:15px;
+    margin-top:18px;
+    padding:20px;
+}
+
+.panel-title{
+    font-size:16px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+/* ================= ANIMALS ================= */
+
+.toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+.search{
+    min-width:220px;
+    flex:1;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:10px 12px;
+}
+
+.filter{
+    border:1px solid var(--border);
+    background:white;
+    border-radius:9px;
+    padding:9px 14px;
+}
+
+.filter.active{
+    background:var(--green);
+    border-color:var(--green);
+    color:white;
+}
+
+.animals-grid{
+    display:grid;
+    grid-template-columns:
+      repeat(auto-fill,minmax(240px,1fr));
+    gap:17px;
+}
+
+.animal-card{
+    overflow:hidden;
+    border-radius:15px;
+    border:1px solid var(--border);
+    background:white;
+    transition:.2s;
+}
+
+.animal-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 26px rgba(0,70,45,.08);
+}
+
+.photo{
+    height:175px;
+    display:grid;
+    place-items:center;
+    background:var(--green-light);
+    font-size:65px;
+}
+
+.photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:15px;
+}
+
+.card-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card-name{
+    font-size:18px;
+    font-weight:700;
+}
+
+.tag{
+    padding:4px 9px;
+    border-radius:20px;
+    color:var(--green);
+    background:var(--green-light);
+    font-size:11px;
+}
+
+.meta{
+    margin-top:11px;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.8;
+}
+
+.card-actions{
+    display:flex;
+    gap:7px;
+    margin-top:13px;
+}
+
+.card-actions button{
+    flex:1;
+    background:white;
+    border:1px solid var(--border);
+    padding:8px;
+    border-radius:8px;
+}
+
+/* ================= LIST ================= */
+
+.list-row{
+    padding:13px 2px;
+    border-bottom:1px solid var(--border);
+}
+
+.list-row:last-child{
+    border:0;
+}
+
+.small{
+    color:var(--muted);
+    margin-top:4px;
+    font-size:12px;
+}
+
+.empty{
+    text-align:center;
+    padding:40px 10px;
+    color:var(--muted);
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(14,38,28,.5);
+    z-index:500;
+}
+
+.modal-card{
+    width:min(720px,92vw);
+    max-height:90vh;
+    overflow:auto;
+    padding:25px;
+    background:white;
+    border-radius:17px;
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.modal-title{
+    font-size:20px;
+    font-weight:700;
+}
+
+.close{
+    border:0;
+    background:none;
+    font-size:27px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+.field label{
+    font-size:13px;
+    color:var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea{
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px;
+    outline:none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+    border-color:var(--green);
+}
+
+textarea{
+    resize:vertical;
+    min-height:90px;
+}
+
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:9px;
+    margin-top:20px;
+}
+
+@media(max-width:900px){
+
+    .app{
+        display:block;
+    }
+
+    .sidebar{
+        padding:14px;
+    }
+
+    .brand{
+        padding-bottom:15px;
+    }
+
+    .nav{
+        display:flex;
+        overflow:auto;
+    }
+
+    .nav button{
+        width:auto;
+        white-space:nowrap;
+    }
+
+    .main{
+        padding:20px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:550px){
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+        grid-column:auto;
+    }
+
+    .topbar{
+        align-items:flex-start;
+    }
+
+    .top-actions{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="loginScreen" class="login-screen">
+
+<div class="login-card">
+
+    <div class="login-logo">🐾</div>
+
+    <h1>流浪动物管理平台</h1>
+
+    <div class="school">
+        中南民族大学 · 校园流浪动物档案
+    </div>
+
+    <input
+        id="email"
+        type="email"
+        placeholder="邮箱"
+    >
+
+    <input
+        id="password"
+        type="password"
+        placeholder="密码（至少6位）"
+    >
+
+    <div class="login-actions">
+
+        <button
+            id="loginBtn"
+            class="btn btn-primary"
+        >
+            登录
+        </button>
+
+        <button
+            id="registerBtn"
+            class="btn btn-secondary"
+        >
+            注册账号
+        </button>
+
+    </div>
+
+    <div
+        id="loginMessage"
+        class="login-message"
+    ></div>
+
+</div>
+
+</div>
+
+
+<div class="app">
+
+<aside class="sidebar">
+
+<div class="brand">
+
+    <div class="brand-logo">
+        🐾
+    </div>
+
+    <div>
+        <div class="brand-name">
+            流浪动物管理平台
+        </div>
+
+        <div class="brand-sub">
+            SOUTH-CENTRAL MINZU UNIVERSITY
+        </div>
+    </div>
+
+</div>
+
+
+<div class="nav">
+
+    <button
+        class="active"
+        data-page="dashboard"
+    >
+        ◉ 数据总览
+    </button>
+
+    <button data-page="animals">
+        🐾 动物档案
+    </button>
+
+    <button data-page="areas">
+        ◉ 活动区域
+    </button>
+
+    <button data-page="members">
+        ♙ 协作成员
+    </button>
+
+    <button data-page="logs">
+        ≡ 操作记录
+    </button>
+
+</div>
+
+</aside>
+
+
+<main class="main">
+
+<div class="topbar">
+
+    <div>
+
+        <div
+            id="pageTitle"
+            class="page-title"
+        >
+            数据总览
+        </div>
+
+        <div class="page-subtitle">
+            校园流浪动物建档与共享管理
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <button
+            id="addBtn"
+            class="btn btn-primary"
+        >
+            ＋ 新建档案
+        </button>
+
+        <button
+            id="logoutBtn"
+            class="btn btn-secondary"
+        >
+            退出
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- Dashboard -->
+
+<section id="dashboardPage">
+
+<div class="stats">
+
+    <div class="stat">
+        <div id="totalCount" class="stat-value">0</div>
+        <div class="stat-label">动物档案</div>
+    </div>
+
+    <div class="stat">
+        <div id="catCount" class="stat-value">0</div>
+        <div class="stat-label">猫咪</div>
+    </div>
+
+    <div class="stat">
+        <div id="dogCount" class="stat-value">0</div>
+        <div class="stat-label">狗狗</div>
+    </div>
+
+    <div class="stat">
+        <div id="neuterCount" class="stat-value">0</div>
+        <div class="stat-label">待绝育</div>
+    </div>
+
+    <div class="stat">
+        <div id="recentCount" class="stat-value">0</div>
+        <div class="stat-label">近7日更新</div>
+    </div>
+
+</div>
+
+
+<div class="panel">
+
+    <div class="panel-title">
+        最近更新
+    </div>
+
+    <div id="recentList"></div>
+
+</div>
+
+</section>
+
+
+<!-- Animals -->
+
+<section id="animalsPage" hidden>
+
+<div class="toolbar">
+
+    <input
+        id="search"
+        class="search"
+        placeholder="搜索编号、名字、毛色、活动区域..."
+    >
+
+    <button
+        class="filter active"
+        data-filter="all"
+    >
+        全部
+    </button>
+
+    <button
+        class="filter"
+        data-filter="cat"
+    >
+        🐱 猫
+    </button>
+
+    <button
+        class="filter"
+        data-filter="dog"
+    >
+        🐶 狗
+    </button>
+
+</div>
+
+<div
+    id="animalGrid"
+    class="animals-grid"
+></div>
+
+</section>
+
+
+<!-- Areas -->
+
+<section id="areasPage" hidden>
+
+<div class="panel">
+
+    <div class="panel-title">
+        校园活动区域
+    </div>
+
+    <div id="areaList"></div>
+
+</div>
+
+</section>
+
+
+<!-- Members -->
+
+<section id="membersPage" hidden>
+
+<div class="panel">
+
+    <div class="panel-title">
+        当前协作账号
+    </div>
+
+    <div id="memberInfo"></div>
+
+    <div class="small">
+        所有登录成员共享同一套动物档案数据。
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- Logs -->
+
+<section id="logsPage" hidden>
+
+<div class="panel">
+
+    <div class="panel-title">
+        最近操作记录
+    </div>
+
+    <div id="logList"></div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+
+<!-- Animal Form -->
+
+<div id="modal" class="modal">
+
+<div class="modal-card">
+
+<div class="modal-head">
+
+    <div
+        id="modalTitle"
+        class="modal-title"
+    >
+        新建动物档案
+    </div>
+
+    <button
+        id="closeModal"
+        class="close"
+    >
+        ×
+    </button>
+
+</div>
+
+
+<form id="animalForm">
+
+<input id="animalId" type="hidden">
+
+<div class="form-grid">
+
+<div class="field">
+    <label>档案编号 *</label>
+    <input
+        id="code"
+        required
+        placeholder="CAT-001"
+    >
+</div>
+
+<div class="field">
+    <label>名字 / 昵称</label>
+    <input
+        id="name"
+        placeholder="例如 小橘"
+    >
+</div>
+
+<div class="field">
+
+    <label>分类 *</label>
+
+    <select id="species">
+        <option value="cat">猫</option>
+        <option value="dog">狗</option>
+    </select>
+
+</div>
+
+
+<div class="field">
+
+    <label>性别</label>
+
+    <select id="sex">
+        <option value="unknown">未知</option>
+        <option value="male">公</option>
+        <option value="female">母</option>
+    </select>
+
+</div>
+
+
+<div class="field">
+    <label>毛色</label>
+    <input id="color">
+</div>
+
+
+<div class="field">
+    <label>年龄估计</label>
+    <input
+        id="age"
+        placeholder="例如 约2岁"
+    >
+</div>
+
+
+<div class="field">
+
+    <label>绝育情况</label>
+
+    <select id="neutered">
+        <option value="false">
+            未绝育 / 未知
+        </option>
+
+        <option value="true">
+            已绝育
+        </option>
+    </select>
+
+</div>
+
+
+<div class="field">
+
+    <label>疫苗情况</label>
+
+    <select id="vaccination">
+        <option>未知</option>
+        <option>未接种</option>
+        <option>部分接种</option>
+        <option>已接种</option>
+    </select>
+
+</div>
+
+
+<div class="field full">
+
+    <label>健康情况</label>
+
+    <input
+        id="health"
+        placeholder="健康、受伤、治疗中..."
+    >
+
+</div>
+
+
+<div class="field">
+
+    <label>活动区域</label>
+
+    <input
+        id="area"
+        placeholder="例如 北区食堂"
+    >
+
+</div>
+
+
+<div class="field">
+
+    <label>首次发现日期</label>
+
+    <input
+        id="foundAt"
+        type="date"
+    >
+
+</div>
+
+
+<div class="field full">
+
+    <label>照片</label>
+
+    <input
+        id="photo"
+        type="file"
+        accept="image/*"
+    >
+
+</div>
+
+
+<div class="field full">
+
+    <label>备注</label>
+
+    <textarea
+        id="notes"
+        placeholder="性格、喂养、救助情况等"
+    ></textarea>
+
+</div>
+
+</div>
+
+
+<div class="modal-footer">
+
+    <button
+        type="button"
+        id="cancelBtn"
+        class="btn btn-secondary"
+    >
+        取消
+    </button>
+
+    <button
+        type="submit"
+        class="btn btn-primary"
+    >
+        保存档案
+    </button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    createClient
+}
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+/* ==================================
+   Supabase
+================================== */
+
+const SUPABASE_URL =
+"https://ntjqwquhbmrcdbgmnhkm.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_oypAZwh1XxKKHjT2XG1DGA_37Yr9iX0";
+
+
+const supabase =
+createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* ==================================
+   State
+================================== */
+
+let animals=[];
+let filter="all";
+
+
+/* ==================================
+   Auth
+================================== */
+
+const {
+    data:{session}
+} =
+await supabase.auth.getSession();
+
+
+if(session){
+
+    showApp(session.user);
+
+}else{
+
+    showLogin();
+
+}
+
+
+supabase.auth.onAuthStateChange(
+(event,session)=>{
+
+    if(session){
+
+        showApp(session.user);
+
+    }else{
+
+        showLogin();
+
+    }
+
+});
+
+
+document.querySelector("#loginBtn")
+.onclick =
+async()=>{
+
+    const email =
+    document.querySelector("#email").value.trim();
+
+    const password =
+    document.querySelector("#password").value;
+
+
+    const {error} =
+    await supabase.auth.signInWithPassword({
+        email,
+        password
+    });
+
+
+    showMessage(
+        error
+        ?
+        error.message
+        :
+        ""
+    );
+
+};
+
+
+document.querySelector("#registerBtn")
+.onclick =
+async()=>{
+
+    const email =
+    document.querySelector("#email").value.trim();
+
+    const password =
+    document.querySelector("#password").value;
+
+
+    if(password.length<6){
+
+        showMessage(
+            "密码至少需要6位"
+        );
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    } =
+    await supabase.auth.signUp({
+        email,
+        password
+    });
+
+
+    if(error){
+
+        showMessage(
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    if(data.session){
+
+        showMessage("");
+
+    }else{
+
+        showMessage(
+            "注册成功，请尝试登录。"
+        );
+
+    }
+
+};
+
+
+document.querySelector("#logoutBtn")
+.onclick =
+async()=>{
+
+    await supabase.auth.signOut();
+
+};
+
+
+function showLogin(){
+
+    document.querySelector(
+        "#loginScreen"
+    ).style.display="flex";
+
+}
+
+
+async function showApp(user){
+
+    document.querySelector(
+        "#loginScreen"
+    ).style.display="none";
+
+
+    document.querySelector(
+        "#memberInfo"
+    ).innerHTML =
+    `
+    <div class="list-row">
+        <strong>
+            ${escapeHtml(user.email || "")}
+        </strong>
+        <div class="small">
+            已登录 · 可查看和维护共享动物档案
+        </div>
+    </div>
+    `;
+
+
+    await loadAnimals();
+
+}
+
+
+function showMessage(msg){
+
+    document.querySelector(
+        "#loginMessage"
+    ).textContent=msg;
+
+}
+
+
+/* ==================================
+   Animals
+================================== */
+
+async function loadAnimals(){
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+    .from("animals")
+    .select("*")
+    .order(
+        "updated_at",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "读取动物档案失败："
+            +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    animals=data || [];
+
+    renderEverything();
+
+}
+
+
+/* ==================================
+   Dashboard
+================================== */
+
+function renderDashboard(){
+
+    const cats =
+    animals.filter(
+        a=>a.species==="cat"
+    );
+
+    const dogs =
+    animals.filter(
+        a=>a.species==="dog"
+    );
+
+    const unNeutered =
+    animals.filter(
+        a=>!a.neutered
+    );
+
+
+    const weekAgo =
+    Date.now()
+    -
+    7*86400000;
+
+
+    const recent =
+    animals.filter(
+        a=>
+        new Date(
+            a.updated_at
+        ).getTime()
+        >=
+        weekAgo
+    );
+
+
+    setText(
+        "totalCount",
+        animals.length
+    );
+
+    setText(
+        "catCount",
+        cats.length
+    );
+
+    setText(
+        "dogCount",
+        dogs.length
+    );
+
+    setText(
+        "neuterCount",
+        unNeutered.length
+    );
+
+    setText(
+        "recentCount",
+        recent.length
+    );
+
+
+    const container =
+    document.querySelector(
+        "#recentList"
+    );
+
+
+    if(!animals.length){
+
+        container.innerHTML=
+        `
+        <div class="empty">
+            还没有动物档案
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+    animals
+    .slice(0,6)
+    .map(
+        a=>`
+        <div class="list-row">
+
+            ${
+                a.species==="cat"
+                ?
+                "🐱"
+                :
+                "🐶"
+            }
+
+            <strong>
+                ${escapeHtml(
+                    a.name || "未命名"
+                )}
+            </strong>
+
+            ·
+            ${escapeHtml(a.code)}
+
+            <div class="small">
+
+                ${
+                    escapeHtml(
+                        a.activity_area
+                        ||
+                        "活动区域未知"
+                    )
+                }
+
+                ·
+
+                ${
+                    formatDate(
+                        a.updated_at
+                    )
+                }
+
+            </div>
+
+        </div>
+        `
+    )
+    .join("");
+
+}
+
+
+/* ==================================
+   Cards
+================================== */
+
+function renderAnimals(){
+
+    const query =
+    document.querySelector(
+        "#search"
+    )
+    .value
+    .trim()
+    .toLowerCase();
+
+
+    const data =
+    animals.filter(a=>{
+
+        const filterOK =
+        filter==="all"
+        ||
+        a.species===filter;
+
+
+        const text =
+        [
+            a.code,
+            a.name,
+            a.color,
+            a.activity_area
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+
+        return (
+            filterOK
+            &&
+            text.includes(query)
+        );
+
+    });
+
+
+    const grid =
+    document.querySelector(
+        "#animalGrid"
+    );
+
+
+    if(!data.length){
+
+        grid.innerHTML=
+        `
+        <div class="empty">
+            暂无符合条件的动物档案
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    grid.innerHTML =
+    data.map(
+        a=>`
+        <article class="animal-card">
+
+            <div class="photo">
+
+            ${
+                a.photo_url
+                ?
+                `<img
+                    src="${escapeHtml(a.photo_url)}"
+                    alt=""
+                 >`
+                :
+                (
+                    a.species==="cat"
+                    ?
+                    "🐱"
+                    :
+                    "🐶"
+                )
+            }
+
+            </div>
+
+            <div class="card-content">
+
+                <div class="card-title">
+
+                    <div class="card-name">
+                        ${
+                            escapeHtml(
+                                a.name || "未命名"
+                            )
+                        }
+                    </div>
+
+                    <span class="tag">
+
+                        ${
+                            a.species==="cat"
+                            ?
+                            "猫"
+                            :
+                            "狗"
+                        }
+
+                    </span>
+
+                </div>
+
+
+                <div class="meta">
+
+                    编号：
+                    ${escapeHtml(a.code)}
+
+                    <br>
+
+                    性别：
+                    ${sexText(a.sex)}
+
+                    ·
+
+                    ${
+                        escapeHtml(
+                            a.color || "毛色未知"
+                        )
+                    }
+
+                    <br>
+
+                    ${
+                        a.neutered
+                        ?
+                        "✓ 已绝育"
+                        :
+                        "○ 未绝育 / 未知"
+                    }
+
+                    <br>
+
+                    📍
+                    ${
+                        escapeHtml(
+                            a.activity_area
+                            ||
+                            "活动区域未知"
+                        )
+                    }
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <button
+                        data-edit="${a.id}"
+                    >
+                        编辑
+                    </button>
+
+                    <button
+                        class="btn-danger"
+                        data-delete="${a.id}"
+                    >
+                        删除
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+        `
+    )
+    .join("");
+
+}
+
+
+/* ==================================
+   Areas
+================================== */
+
+function renderAreas(){
+
+    const counts={};
+
+
+    animals.forEach(a=>{
+
+        const area =
+        a.activity_area
+        ||
+        "区域未知";
+
+
+        counts[area] =
+        (counts[area] || 0)
+        +
+        1;
+
+    });
+
+
+    const items =
+    Object.entries(counts)
+    .sort(
+        (a,b)=>b[1]-a[1]
+    );
+
+
+    const el =
+    document.querySelector(
+        "#areaList"
+    );
+
+
+    if(!items.length){
+
+        el.innerHTML=
+        `
+        <div class="empty">
+            暂无活动区域记录
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    el.innerHTML =
+    items.map(
+        ([area,count])=>`
+        <div class="list-row">
+
+            📍
+            <strong>
+                ${escapeHtml(area)}
+            </strong>
+
+            <div class="small">
+                已记录 ${count} 只动物
+            </div>
+
+        </div>
+        `
+    )
+    .join("");
+
+}
+
+
+/* ==================================
+   Logs
+================================== */
+
+async function loadLogs(){
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+    .from("audit_logs")
+    .select("*")
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    )
+    .limit(100);
+
+
+    if(error){
+
+        console.error(error);
+        return;
+
+    }
+
+
+    const el =
+    document.querySelector(
+        "#logList"
+    );
+
+
+    if(!data?.length){
+
+        el.innerHTML=
+        `
+        <div class="empty">
+            暂无操作记录
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    const map={
+        INSERT:"新增档案",
+        UPDATE:"修改档案",
+        DELETE:"删除档案"
+    };
+
+
+    el.innerHTML =
+    data.map(
+        item=>`
+        <div class="list-row">
+
+            <strong>
+                ${
+                    map[item.action]
+                    ||
+                    item.action
+                }
+            </strong>
+
+            ·
+
+            ${
+                escapeHtml(
+                    item.animal_name
+                    ||
+                    item.animal_code
+                    ||
+                    "未命名动物"
+                )
+            }
+
+            <div class="small">
+                ${
+                    formatDateTime(
+                        item.created_at
+                    )
+                }
+            </div>
+
+        </div>
+        `
+    )
+    .join("");
+
+}
+
+
+/* ==================================
+   Modal
+================================== */
+
+const modal =
+document.querySelector(
+    "#modal"
+);
+
+
+document.querySelector(
+    "#addBtn"
+).onclick =
+()=>{
+
+    document.querySelector(
+        "#animalForm"
+    ).reset();
+
+    value(
+        "animalId",
+        ""
+    );
+
+    document.querySelector(
+        "#modalTitle"
+    ).textContent=
+    "新建动物档案";
+
+    modal.style.display=
+    "flex";
+
+};
+
+
+document.querySelector(
+    "#closeModal"
+).onclick=
+closeModal;
+
+
+document.querySelector(
+    "#cancelBtn"
+).onclick=
+closeModal;
+
+
+function closeModal(){
+
+    modal.style.display=
+    "none";
+
+}
+
+
+/* ==================================
+   Edit / Delete
+================================== */
+
+document.querySelector(
+    "#animalGrid"
+)
+.addEventListener(
+"click",
+async e=>{
+
+    const editId =
+    e.target.dataset.edit;
+
+    const deleteId =
+    e.target.dataset.delete;
+
+
+    if(editId){
+
+        openEdit(editId);
+
+    }
+
+
+    if(deleteId){
+
+        await removeAnimal(
+            deleteId
+        );
+
+    }
+
+});
+
+
+function openEdit(id){
+
+    const a =
+    animals.find(
+        item=>item.id===id
+    );
+
+    if(!a)return;
+
+
+    value(
+        "animalId",
+        a.id
+    );
+
+    value(
+        "code",
+        a.code
+    );
+
+    value(
+        "name",
+        a.name || ""
+    );
+
+    value(
+        "species",
+        a.species
+    );
+
+    value(
+        "sex",
+        a.sex
+    );
+
+    value(
+        "color",
+        a.color || ""
+    );
+
+    value(
+        "age",
+        a.age_estimate || ""
+    );
+
+    value(
+        "neutered",
+        String(a.neutered)
+    );
+
+    value(
+        "vaccination",
+        a.vaccination
+    );
+
+    value(
+        "health",
+        a.health || ""
+    );
+
+    value(
+        "area",
+        a.activity_area || ""
+    );
+
+    value(
+        "foundAt",
+        a.found_at || ""
+    );
+
+    value(
+        "notes",
+        a.notes || ""
+    );
+
+
+    document.querySelector(
+        "#modalTitle"
+    ).textContent=
+    "编辑动物档案";
+
+
+    modal.style.display=
+    "flex";
+
+}
+
+
+async function removeAnimal(id){
+
+    const a =
+    animals.find(
+        item=>item.id===id
+    );
+
+
+    const ok =
+    confirm(
+        `确定删除 ${
+            a?.name || a?.code || "该动物"
+        } 的档案吗？`
+    );
+
+
+    if(!ok)return;
+
+
+    const {
+        error
+    } =
+    await supabase
+    .from("animals")
+    .delete()
+    .eq(
+        "id",
+        id
+    );
+
+
+    if(error){
+
+        alert(
+            "删除失败："
+            +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    await loadAnimals();
+
+}
+
+
+/* ==================================
+   Save
+================================== */
+
+document.querySelector(
+    "#animalForm"
+)
+.addEventListener(
+"submit",
+async e=>{
+
+    e.preventDefault();
+
+
+    const id =
+    getValue(
+        "animalId"
+    );
+
+
+    const existing =
+    animals.find(
+        a=>a.id===id
+    );
+
+
+    let photoUrl =
+    existing?.photo_url
+    ||
+    null;
+
+
+    const file =
+    document.querySelector(
+        "#photo"
+    ).files[0];
+
+
+    if(file){
+
+        const ext =
+        file.name
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+
+        const filename =
+        `${crypto.randomUUID()}.${ext}`;
+
+
+        const {
+            error
+        } =
+        await supabase.storage
+        .from("animal-photos")
+        .upload(
+            filename,
+            file
+        );
+
+
+        if(error){
+
+            alert(
+                "照片上传失败："
+                +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        const {data} =
+        supabase.storage
+        .from("animal-photos")
+        .getPublicUrl(
+            filename
+        );
+
+
+        photoUrl =
+        data.publicUrl;
+
+    }
+
+
+    const record={
+
+        code:
+        getValue("code").trim(),
+
+        name:
+        getValue("name").trim(),
+
+        species:
+        getValue("species"),
+
+        sex:
+        getValue("sex"),
+
+        color:
+        getValue("color").trim(),
+
+        age_estimate:
+        getValue("age").trim(),
+
+        neutered:
+        getValue("neutered")
+        ===
+        "true",
+
+        vaccination:
+        getValue("vaccination"),
+
+        health:
+        getValue("health").trim(),
+
+        activity_area:
+        getValue("area").trim(),
+
+        found_at:
+        getValue("foundAt")
+        ||
+        null,
+
+        photo_url:
+        photoUrl,
+
+        notes:
+        getValue("notes").trim()
+
+    };
+
+
+    let error;
+
+
+    if(id){
+
+        ({
+            error
+        } =
+        await supabase
+        .from("animals")
+        .update(record)
+        .eq(
+            "id",
+            id
+        ));
+
+    }else{
+
+        ({
+            error
+        } =
+        await supabase
+        .from("animals")
+        .insert(record));
+
+    }
+
+
+    if(error){
+
+        alert(
+            "保存失败："
+            +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    closeModal();
+
+    await loadAnimals();
+
+});
+
+
+/* ==================================
+   Search / filter
+================================== */
+
+document.querySelector(
+    "#search"
+)
+.addEventListener(
+    "input",
+    renderAnimals
+);
+
+
+document.querySelectorAll(
+    ".filter"
+)
+.forEach(button=>{
+
+    button.onclick=()=>{
+
+        document
+        .querySelectorAll(
+            ".filter"
+        )
+        .forEach(
+            b=>
+            b.classList.remove(
+                "active"
+            )
+        );
+
+
+        button.classList.add(
+            "active"
+        );
+
+
+        filter =
+        button.dataset.filter;
+
+
+        renderAnimals();
+
+    };
+
+});
+
+
+/* ==================================
+   Navigation
+================================== */
+
+document.querySelectorAll(
+    ".nav button"
+)
+.forEach(button=>{
+
+button.onclick=()=>{
+
+    document
+    .querySelectorAll(
+        ".nav button"
+    )
+    .forEach(
+        b=>
+        b.classList.remove(
+            "active"
+        )
+    );
+
+
+    button.classList.add(
+        "active"
+    );
+
+
+    const page =
+    button.dataset.page;
+
+
+    const titles={
+
+        dashboard:
+        "数据总览",
+
+        animals:
+        "动物档案",
+
+        areas:
+        "活动区域",
+
+        members:
+        "协作成员",
+
+        logs:
+        "操作记录"
+
+    };
+
+
+    document.querySelector(
+        "#pageTitle"
+    ).textContent=
+    titles[page];
+
+
+    [
+        "dashboard",
+        "animals",
+        "areas",
+        "members",
+        "logs"
+    ]
+    .forEach(name=>{
+
+        document.querySelector(
+            `#${name}Page`
+        ).hidden=
+        name!==page;
+
+    });
+
+
+    if(page==="logs"){
+
+        loadLogs();
+
+    }
+
+};
+
+});
+
+
+/* ==================================
+   Realtime
+================================== */
+
+supabase
+.channel(
+    "animals-realtime"
+)
+.on(
+    "postgres_changes",
+    {
+        event:"*",
+        schema:"public",
+        table:"animals"
+    },
+    ()=>{
+        loadAnimals();
+    }
+)
+.subscribe();
+
+
+/* ==================================
+   Helpers
+================================== */
+
+function renderEverything(){
+
+    renderDashboard();
+    renderAnimals();
+    renderAreas();
+
+}
+
+
+function getValue(id){
+
+    return document.querySelector(
+        "#"+id
+    ).value;
+
+}
+
+
+function value(id,v){
+
+    document.querySelector(
+        "#"+id
+    ).value=
+    v ?? "";
+
+}
+
+
+function setText(id,v){
+
+    document.querySelector(
+        "#"+id
+    ).textContent=v;
+
+}
+
+
+function sexText(value){
+
+    if(value==="male"){
+        return "公";
+    }
+
+    if(value==="female"){
+        return "母";
+    }
+
+    return "未知";
+
+}
+
+
+function formatDate(date){
+
+    if(!date)return "";
+
+    return new Date(date)
+    .toLocaleDateString(
+        "zh-CN"
+    );
+
+}
+
+
+function formatDateTime(date){
+
+    if(!date)return "";
+
+    return new Date(date)
+    .toLocaleString(
+        "zh-CN"
+    );
+
+}
+
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+    .replaceAll(
+        "'",
+        "&#039;"
+    );
+
+}
+
+</script>
+
+</body>
+</html>
